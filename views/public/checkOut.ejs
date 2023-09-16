@@ -1,0 +1,497 @@
+
+
+    <%- include("./includes/headerPart.ejs") %>
+    
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.1.5/dist/sweetalert2.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.1.5/dist/sweetalert2.min.js"></script>
+    
+    <!-- Header -->
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Checkout</title>
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.1.5/dist/sweetalert2.min.css">
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.1.5/dist/sweetalert2.min.js"></script>
+    </head>
+    <body>
+        <%- include("./includes/header.ejs") %>
+        <div class="container mt-5 pt-5">
+           
+
+            <div class="row">
+
+                <div class="col-lg-6">
+
+                    <!-- Billing Details Form -->
+                    <div class="card p-4">
+                        <h2 class="card-title">Billing Details</h2>
+                        <% if(address[0]) { %>
+                            <form class="needs-validation" novalidate>
+                                <div class="form-group">
+                                    <label for="name">Name</label>
+                                    <input type="text" class="form-control" id="name" name="name" value="<%= address[0].name %>" required>
+                                    <div class="invalid-feedback">
+                                        Please enter your name.
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="number">Mobile Number</label>
+                                    <input type="text" class="form-control" id="number" name="number" value="<%= address[0].mobileNumber %>" required>
+                                    <div class="invalid-feedback">
+                                        Please enter your mobile number.
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="address">Address</label>
+                                    
+                                    <input type="text" class="form-control" id="address" name="address" value="<%= address[0].address %> <%=address[0].locality%> <%=address[0].city%> <%=address[0].pincode%> <%=address[0].state%>" required>
+                                    
+                                    <div class="invalid-feedback">
+                                        Please enter your address.
+                                    </div>
+                                </div>
+                                <!-- Add other form fields here -->
+                                <button class="btn btn-primary" type="submit">Continue</button>
+                            </form>
+                        <% } else { %>
+                            <h5>Please Add an Address</h5>
+                        <% } %>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <!-- Modals for Address -->
+                    <div class="card p-4">
+                        <h2 class="card-title">Manage Addresses</h2>
+                        <button class="btn btn-primary mb-2" data-toggle="modal" data-target="#exampleModal1">Change Address</button>
+                        <button class="btn btn-success" data-toggle="modal" data-target="#exampleModal2">Add New Address</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    
+        <!-- Change Address Modal -->
+        <div class="modal fade" id="changeAddressModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <!-- Modal content goes here -->
+                </div>
+            </div>
+        </div>
+    
+        <!-- Add Address Modal -->
+        <div class="modal fade" id="addAddressModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <!-- Modal content goes here -->
+                </div>
+            </div>
+        </div>
+
+
+
+
+
+        
+
+            <!-- Button trigger modal -->
+
+                <!-- Modal -->
+                <div class="modal fade" id="exampleModal1" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog" style="margin-top: 150px ;">
+                      <div class="modal-content">
+                          <div class="modal-header">
+                          <h5 class="modal-title" id="exampleModalLabel">ADDRESSES</h5>
+                          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                              <span aria-hidden="true">&times;</span>
+                          </button>
+                          </div>
+                          <div class="modal-body">
+                              <div class="pop-up-list">
+                                  <div class="comment-list grid-view" style="height: 500px; overflow-y:scroll;">
+                                      <form id="addressForm" action="/changeDefaultAddress" method="POST">
+                                          <% address.forEach(function(address,index) {%>
+                                              <label for="address<%=index%>">Address</label>
+                                              <input type="radio" id="addressRadio{<%=index%>}" name="addressRadio" value="<%=address._id%>" onchange="this.form.submit()">
+                                              <br>
+                                          <div class="single-comment grid-item">
+                                              <div class="user justify-content-between d-flex">
+                                              <div class="desc">
+                                                  <h5>Name: <%=address.name%></h5>
+                                                  <h5>Number: <%=address.mobileNumber%></h5>
+                                                  <h5>Address: <%=address.address%></h5>
+                                                  <h5>City: <%=address.city%></h5>
+                                                  <h5>Street: <%=address.locality%></h5>
+                                                  <h5>Pin: <%=address.pincode%></h5>
+                                              </div>
+                                              </div>
+                                          </div>
+                                          <br>
+                                          <% }) %>
+                                      </form>
+                                  </div>
+                              </div>
+                          </div>
+                      </div>
+                    </div>
+                  </div>
+  
+                  <div class="modal fade" id="exampleModal2" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog" style="margin-top: 150px ;">
+                      <div class="modal-content">
+                          <div class="modal-header">
+                          <h5 class="modal-title" id="exampleModalLabel">Add Address</h5>
+                          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                              <span aria-hidden="true">&times;</span>
+                          </button>
+                          </div>
+                          <div class="modal-body">
+                              <div class="popup-wrapper">
+                                  <div class="popup">
+                                      <button class="close-button"></button>
+                                      <form class="popup-form" action="/checkOutAddress" method="POST" id="myForm" onsubmit="return validateForm()">
+                                          <input type="text" class="popup-form__input" placeholder="Name" name="name" id="name">
+                                          <span id="nameError"></span>
+                                          <input type="tel" class="popup-form__input" placeholder="Mobile Number" name="mno" id="mno">
+                                          <span id="mnoError"></span>
+                                          <textarea class="popup-form__input" placeholder="House Address" name="address" id="address"></textarea>
+                                          <input type="text" class="popup-form__input" placeholder="City" name="city" id="city">
+                                          <input type="text" class="popup-form__input" placeholder="Street" name="locality" id="locality">
+                                          <input type="text" class="popup-form__input" placeholder="PostalCode/PIN" name="pincode" id="pincode">
+                                          <input type="text" class="popup-form__input" placeholder="State" name="state" id="state">
+                                          <button type="submit" id="btn" class="popup-form__submit btn btn-primary">ADD</button>
+                                      </form>
+                                  </div>
+                              </div>
+                          </div>
+                      </div>
+                    </div>
+                  </div>
+          </div>
+
+
+
+
+
+
+
+
+          <div class="container mt-5">
+            <div class="row">
+                <div class="col-lg-6">
+                    <!-- Billing Details Form -->
+                    <form id="checkOut-form" action="/checkOut" method="POST">
+                    <!-- Your Order -->
+                    <div class="card p-4">
+                        <h2 class="card-title">Your Order</h2>
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item"><h5>Product Total</h5></li>
+                            <% cart.forEach(function(cart,index) {%>
+                            <li class="list-group-item">
+                                
+                                <a href="#" style="color: black;"><%=cart.carted.name%> 
+                                <span class="middle" style="color: black;">x <%=cart.quantity%></span><br> 
+                                <span class="last" style="color: black;">₹<%= cart.total %></span></a>
+                            </li>
+                            <% }) %>
+                        </ul>
+                        <ul class="list list_2">
+                            <li><a href="#">Subtotal <span id="subTotal">₹<%=total.cartTotal%></span></a></li>
+                            <li><a href="#">Discount  <span id="couponOffer"></span></a></li>
+                            <li class="p-t-10"><b>Total: <span id="total"></span></b></li>
+                            <input type="hidden" name="discountPercentage" id="discountPercentage" value="0">
+                            <input type="hidden" name="discountAmount" id="discountAmount" value="0">
+                            <input type="hidden" name="total" value="<%=total.cartTotal%>" id="totalVal">
+                            <%if(address[0]){%>
+                            <input type="hidden" name="address" value="<%=address[0]._id%>" >
+                            <%}else{%>
+                            <%}%>
+                        </ul>
+                        <div class="form-group row coupon_area p-t-15">
+                            <div class="col-sm-8">
+                                <input type="text" class="form-control" placeholder="Enter coupon code" name="couponCode" id="couponCode">
+                            </div>
+                            <div class="col-sm-4">
+                                <button class="btn btn-primary" style="width: 100px; height: 40px;" onclick="applyCoupon('<%=total.cartTotal%>')">Apply</button>
+                            </div>
+                        </div>
+                        <span id="couponErr"></span>
+                        <h4 class="p-b-10">Payment</h4>
+                        <div class="payment_item">
+                            <div class="form-check">
+                                <input type="radio" class="form-check-input" id="walletOption" name="paymentOption" value="wallet">
+                                <label class="form-check-label" for="walletOption">Wallet</label>
+                            </div>
+                            <p>Pay the amount from your wallet</p>
+                        </div>
+                        <div class="payment_item">
+                            <div class="form-check">
+                                <input type="radio" class="form-check-input" id="codOption" name="paymentOption" value="cod" checked>
+                                <label class="form-check-label" for="codOption">Cash On Delivery</label>
+                            </div>
+                            <p>Pay the amount at your doorstep</p>
+                        </div>
+                        <div class="payment_item">
+                            <div class="form-check">
+                                <input type="radio" class="form-check-input" id="razorpayOption" name="paymentOption" value="razorpay">
+                                <label class="form-check-label" for="razorpayOption">Razorpay</label>
+                            </div>
+                            <p>Pay through Razorpay</p>
+                        </div>
+                        <%if(address[0]){%>
+                        <button class="btn btn-primary" style="width: 150px;" onclick="proceedToPayment()">Place Order</button>
+                        <%}else{%>
+                        <button class="btn btn-primary" style="width: 150px;" disabled onclick="proceedToPayment()">Place Order</button>
+                        <%}%>
+                    </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+
+
+
+
+
+
+        <script>
+            function validateForm() {
+                const name = document.getElementById("name").value.trim();
+                const mobileNumber = document.getElementById("mno").value.trim();
+                const address = document.getElementById("address").value.trim();
+                const city = document.getElementById("city").value.trim();
+                const locality = document.getElementById("locality").value.trim();
+                const pincode = document.getElementById("pincode").value.trim();
+                const state = document.getElementById("state").value.trim();
+          
+                // Check if the name is not empty
+                if (name === "") {
+                  alert("Please enter valid Name");
+                    return false;
+                }
+          
+                // Check if the mobile number is a valid number with at least 10 digits
+                if (isNaN(mobileNumber) || mobileNumber.length < 10) {
+                  alert("Please enter valid mobile Number .");
+                    return false;
+                }
+          
+                // Check if the address is not empty
+                if (address === "") {
+                    alert("Please enter your house address.");
+                    return false;
+                }
+          
+                // Check if the city is not empty
+                if (city === "") {
+                    alert("Please enter your city.");
+                    return false;
+                }
+          
+                // Check if the street/locality is not empty
+                if (locality === "") {
+                    alert("Please enter your street/locality.");
+                    return false;
+                }
+          
+                // Check if the postal code/PIN is not empty and is a valid number
+                if (pincode === "" || isNaN(pincode)) {
+                    alert("Please enter a valid postal code/PIN.");
+                    return false;
+                }
+          
+                // Check if the state is not empty
+                if (state === "") {
+                    alert("Please enter your state.");
+                    return false;
+                }
+          
+                // If all validations pass, the form will be submitted
+                return true;
+            }
+        </script>
+
+
+
+<script>
+   function proceedToPayment() {
+
+    console.log("proceedToPayment function called");
+    event.preventDefault();
+                $.ajax({
+                    url: "/checkOut",
+
+                    method: 'POST',
+                    data: $('#checkOut-form').serialize(),
+                    success: function (response) {
+                        if (response.error) {
+                            if (response.error === "Insufficient wallet balance!") {
+                                Swal.fire({
+                                    title: 'Error!',
+                                    text: 'Insufficient wallet balance!',
+                                    icon: 'error',
+                                    timer: 5000
+                                });
+                            } else {
+                                Swal.fire({
+                                    title: 'Error!',
+                                    text: response.error,
+                                    icon: 'error',
+                                    timer: 5000
+                                });
+                            }
+                        } else if (response.codStatus == true) {
+                            
+                            location.href = '/success';
+                        } else if (response.orderStatus == true) {
+                           location.href = '/success';
+                        } else if (response.status == "OrderFailed") {
+                            Swal.fire({
+                                title: 'Order Failed!',
+                                text: 'Your Product is Out of Stock. Please Check after some time',
+                                icon: 'error',
+                                timer: 5000
+                            }).then(() => {
+                                location.href = '/'
+                            });
+                        } else if
+                         (response.status == 'blocked') {
+                            Swal.fire({
+                                title: 'You are blocked',
+                                icon: 'error',
+                                timer: 5000
+                            });
+                            setTimeout(() => {
+                                window.location.href = "/logout"
+                            }, 5000);
+                        } else {
+                            try {
+                                razorpay(response);
+                            } catch (error) {
+                                console.log(error.message)
+                                // Swal.fire({
+                                //     title: 'Error!',
+                                //     text: error.message,
+                                //     icon: 'error',
+                                //     timer: 5000
+                                // });
+                            }
+                        }
+                    },
+                    error: function (jqXHR) {
+                        try {
+                            let errResponse = JSON.parse(jqXHR.responseText);
+                            if (errResponse.error && errResponse.error === "Insufficient wallet balance!") {
+                                Swal.fire({
+                                    title: 'Error!',
+                                    text: 'Insufficient wallet balance!',
+                                    icon: 'error',
+                                    timer: 5000
+                                });
+                            } else {
+                                Swal.fire({
+                                    title: 'Error!',
+                                    text: 'An unexpected error occurred.',
+                                    icon: 'error',
+                                    timer: 5000
+                                });
+                            }
+                        } catch (err) {
+                            Swal.fire({
+                                title: 'Error!',
+                                text: 'An unexpected error occurred.',
+                                icon: 'error',
+                                timer: 5000
+                            });
+                        }
+                    }
+                });
+            }
+
+
+       
+
+
+
+
+
+
+       function verifypayment(payment, order, paymentId) {
+           console.log('12121212121212', payment, order, paymentId, '-------------1212121212121212--');
+           $.ajax({
+               url: 'verifyPayment',
+               method: 'post',
+               data: {
+                   payment,
+                   order,
+                   paymentId
+               },
+
+               success: (response) => {
+                   if (response.status) {
+                       {
+                           location.href = '/success'
+                       }
+                   } else {
+
+                   }
+
+               }
+           })
+       }
+
+       function paymentFailed(order) {
+               $.ajax({
+                   url: 'paymentFailed',
+                   method: 'post',
+                   data: {
+                       order
+                   },
+
+                   success: (response) => {
+                       if (response.status) {
+                           // Swal.fire({
+                           //     title: 'Order Failed!',
+                           //     text: 'Your order is failed.',
+                           //     icon: 'error',
+                           //     timer: 5000
+                           // }).then(() => {
+                           //     location.href = '/'
+                           // })
+                           location.href = '/failed'
+                       } else {
+
+                       }
+
+                   }
+               })
+           }
+
+   
+
+
+
+
+
+</script>
+        
+    
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+        <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+        <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+        
+
+        
+
+    </body>
+    </html>
+    

@@ -1,0 +1,206 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Modernize Free</title>
+  <link rel="shortcut icon" type="image/png" href="/admin/assets/images/logos/favicon.png" />
+  <link rel="stylesheet" href="/admin/assets/css/styles.min.css" />
+  
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.min.js" integrity="sha384-Rx+T1VzGupg4BHQYs2gCW9It+akI2MM/mndMCy36UVfodzcJcF0GGLxZIzObiEfa" crossorigin="anonymous"></script>
+  <%-include("./includes/header.ejs")%>
+</head>
+
+<body>
+  <!--  Body Wrapper -->
+  <div class="page-wrapper" id="main-wrapper" data-layout="vertical" data-navbarbg="skin6" data-sidebartype="full"
+    data-sidebar-position="fixed" data-header-position="fixed">
+    <%-include('./includes/sidebar.ejs')%>
+    <!--  Main wrapper -->
+    <div class="body-wrapper">
+      <!--  Header Start -->
+      
+      <!--  Header End -->
+       
+<main class="main-wrap">
+     
+  
+      
+    <section class="content-main container-fluid">
+        <div class="row">
+            <div class="col-6">
+                <div class="content-header">
+                    <h2 class="content-title">Categories</h2>
+                    <div>
+                      <a class="btn btn-success rounded font-sm hover-up mb-3" href="/admin/addCategory">New Category</a>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-body">
+                <div class="row">
+                   
+                    <div class="col-md-12">
+                        <div class="table-responsive">
+                          <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th></th>
+                                    <th>Name</th>
+                                    <th>Description</th>
+                                    <th>Status</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <% categories.forEach(category => { %>
+                                    <tr>
+                                        <td></td>
+                                        <td><%= category.name %></td>
+                                        <td><%= category.description %></td>
+                                        <td>
+                                            <% if (category.isListed) { %>
+                                                <span class="badge bg-success">Active</span>
+                                            <% } else { %>
+                                                <span class="badge bg-warning text-dark">Unlisted</span>
+                                            <% } %>
+                                        </td>
+                                        <td>
+                                            <div class="dropdown">
+                                                <button class="btn btn-light btn-sm dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+                                                    Actions
+                                                </button>
+                                                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                                    <li><a class="dropdown-item" href="/admin/editCategory?id=<%= category._id %>">Edit Info</a></li>
+                                                    <% if (category.isListed) { %>
+                                                        <li><a class="dropdown-item text-danger" href="/admin/unListCategory?id=<%= category._id %>">Unlist</a></li>
+                                                    <% } else { %>
+                                                        <li><a class="dropdown-item" href="/admin/reListCategory?id=<%= category._id %>">Relist</a></li>
+                                                    <% } %>
+                                                </ul>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                <% }) %>
+                            </tbody>
+                        </table>
+                        </div>
+
+                        
+                    </div> <!-- .col// -->
+                </div> <!-- .row // -->
+                
+            </div> <!-- card body .// -->
+        </div> <!-- card .// -->
+    </section> 
+</main>
+<script src="/admin/assets/libs/jquery/dist/jquery.min.js"></script>
+<script src="/admin/assets/libs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+<script src="/admin/assets/js/sidebarmenu.js"></script>
+<script src="/admin/assets/js/app.min.js"></script>
+<script src="/admin/assets/libs/apexcharts/dist/apexcharts.min.js"></script>
+<script src="/admin/assets/libs/simplebar/dist/simplebar.js"></script>
+<script src="/admin/assets/js/dashboard.js"></script>
+
+<script>
+  const regex = /^(?!\s*$).+/;
+
+  const titleError = document.getElementById("title-error");
+  const descriptionError = document.getElementById("description-error");
+
+  const myform = document.getElementById("myform");
+
+  function titleValidation() {
+    const name = document.getElementById("name").value;
+    const nameInput = document.getElementById("name");
+    if (name.length == 0) {
+      titleError.innerHTML = "Title is required";
+      titleError.style.color = "red";
+      nameInput.style.border = "solid 2px red";
+      return false;
+    }
+    if (!name.match(regex)) {
+      titleError.innerHTML = "Write valid Title";
+      titleError.style.color = "red";
+      nameInput.style.border = "solid 2px red";
+      return false;
+    }
+    titleError.innerHTML = "";
+    titleError.style.color = "green";
+    nameInput.style.border = "solid 2px green";
+    return true;
+  }
+
+  function descriptionValidation() {
+    const name = document.getElementById("description").value;
+    const nameInput = document.getElementById("description");
+    if (name.length == 0) {
+      descriptionError.innerHTML = "Description is required";
+      descriptionError.style.color = "red";
+      nameInput.style.border = "solid 2px red";
+      return false;
+    }
+    if (!name.match(regex)) {
+      descriptionError.innerHTML = "Write valid Description";
+      descriptionError.style.color = "red";
+      nameInput.style.border = "solid 2px red";
+      return false;
+    }
+    descriptionError.innerHTML = "";
+    descriptionError.style.color = "green";
+    nameInput.style.border = "solid 2px green";
+    return true;
+  }
+
+  myform.addEventListener("submit", (event) => {
+    event.preventDefault();
+    if (!titleValidation() || !descriptionValidation()) {
+      return false;
+    } else {
+      myform.submit();
+    }
+  });
+ </script>
+
+</body>
+</html>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      <script src="/admin/assets/libs/jquery/dist/jquery.min.js"></script>
+      <script src="/admin/assets/libs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+      <script src="/admin/assets/js/sidebarmenu.js"></script>
+      <script src="/admin/assets/js/app.min.js"></script>
+      <script src="/admin/assets/libs/apexcharts/dist/apexcharts.min.js"></script>
+      <script src="/admin/assets/libs/simplebar/dist/simplebar.js"></script>
+      <script src="/admin/assets/js/dashboard.js"></script>
+    
+
+
+
+        </script>
+</body>
+
+</html>

@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+
+
+<%- include("./includes/headerPart.ejs") %>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+</head>
+
+<body>
+<%- include("./includes/header.ejs") %>
+
+<section style="background-color: #f8f9fa; padding-top: 80px;">
+    <div class="container py-5">
+        <div class="row">
+            <div class="col-lg-8 mx-auto">
+                <div class="card mb-4">
+                    <div class="card-body">
+                        <h4 class="mb-4">Address Book</h4>
+                        <div class="d-flex justify-content-end">
+                            <button type="button" class="btn btn-primary" onclick="showModal()">Add Address</button>
+                        </div>
+                        <br>
+                        <br>
+                        <div class="table-responsive">
+                          <ul class="list-group">
+                            <% arr.forEach((address) => { %>
+                                <li class="list-group-item">
+                                    <div>
+                                        <strong>Name:</strong> <%= address.name %>
+                                    </div>
+                                    <div>
+                                        <strong>Mobile Number:</strong> <%= address.mobileNumber %>
+                                    </div>
+                                    <div>
+                                        <strong>Address:</strong> <%= address.address %>, <%= address.locality %>, <%= address.city %>
+                                    </div>
+                                    <div>
+                                        <strong>Pincode:</strong> <%= address.pincode %>
+                                    </div>
+                                    <div>
+                                        <strong>State:</strong> <%= address.state %>
+                                    </div>
+                                    <div>
+                                        <!-- Action buttons or links -->
+                                        <button type="button" class="btn btn-warning" onclick="showModal(<%= JSON.stringify(address) %>)">
+                                          Edit
+                                        </button>
+                                        
+                                      
+                                        <a href="/deleteAddress?id=<%= address._id %>" class="btn btn-danger">
+                                            Delete
+                                        </a>
+                                    </div>
+                                </li>
+                            <% }) %>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Modal for Edit/Add Address -->
+<div class="modal fade" id="popupForm" tabindex="-1" aria-labelledby="popupFormLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="popupFormLabel">Edit Address</h5>
+        <!-- <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button> -->
+        <button type="button" class="btn" onclick="closePopupedit()">
+          Close
+        </button>
+        <button type="button" class="btn" onclick="saveAddressedit()">
+          Save
+        </button>
+      </div>
+      <div class="modal-body">
+        <!-- Address form fields -->
+        <input type="hidden" id="idInput" />
+        <input type="text" id="nameInput" placeholder="Name" />
+        <input type="text" id="mobileNumberInput" placeholder="Mobile Number" />
+        <input type="text" id="addressInput" placeholder="Address" />
+        <input type="text" id="localityInput" placeholder="Locality" />
+        <input type="text" id="cityInput" placeholder="City" />
+        <input type="text" id="pincodeInput" placeholder="Pincode" />
+        <input type="text" id="stateInput" placeholder="State" />
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary" onclick="saveAddress()">Save</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  function showModal(address) {
+    // Clear form fields
+    document.getElementById("idInput").value = ""; // Clear the ID field initially
+
+    if (address) {
+        // If an address is provided, populate the form fields and set the ID
+        document.getElementById("idInput").value = address._id;
+        document.getElementById("nameInput").value = address.name;
+        document.getElementById("mobileNumberInput").value = address.mobileNumber;
+        document.getElementById("addressInput").value = address.address;
+        document.getElementById("localityInput").value = address.locality;
+        document.getElementById("cityInput").value = address.city;
+        document.getElementById("pincodeInput").value = address.pincode;
+        document.getElementById("stateInput").value = address.state;
+    }
+
+    // Show the modal
+    $('#popupForm').modal('show');
+}
+
+
+
+    function saveAddress() {
+      // Get the form data
+      var id = document.getElementById("idInput").value;
+      var name = document.getElementById("nameInput").value;
+      var mobileNumber = document.getElementById("mobileNumberInput").value;
+      var address = document.getElementById("addressInput").value;
+      var locality = document.getElementById("localityInput").value;
+      var city = document.getElementById("cityInput").value;
+      var pincode = document.getElementById("pincodeInput").value;
+      var state = document.getElementById("stateInput").value;
+
+      // Validate the input values
+      if (name.trim() === "") {
+        alert("Name cannot be empty");
+        return;
+      }
+      if (!/^[a-zA-Z ]+$/.test(name)) {
+        alert("Name should not contain numbers or special characters");
+        return;
+      }
+      if (mobileNumber.trim() === "") {
+        alert("Mobile Number cannot be empty");
+        return;
+      }
+      if (!/^\+?\d{1,12}$/.test(mobileNumber)) {
+        alert("Mobile Number should contain a maximum of 12 numbers only");
+        return;
+      }
+      if (address.trim() === "") {
+        alert("Address cannot be empty");
+        return;
+      }
+      if (locality.trim() === "") {
+        alert("Locality cannot be empty");
+        return;
+      }
+      if (city.trim() === "") {
+        alert("City cannot be empty");
+        return;
+      }
+      if (pincode.trim() === "") {
+        alert("Pincode cannot be empty");
+        return;
+      }
+      if (!/^\d{6}$/.test(pincode)) {
+        alert("Pincode should contain exactly 6 digits");
+        return;
+      }
+      if (state.trim() === "") {
+        alert("State cannot be empty");
+        return;
+      }
+
+      // Create a data object to send in the AJAX request
+      var data = {
+        id: id,
+        name: name,
+        mno: mobileNumber,
+        address: address,
+        locality: locality,
+        city: city,
+        pincode: pincode,
+        state: state,
+      };
+
+      // Make an AJAX call to the "/addaddress" URL
+      var xhr = new XMLHttpRequest();
+      xhr.open("POST", "/submitAddress", true);
+      xhr.setRequestHeader("Content-Type", "application/json");
+      xhr.onreadystatechange = function () {
+        if (xhr.readyState === 4 && xhr.status === 200) {
+          // Request completed successfully
+          console.log(xhr.responseText); // You can do something with the response here
+          $('#popupForm').modal('hide'); // Close the modal after successful save
+          location.reload();
+        }
+      };
+      xhr.send(JSON.stringify(data));
+    }
+
+
+
+    function saveAddressedit() {
+  // Get the input values including the ID
+  var id = document.getElementById("idInput").value; // Get the ID
+  var name = document.getElementById("nameInput").value;
+  var mobileNumber = document.getElementById("mobileNumberInput").value;
+  var address = document.getElementById("addressInput").value;
+  var locality = document.getElementById("localityInput").value;
+  var city = document.getElementById("cityInput").value;
+  var pincode = document.getElementById("pincodeInput").value;
+  var state = document.getElementById("stateInput").value;
+
+  // Validate the input values (same validation as before)
+
+  var formData = {
+    id: id, // Use the ID to identify the address to update
+    name: name,
+    mobileNumber: mobileNumber,
+    address: address,
+    locality: locality,
+    city: city,
+    pincode: pincode,
+    state: state,
+  };
+
+  // Send the form data to the server using AJAX for updating
+  var xhr = new XMLHttpRequest();
+  xhr.open("POST", "/updateAddress", true);
+  xhr.setRequestHeader("Content-Type", "application/json");
+  xhr.onreadystatechange = function () {
+    if (xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) {
+      // Reload the section of the address table
+      var addressTableSection = document.getElementById(
+        "addressTableSection"
+      );
+      addressTableSection.innerHTML = xhr.responseText;
+      $('#popupForm').modal('hide'); // Close the modal after successful save
+    }
+  };
+  xhr.send(JSON.stringify(formData));
+}
+
+
+
+</script>
+
+<script
+    src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz"
+    crossorigin="anonymous"
+></script>
+<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+</body>
+</html>

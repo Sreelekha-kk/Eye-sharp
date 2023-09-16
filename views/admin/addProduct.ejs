@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>eye sharp</title>
+    <link rel="icon" type="image/png" href="/public/images/icons/favicon.png"/>
+    <link rel="stylesheet" href="/admin/assets/css/styles.min.css" />
+
+    <!-- Bootstrap CSS -->
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/5.0.0-beta2/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.4.1/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="path/to/cropper.css">
+    <script src="path/to/cropper.js"></script>
+    <!-- Custom CSS -->
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+        .btn-back {
+            margin: 1rem;
+            font-size: 1rem;
+            color: #ffffff; /* White text */
+            background-color: #007bff; /* Blue background */
+            padding: 5px 10px;
+            border-radius: 5px;
+            text-decoration: none; /* No underline */
+        }
+        .card {
+            border-radius: 1rem;
+            border: none;
+            box-shadow: 0 0.5rem 1rem 0 rgba(0, 0, 0, 0.1);
+            max-width: 800px;
+            margin: auto;
+        }
+        .card .card-body {
+            padding: 3rem 4rem;
+        }
+        .btn-primary {
+            background-color:#007bff;
+        }
+        .form-label {
+            font-weight: 500;
+            color: #495057;
+        }
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        .narrow-column {
+            width: 20px;
+        }
+    </style>
+
+</head>
+<body>
+    <div class="page-wrapper" id="main-wrapper" data-layout="vertical" data-navbarbg="skin6" data-sidebartype="full" data-sidebar-position="fixed" data-header-position="fixed">
+        <!-- Sidebar Start -->
+        <%- include("./includes/sidebar.ejs") %>
+        <!--  Sidebar End -->
+        <!--  Main wrapper -->
+        <div class="body-wrapper">
+          <!--  Header Start -->
+          <%- include("./includes/header.ejs") %>
+          <!--  Header End -->
+          <div class="container-fluid">
+            <!--  Row 1 -->
+            
+            <div class="row">
+              
+              <div class="col-lg-12 d-flex align-items-stretch">
+                <div class="card w-100">
+                  <div class="card-body p-4">
+                        <!-- Main content -->
+                        <main class="container my-5">       
+                            <h1 class="mb-5 text-center text-secondary">Add New Product</h1>
+                            <div class="text-center mt-5">
+                                <p class="text-danger"><%=(typeof message!=='undefined')?message:""%></p>
+                            </div>
+                            <form id="productForm" action="/admin/addProduct" method="post" enctype="multipart/form-data">
+                                <div class="card shadow-lg">
+                                    <div class="card-body">
+                                        <!-- Your form groups go here -->
+                                        <div class="form-group mb-4">
+                                            <div>
+                                                <label class="form-label" for="product-name">Product title</label>
+                                            </div>
+                                            <div>
+                                                <input type="text" id="product-name" class="form-control" name="name" placeholder="Type here">
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="form-group mb-4">
+                                            <div>
+                                                <label class="form-label" for="product-description">Description</label>
+                                            </div>
+                                            <div>
+                                                <textarea class="form-control" id="product-description" name="description" rows="4" placeholder="Type here"></textarea>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="form-group mb-4">
+                                            <div>
+                                                <label class="form-label" for="product-category">Category</label>
+                                            </div>
+                                            <div>
+                                                <select class="form-select" id="product-category" name="category">
+                                                    <% category.forEach(function(category) { %>
+                                                    <option value="<%= category._id %>"><%= category.name %></option>
+                                                    <% }); %>
+                                                </select>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group mb-4">
+                                            <div>
+                                                <label class="form-label" for="product-price">Cost in INR</label>
+                                            </div>
+                                            <div>
+                                                <input type="number" id="product-price" class="form-control" name="price" placeholder="00.0">
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group mb-4">
+                                            <div>
+                                                <label class="form-label">Stock</label>  
+                                            </div>                                    
+                                            <div>
+                                                <input type="number" placeholder="0" class="form-control" name="stock" id="stock" onkeyup="stockValidation()"><span id="stockError"></span>
+                                            </div>
+                                        </div>
+                                        
+                                        <h5 class="mt-5 mb-3 text-secondary">Product Images</h5>
+                                        
+                                        <div class="form-group mb-4">
+                                            <div>
+                                                <label class="form-label" for="images">Product Images</label>
+                                            </div>
+                                            <div id="imgPreviewContainer">
+                                                <!-- Images will be previewed here -->
+                                            </div>
+                                            <div>
+                                                <input type="file" id="images" name="images" class="form-control" onchange="viewImages(event)" multiple>
+                                            </div>
+                                        </div>
+                                        
+                                        <button type="submit" class="btn btn-primary mt-3"><i class="bi bi-box-arrow-in-up"></i> Publish Product</button>
+                                    </div>
+                                </div>
+                            </form>        
+                        </main>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+          </div>
+      </div>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.12/cropper.min.js"></script>
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.12/cropper.min.css">
+      <script>
+
+
+
+function viewImages(event) {
+    const files = event.target.files;
+    const imgPreviewContainer = document.getElementById("imgPreviewContainer");
+    const cropperOptions = {
+        aspectRatio: 1, // Adjust the aspect ratio as needed
+        viewMode: 1,   // Set to 1 for displaying the cropped image
+    };
+
+    if (files.length > 3) {
+        alert('You can upload up to 3 images only.');
+        event.target.value = '';  // Clear the input
+        return;
+    }
+
+    for (let i = 0; i < files.length; i++) {
+        const file = files[i];
+
+        // Validate file size
+        if (file.size > 2 * 1024 * 1024) {
+            alert('Each image should be less than 2MB in size.');
+            event.target.value = '';  // Clear the input
+            return;
+        }
+
+        // Validate file type
+        const validTypes = ['image/jpeg', 'image/jpg', 'image/png'];
+        if (!validTypes.includes(file.type)) {
+            alert('Only jpeg and png image types are allowed.');
+            event.target.value = '';  // Clear the input
+            return;
+        }
+
+        // Display image preview with cropping functionality
+        const imgPreview = document.createElement('img');
+        imgPreview.src = URL.createObjectURL(file);
+        imgPreview.width = 100;
+        imgPreview.height = 100;
+
+        // Create a container div for each image
+        const imgContainer = document.createElement('div');
+        imgContainer.appendChild(imgPreview);
+        imgPreviewContainer.appendChild(imgContainer);
+
+        // Initialize Cropper.js for each image
+        const cropper = new Cropper(imgPreview, cropperOptions);
+
+        // Add a button to trigger cropping and save the cropped result
+        const cropButton = document.createElement('button');
+        cropButton.textContent = 'Crop and Save';
+        cropButton.addEventListener('click', () => {
+            const croppedDataUrl = cropper.getCroppedCanvas().toDataURL(); // Get the cropped image as data URL
+
+            // Display the cropped image on the page
+            const croppedImage = document.createElement('img');
+            croppedImage.src = croppedDataUrl;
+            croppedImage.width = 100;
+            croppedImage.height = 100;
+
+            // Append the cropped image to the same container as the original image
+            imgContainer.innerHTML = ''; // Clear the original image
+            imgContainer.appendChild(croppedImage);
+
+            // You can save the cropped data URL or take further actions as needed
+            console.log('Cropped Data URL:', croppedDataUrl);
+        });
+
+        // Append the crop button to the image container
+        imgContainer.appendChild(cropButton);
+    }
+}
+
+
+
+
+    </script>
+    <script>
+        const stock = document.getElementById("stock")
+
+        function stockValidation(){
+            const stockValue = stock.value
+			if(stockValue.trim()==0){
+				stockError.innerHTML = 'Stock is Required'
+				stockError.style.color = 'red'
+				stock.style.border = "solid 2px red";
+				return false;
+			}
+            if(stockValue <  0 ){
+				stockError.innerHTML = 'Stock Must be greater than or equal to zero'
+				stockError.style.color = 'red'
+				stock.style.border = "solid 2px red";
+				return false;
+			}
+            stockError.innerHTML = ""
+			stockError.style.color = "green"
+			stock.style.border = "solid 2px green";
+			return true
+        }
+    </script>
+
+<script>
+    const productForm = document.getElementById('productForm');
+
+    productForm.addEventListener('submit', function(event) {
+        event.preventDefault();
+
+        const formData = new FormData(productForm);
+
+        fetch('/admin/addProduct', {
+            method: 'POST',
+            body: formData,
+        })
+        .then(response => {
+            // Check if the response is ok (status code 200-299)
+            if (!response.ok) {
+                // Convert the response body to text and throw it as an error
+                return response.text().then(errorText => {
+                    throw new Error(errorText);
+                });
+            }
+            return response.text();  // If response is ok, convert body to text
+        })
+        .then(data => {
+            window.location.href = '/admin/productManagement';
+        })
+        .catch((error) => {
+            console.error('Error:', error.message);
+            alert(error.message);  // Now, this will display our error messages
+        });
+    });
+
+</script>
+
+
+</body>
+</html>

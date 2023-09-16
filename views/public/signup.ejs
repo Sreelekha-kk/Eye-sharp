@@ -1,0 +1,74 @@
+<%- include("./includes/headerPart.ejs") %>
+<%- include("./includes/header.ejs") %>
+
+<div class="d-flex align-items-center justify-content-center" style="min-height: 100vh;">
+  <div class="container w-50 py-5">
+    <div class="text-center">
+      <h2 class="font-weight-bold">Signup System</h2>
+    </div>
+    <form action="/signupValidate" method="post" id="signup-form" onsubmit="return validateForm()">
+      <div class="form-group">
+        <label for="name">Name:</label>
+        <input type="text" class="form-control" id="name" name="name" required>
+      </div>
+      <div class="form-group">
+        <label for="mobile">Mobile:</label>
+        <input type="tel" class="form-control" id="mobile" name="mobile" required>
+      </div>
+      <div class="form-group">
+        <label for="email">Email:</label>
+        <input type="email" class="form-control" id="email" name="email" required
+          pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}">
+      </div>
+      <div class="form-group">
+        <label for="password">Password:</label>
+        <input type="password" class="form-control" id="password" name="password" required minlength="8"
+          maxlength="20">
+      </div>
+      <div class="text-center">
+        <div class="text-center">
+          <input type="submit" value="Submit" class="btn btn-primary">
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+<%- include("./includes/footer.ejs") %>
+
+<script>
+  function validateForm() {
+    const nameInput = document.getElementById("name");
+    const emailInput = document.getElementById("email");
+    const mobileInput = document.getElementById("mobile");
+    const passwordInput = document.getElementById("password");
+
+    // Validate name
+    if (nameInput.value.trim() === "") {
+      alert("Name is required");
+      return false;
+    }
+
+    // Validate email using a regular expression
+    const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
+    if (!emailPattern.test(emailInput.value)) {
+      alert("Invalid email address");
+      return false;
+    }
+
+    // Validate mobile number using a regular expression (adjust the pattern as needed)
+    const mobilePattern = /^[0-9]{10}$/;
+    if (!mobilePattern.test(mobileInput.value)) {
+      alert("Invalid mobile number");
+      return false;
+    }
+
+    // Validate password length
+    if (passwordInput.value.length < 8 || passwordInput.value.length > 20) {
+      alert("Password must be between 8 and 20 characters");
+      return false;
+    }
+
+    // Form is valid, continue with submission
+    return true;
+  }
+</script>

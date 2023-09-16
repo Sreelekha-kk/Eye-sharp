@@ -1,0 +1,295 @@
+
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <%- include("./includes/headerPart.ejs") %>
+
+
+	<style>
+    /* Product Detail Container */
+	.product-detail {
+    padding: 40px 0;
+}
+
+.product-images {
+    display: flex;
+    flex-direction: column;
+}
+
+.main-image img {
+    max-width: 100%;
+    height: auto;
+    border: 1px solid #ddd;
+    padding: 10px;
+}
+
+.thumbnail-images {
+    display: flex;
+    margin-top: 10px;
+}
+
+.thumbnail-images img {
+    max-width: 80px;
+    height: auto;
+    margin-right: 10px;
+    border: 1px solid #ddd;
+    cursor: pointer;
+}
+
+.product-details {
+    padding: 0 20px;
+}
+
+.product-title {
+    font-size: 24px;
+    margin-bottom: 10px;
+}
+
+.product-price {
+    font-size: 18px;
+    margin-bottom: 20px;
+}
+
+.currency-symbol {
+    font-size: 16px;
+}
+
+.price {
+    font-weight: bold;
+}
+
+.product-description {
+    font-size: 16px;
+    line-height: 1.6;
+    margin-bottom: 20px;
+}
+
+.product-actions {
+    display: flex;
+}
+
+.add-to-cart-button,
+.buy-now-button {
+    padding: 10px 20px;
+    font-size: 16px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    margin-right: 10px;
+}
+
+.buy-now-button {
+    background-color: #ff5722;
+}
+
+        .lense {
+           width: 100px;
+		   height: 100px;
+		   position: absolute;
+		   top: 0;
+		   left: 0;
+		   
+		   background-color: rgba(225,225,225,0.6);
+
+        }
+
+        .result {
+           position: absolute;
+		   left:calc(100% + 80px) ;
+		   top: 30px;
+		   width: 300px;
+		   height: 300px;
+
+
+
+        }
+
+
+    </style>
+
+	
+	<!-- Header -->
+	<%- include("./includes/header.ejs") %>
+
+	<!-- breadcrumb -->
+	
+    <section class="product-detail">
+		<div class="container pt-5">
+			<div class="row pt-5">
+				<div class="col-md-6">
+					<div class="product-images">
+						<div class="main-image">
+							<!-- The main image will be replaced with the clicked thumbnail -->
+							<img id="main-product-image" src="../admin/assets/images/products/SavedPictures/<%= product.images[0]%>" alt="Product Image">
+							<div class="lense"></div>
+							<div class="result"></div>
+							
+						</div>
+						
+						<div class="thumbnail-images">
+							<!-- Thumbnails for other product images -->
+							<img src="../admin/assets/images/products/SavedPictures/<%= product.images[0]%>" alt="Thumbnail Image" onclick="changeImage(this)">
+							<img src="../admin/assets/images/products/SavedPictures/<%= product.images[1]%>" alt="Thumbnail Image" onclick="changeImage(this)">
+							<img src="../admin/assets/images/products/SavedPictures/<%= product.images[2]%>" alt="Thumbnail Image" onclick="changeImage(this)">
+							<!-- Add more thumbnails as needed -->
+						</div>
+					</div>
+				</div>
+				<div class="col-md-6">
+					<div class="product-details">
+						<h1 class="product-title"><%= product.name %></h1>
+						<div class="product-price">
+							<span class="currency-symbol"><i class="fa fa-inr" aria-hidden="true"></i></span>
+							<span class="price"><%= product.price %></span>
+						</div>
+						<p class="product-description"><%= product.description %></p>
+						<!-- Additional product information (category, availability, etc.) -->
+						<div class="product-actions">
+							<a href="javascript:void(0)" onclick="addtocart('<%=product._id%>')" class="flex-c-m stext-101 cl5 size-10 bg2 bor1 hov-btn1 p-2 trans-04" style="width: 150px;">
+								<i class="ti-bag"></i> Add To Cart
+							</a>
+							<button class="buy-now-button">Buy Now</button>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+	
+	<script>
+		function changeImage(thumbnail) {
+			// Get the source of the clicked thumbnail
+			var thumbnailSrc = thumbnail.src;
+	
+			// Get the main product image element
+			var mainImage = document.getElementById("main-product-image");
+	
+			// Set the source of the main image to the clicked thumbnail
+			mainImage.src = thumbnailSrc;
+		}
+	</script>
+	
+
+
+
+
+    <script>
+		
+        function changeImage(thumbnail) {
+            // Get the source of the clicked thumbnail
+            var thumbnailSrc = thumbnail.src;
+    
+            // Get the main product image element
+            var mainImage = document.getElementById("main-product-image");
+    
+            // Set the source of the main image to the clicked thumbnail
+            mainImage.src = thumbnailSrc;
+        }
+    
+        </script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+	<script>
+		function addtocart(proId) {
+			console.log("hfhj")
+		  $.ajax({
+			url: '/addToCart/' + proId,
+			method: 'POST',
+	  
+			success: (response) => {
+			  if (response.status==true) {
+				Swal.fire({
+				  title: 'Added To Cart',
+				  text: 'Your Product has been added to Cart',
+				  icon: 'success',
+				  timer: 5000
+				})
+				
+			  }else if(response.status=='outOfStock'){
+				Swal.fire({
+				  title: 'Out of Stock',
+				  text: 'Product Out Of Stock',
+				  icon: 'error',
+				  timer: 5000
+				})
+			  }else if(response.status=='blocked'){
+				Swal.fire({
+				  title: 'You are blocked',
+				  icon: 'error',
+				  timer: 5000
+				})
+				setTimeout(() => {
+					window.location.href="/logout"
+				},5000)
+			  }
+			}
+		  })
+		}
+	</script>
+	<script>
+		const mainimage=document.querySelector(".main-image")
+		const mainproductimage=document.querySelector("#main-product-image")
+		const lense=document.querySelector(".lense")
+		const result=document.querySelector(".result")
+
+
+		const mainimageRect=mainimage.getBoundingClientRect()
+		const mainproductRect=mainproductimage.getBoundingClientRect()
+		const lenseRect=lense.getBoundingClientRect()
+		const resultRect=result.getBoundingClientRect()
+
+
+
+		mainimage.addEventListener('mousemove',zoomImage)
+		result.style.backgroundImage=`url(${mainproductimage.src})`
+
+		function zoomImage(e){
+			console.log('zoom image',e.clientX,e.clientY)
+			 const  { x,y }=getMousepos(e)
+			lense.style.left=x+"px"
+			lense.style.top=y+"px"
+
+
+			let fx=resultRect.width/lenseRect.width
+			let fy=resultRect.height/lenseRect.height
+
+			result.style.backgroundSize=`${mainproductRect.width*fx}px ${mainproductRect.height*fy}px `
+			result.style.backgroundPosition=`${x*fx}px  ${y*fy}px`
+			
+
+
+		}
+		function getMousepos(e){
+
+			let x=e.clientX-mainimageRect.left-lenseRect.width/2
+			let y=e.clientY-mainimageRect.top-lenseRect.height/2
+
+			let minX=0;
+			let minY=0;
+			let maxX=mainimageRect.width-lenseRect.width
+			let maxY=mainimageRect.height-lenseRect.height
+
+			
+
+			if(x<=minX){
+				x=minX
+			}
+			else if(x>=maxX){
+				x=maxX
+
+			}
+			if(y<=minY){
+				y=minY
+			}
+			else if(y>=maxY){
+				y=maxY
+
+			}
+
+return { x,y }
+		}
+
+</script>

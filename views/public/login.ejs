@@ -1,0 +1,47 @@
+
+<!doctype html>
+
+<html lang="en">
+  <head>
+   
+    
+      <%-include("./includes/headerPart.ejs")%>
+    </style>
+  </head>
+  <body>
+    <%-include("./includes/header.ejs")%>
+
+    <div class="text-center center-div" id="login">
+        <br><br><br>
+        <div class="container w-25  py-5">
+            <div class="title pb-5">
+                <h4 class="font-weight-bold text-danger">Login</h4>
+                <br><br>
+                <span class="text-primary"><h6>Login for the existing user</h6></span>
+                <% if(locals.logout){%>
+                    <div class="text-warning text-center">
+                        <%=logout %>
+
+                    </div>
+                
+                <%}%>
+
+            </div>
+            <form action="/loginValidate"  method='POST'class="pt-3">
+                <div class="form-group">
+                    <input type="email" class="form-control" placeholder="email" name="email">
+                    <small class="form-text text-muted text-left">Register email added</small>
+                </div>
+                <div class="form-group">
+                    <input type="password" class="form-control" name="password" placeholder="password">
+                </div>
+                <div class="text-center">
+                    <input type="submit" value="Login" class="btn btn-primary">
+                    <a href="/forgotPassword">Forgot Password?</a>
+                </div>
+            </form>
+        </div>
+    </div>
+    <%-include("./includes/footer.ejs")%>
+</body>
+

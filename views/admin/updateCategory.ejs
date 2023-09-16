@@ -1,0 +1,156 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Modernize Free</title>
+  <link rel="shortcut icon" type="image/png" href="/admin/assets/images/logos/favicon.png" />
+  <link rel="stylesheet" href="/admin/assets/css/styles.min.css" />
+</head>
+
+<body>
+  <!--  Body Wrapper -->
+  <div class="page-wrapper" id="main-wrapper" data-layout="vertical" data-navbarbg="skin6" data-sidebartype="full"
+    data-sidebar-position="fixed" data-header-position="fixed">
+    <%-include('./includes/sidebar.ejs')%>
+    <!--  Main wrapper -->
+    <div class="body-wrapper">
+      <!--  Header Start -->
+      <%-include("./includes/header.ejs")%>
+      <!--  Header End -->
+
+
+      <main class="main-wrap">
+     
+        <section class="content-main">
+            <div class="content-header">
+                <div>
+                    <h2 class="content-title card-title">Categories </h2>
+                    <p>Add category</p>
+                </div>
+               
+                
+            </div>
+            <div class="card">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <form method="post" action="/admin/editCategory" id="myform">
+                                <div class="mb-4">
+                                    <label for="product_name" class="form-label">Name</label>
+                                    <input type="text" placeholder="Type here" class="form-control" id="name" name="category" onkeyup="titleValidation()"  value="<%= category.name %>" required>
+                                </div>
+                                <span id="title-error"></span>
+                                <div class="mb-4">
+                                    <label class="form-label ">Description</label>
+                                    <textarea placeholder="Type here" class="form-control ellipsis-text" name="description" style=" text-overflow: ellipsis;" onkeyup="descriptionValidation()" id="description" ><%=category.description%></textarea>
+                                </div>
+                                <span id="description-error"></span>
+                                <div class="d-grid">
+                                    <button class="btn btn-primary">updatecategor category</button>
+                                </div>
+                                <input type="hidden" name="id" value="<%=category._id%>">
+                            </form>
+                            <p><%=(typeof message!=='undefined')?message:""%></p>
+
+                        </div>
+                     <!-- .col// -->
+                    </div> <!-- .row // -->
+                </div> <!-- card body .// -->
+            </div> <!-- card .// -->
+        </section> <!-- content-main end// -->
+       
+    </main>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      <script src="/admin/assets/libs/jquery/dist/jquery.min.js"></script>
+<script src="/admin/assets/libs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+<script src="/admin/assets/js/sidebarmenu.js"></script>
+<script src="/admin/assets/js/app.min.js"></script>
+<script src="/admin/assets/libs/apexcharts/dist/apexcharts.min.js"></script>
+<script src="/admin/assets/libs/simplebar/dist/simplebar.js"></script>
+<script src="/admin/assets/js/dashboard.js"></script>
+<script src="../admin/assets/js/vendors/jquery-3.6.0.min.js"></script>
+<script src="../admin/assets/js/vendors/bootstrap.bundle.min.js"></script>
+<script src="../admin/assets/js/vendors/select2.min.js"></script>
+<script src="../admin/assets/js/vendors/perfect-scrollbar.js"></script>
+<script src="../admin/assets/js/vendors/jquery.fullscreen.min.js"></script>
+<!-- Main Script -->
+<script src="../admin/assets/js/main.js" type="text/javascript"></script>
+
+<script>
+    const regex = /^(?!\s*$).+/;
+  
+    const titleError = document.getElementById("title-error");
+    const descriptionError = document.getElementById("description-error");
+
+    const myform = document.getElementById("myform");
+  
+    function titleValidation() {
+      const name = document.getElementById("name").value;
+      const nameInput = document.getElementById("name");
+      if (name.length == 0) {
+        titleError.innerHTML = "Title is required";
+        titleError.style.color = "red";
+        nameInput.style.border = "solid 2px red";
+        return false;
+      }
+      if (!name.match(regex)) {
+        titleError.innerHTML = "Write valid Title";
+        titleError.style.color = "red";
+        nameInput.style.border = "solid 2px red";
+        return false;
+      }
+      titleError.innerHTML = "";
+      titleError.style.color = "green";
+      nameInput.style.border = "solid 2px green";
+      return true;
+    }
+  
+    function descriptionValidation() {
+      const name = document.getElementById("description").value;
+      const nameInput = document.getElementById("description");
+      if (name.length == 0) {
+        descriptionError.innerHTML = "Description is required";
+        descriptionError.style.color = "red";
+        nameInput.style.border = "solid 2px red";
+        return false;
+      }
+      if (!name.match(regex)) {
+        descriptionError.innerHTML = "Write valid Description";
+        descriptionError.style.color = "red";
+        nameInput.style.border = "solid 2px red";
+        return false;
+      }
+      descriptionError.innerHTML = "";
+      descriptionError.style.color = "green";
+      nameInput.style.border = "solid 2px green";
+      return true;
+    }
+  
+    myform.addEventListener("submit", (event) => {
+      event.preventDefault();
+      if (!titleValidation() || !descriptionValidation()) {
+        return false;
+      } else {
+        myform.submit();
+      }
+    });
+  </script>
+</body>
+
+</html>
