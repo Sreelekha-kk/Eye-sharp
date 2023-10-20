@@ -1,0 +1,441 @@
+function GetXmlHttpObject()
+{
+var xmlHttp=null;
+try
+ {
+ xmlHttp=new XMLHttpRequest();
+ }
+catch (e)
+ {
+ try
+  {
+  xmlHttp=new ActiveXObject("Msxml2.XMLHTTP");
+  }
+ catch (e)
+  {
+  xmlHttp=new ActiveXObject("Microsoft.XMLHTTP");
+  }
+ }
+return xmlHttp;
+}
+function CheckName(e, T)
+	{
+		if ([e.keyCode||e.which]==8) 
+		    return true;
+		if ([e.keyCode||e.which]==45) 
+		  {
+		   var nod=T.id;
+		   var V=T.value;
+		 	 if(V.substring(V.length-1)=="-")
+			 {
+			 T.value=V.substring(0,V.length-1);
+			 }
+		   return true;
+		   }
+		if([e.keyCode||e.which] == 32)
+		  {
+		   var nod=T.id;
+		   var V=T.value;
+		 	 if(V.substring(V.length-1)==' ')
+			 {
+			 T.value=V.substring(0,V.length-1);
+			 }
+		   return true;
+		   }
+		if([e.keyCode||e.which] == 46)
+		{
+		  var nod=T.id;
+		   var V=T.value;
+		 	 if(V.substring(V.length-1)=='.')
+			 {
+			  T.value=V.substring(0,V.length-1);
+			 }
+		  return true;  
+		}
+		if ( ([e.keyCode||e.which] < 65 || [e.keyCode||e.which] > 90) &&  ([e.keyCode||e.which] < 97 || [e.keyCode||e.which] > 122)  )
+		{
+		e.preventDefault? e.preventDefault() : e.returnValue = false;
+		}
+	}
+function CheckNameSlashCom(e, T)
+	{
+		if ([e.keyCode||e.which]==8) 
+		    return true;
+		if ([e.keyCode||e.which]==47) 
+		  {
+		   var nod=T.id;
+		   var V=T.value;
+		 	 if(V.substring(V.length-1)=="/")
+			 {
+			 T.value=V.substring(0,V.length-1);
+			 }
+		   return true;
+		   }
+		if([e.keyCode||e.which] == 32)
+		  {
+		   var nod=T.id;
+		   var V=T.value;
+		 	 if(V.substring(V.length-1)==' ')
+			 {
+			 T.value=V.substring(0,V.length-1);
+			 }
+		   return true;
+		   }
+		if([e.keyCode||e.which] == 44)
+		{
+		  var nod=T.id;
+		   var V=T.value;
+		 	 if(V.substring(V.length-1)==',')
+			 {
+			  T.value=V.substring(0,V.length-1);
+			 }
+		  return true;  
+		}
+		if ( ([e.keyCode||e.which] < 65 || [e.keyCode||e.which] > 90) &&  ([e.keyCode||e.which] < 97 || [e.keyCode||e.which] > 122) && ([e.keyCode||e.which] < 48 || [e.keyCode||e.which] > 57) )
+		{
+		e.preventDefault? e.preventDefault() : e.returnValue = false;
+		}
+	}
+function CheckNumber(e,T)
+	    {
+	  if ([e.keyCode||e.which]==47) 
+		    {
+		   var nod=T.id;
+		   
+		   var V=T.value;
+		 	 if(V.substring(V.length-1)=="/")
+			 {
+			 T.value=V.substring(0,V.length-1);
+			 }
+		   return true;
+		   }
+		  if ([e.keyCode||e.which]==8) 
+		    return true;
+		if([e.keyCode||e.which] == 46)
+			{
+				  var nod=T.id;
+				  var V=T.value;
+				  if(V.substring(V.length-1)=='.')
+					 {
+					 T.value=V.substring(0,V.length-1);
+					 }
+					return true;
+			} 
+			if ([e.keyCode||e.which] < 48 || [e.keyCode||e.which] > 57)
+		   e.preventDefault? e.preventDefault() : e.returnValue = false;
+	   }
+function copyaddress()
+{
+var reg=document.onlineregistration;	
+if(document.onlineregistration.check.checked)
+{
+    reg.phousename.value=document.onlineregistration.chousename.value;
+    reg.pstreet.value=document.onlineregistration.cstreet.value;
+    reg.ptown.value=reg.ctown.value;
+	reg.ppostoffice.value=reg.cpostoffice.value;
+	reg.pstate.value=reg.cstate.value;
+	document.getElementById('pdistrict').value=document.getElementById('cdistrict').value;
+	reg.ppincode.value=reg.cpincode.value;
+	reg.plandphone.value=reg.clandphone.value;
+ 	reg.pcode.value=reg.ccode.value;
+}
+else
+{
+	 reg.phousename.value='';
+	 reg.pstreet.value='';
+	 reg.ptown.value='';
+	 reg.pdistrict.value='';
+	 reg.ppincode.value='';
+ 	 reg.plandphone.value='';
+	 reg.ppostoffice.value='';
+	 document.getElementById('pdistrict').value='';
+     reg.pstate.value='';
+     reg.pcode.value='';
+}
+}
+function load_payeename(p)
+{
+document.getElementById("payeename").value=p;
+document.getElementById("payeename").disabled=true;
+}
+
+function text_onkeyUp(e, oText)
+  {
+   keyCode = e.keyCode;  
+  if(keyCode>= 65  && keyCode<=90)
+	{
+	var c = String.fromCharCode(keyCode);  
+	c = c.toUpperCase(); 
+	var nod=document.getElementById(oText.id).value;
+	nod=nod.toUpperCase();
+	document.getElementById(oText.id).value=nod;
+	}
+	if(keyCode==8)
+	{
+	}
+	if(keyCode==13)
+	{
+	}
+  }
+var i=0;
+function addRow(tableID) 
+{   
+            var table = document.getElementById(tableID);   
+            var rowCount = table.rows.length;   
+            var row = table.insertRow(rowCount);   
+            var cell1 = row.insertCell(0);  
+		    cell1.setAttribute("align","left");
+			var element1 = document.createElement("input"); 
+			element1.setAttribute('type','TEXT');
+			element1.setAttribute('id',"exa"+i);
+			element1.setAttribute('name',"exa[]");
+			cell1.appendChild(element1); 
+			element1.setAttribute('onkeyup','text_onkeyUp(event, this)'); 
+			var cell2 = row.insertCell(1);
+			cell2.setAttribute("align","left");
+			var element2 = document.createElement("input"); 
+			element2.setAttribute('type','TEXT');
+			element2.setAttribute('id',"bo[]");
+			element2.setAttribute('name',"bo[]");
+			cell2.appendChild(element2); 
+			var cell3 = row.insertCell(2);
+			cell3.setAttribute("align","left");
+			var element3 = document.createElement("input"); 
+			element3.setAttribute('type','TEXT');
+			element3.setAttribute('id',"su[]");
+			element3.setAttribute('name',"su[]");
+			cell3.appendChild(element3); 
+			var cell7 = row.insertCell(3);
+			cell7.setAttribute("align","left");
+			var element7 = document.createElement("input"); 
+			element7.setAttribute('type','TEXT');
+			element7.setAttribute('id',"yea[]");
+			element7.setAttribute('name',"yea[]");
+			cell7.appendChild(element7); 
+			var cell5= row.insertCell(4);
+			var element5 = document.createElement("input"); 
+			element5.setAttribute('type','TEXT');
+			element5.setAttribute('id',"mar[]");
+			element5.setAttribute('name',"mar[]");
+			cell5.appendChild(element5); 
+			var cell6= row.insertCell(5);
+			var element6 = document.createElement("input"); 
+			element6.setAttribute('type','TEXT');
+			element6.setAttribute('id',"grad"+i);
+			element6.setAttribute('name',"grad[]");
+			cell6.appendChild(element6); 
+			element6.setAttribute('onkeyup','text_onkeyUp(event, this)'); 
+			i=i + 1;
+			}
+ function deleteRow(tableID) 
+ {   
+   try {   
+            var table = document.getElementById(tableID);   
+            var rowCount = table.rows.length;
+			if(rowCount==2)
+			{
+				alert("You must enter the qualifications");
+			}
+			else
+			{
+  				table.deleteRow(rowCount-1);
+			}
+        
+            }catch(e) {   
+                alert(e);   
+            }   
+        }   
+$(document).ready(function() {
+	var validator = $("#onlineregistration").validate({
+	rules: {
+		
+    		lstboard:"required",
+			txt_tenth_regno:{
+			                required:true,
+							digits:true,
+							minlength:1
+							},
+			tenth_year:"required",
+			candidatename: "required",
+			fname: "required",
+			//mothername:"required",
+			adharid:{required:true,minlength: 12},
+			txtoccupation:"required",
+			day:"required",
+			month:"required",
+			year:"required",
+			dd1:"required",
+			mm1:"required",
+			yy1:"required",
+			sex:"required",
+			nationality:"required",
+			mobileno:{
+				required:true,
+				minlength:10
+			},
+			email: {
+				required: true,
+				email: true
+			},
+			chousename:"required",
+			ctown:"required",
+			cstate:"required",
+			cdistrict:"required",
+			cpincode:"required",
+			phousename:"required",
+			ptown:"required",
+			pstate:"required",
+			pdistrict:"required",
+			ppincode:"required",
+			inststate:"required",
+			instdist:"required",
+			insttype:"required",
+			instname:"required",
+			coursetype:"required",
+			coursename1:"required",
+			currentyear:"required",
+			txt_cyear:"required",
+			txt_fulltime:"required",
+			coursename:"required",
+			acadyear:"required",
+			totalmarks:"required",
+			maxmarks:"required",
+			ssrecieve:"required",
+			/*accno:
+			{required:true,
+			minlength: 10,
+			},*/
+			bankname:"required",
+			banktype:"required",
+			//bank_dist:"required",
+			branchcode:"required",
+			agree:"required",
+			password: {
+				required: true,
+				minlength: 5
+			},
+			confirmpassword: {
+				required: true,
+				minlength: 5,
+			},
+			dateformat: "required",
+			terms: "required"
+		},
+		messages: {
+			lstboard: "Select Board",
+			txt_tenth_regno: "Enter SSLC Reg No",
+			tenth_year: "Enter  SSLC Year",
+			candidatename: "Enter candidate name",
+			fname: "Enter Father/Guardian Name",
+			//mothername: "Enter Mother Name",
+			adharid:"Enter valid Adhar ID",
+			txtoccupation: "Enter Father's Occupation",
+			day:"select a Day of your date of birth",  
+			month:"select a month of your date of birth",
+			year:"select a year of your date of birth",
+			dd1:"select a Day of your date of Admission",
+			mm1:"select a month of your date of Admission",
+			yy1:"select a year of your date of Admission",
+			sex:"select the sex",
+			nationality:"select the nationality",
+			mobileno:{
+			required:"Enter the mobile number",
+			minlength:jQuery.format("Enter at least {0} numbers")
+			},
+			chousename:"Enter the housename/no",
+			cstreet:"Enter the street",
+			ctown:"Enter the town/city/village&P.O",
+			cstate:"Enter the state",
+			cdistrict:"Select the district",
+			cpostoffice: "Enter Post Office",
+			cpincode:
+			{
+			required:"Enter the pincode",
+			digits:"Enter only numeric values",
+			minlength:jQuery.format("Enter {0} for a valid pincode")
+			},
+			phousename:"Enter the housename/no",
+			pstreet:"Enter the street",
+			ptown:"Enter the town/city/village&P.O",
+			pstate:"Enter the state",
+			pdistrict:"Select the district",
+			ppostoffice: "Enter Post Office",
+			ppincode:
+			{
+			required:"Enter the pincode",
+			digits:"Enter only numeric values",
+			minlength:jQuery.format("Enter {0} for a valid pincode")
+				},
+			inststate:"Please select institution state",
+			instdist:"Please select district",
+			insttype:"Please select institution type",
+			instname:"Please select name of institution",
+			coursetype:"Please select Type of Course",
+			courselevel:"Please select courselevel",
+			coursename1:"Please select current course name ",
+			currentyear:"Please select current year",
+			txt_fulltime:"Please select Attending Full Time Course",
+			txt_cyear:"Enter the Year of Study",
+			admissiondt:"Enter theDate of Admission",
+			feeconcession:"Please select Fee Concession",
+			coursename:"Please select scholarship sought course",
+			acadyear:"Please select year of passing",
+			totalmarks:"Enter the Total Mark",
+			maxmarks:"Enter the Maximum Mark",
+			ssrecieve:"Receiving any Other Scholarship",
+			fistappearence:"Please select Passed in First Appearence",
+			break1:"Please select Break of Study After This Course",
+			/*accno:
+			{
+			required:"Enter the Account Number",
+			minlength:jQuery.format("Enter   valid account number")
+			},*/
+			bankname:"Select the Bank Name",
+			banktype:"Select the Bank Type",
+			//bank_dist:"Select the Bank District",
+			branchcode:"Select Bank branch Name",
+			agree:"Check declaration",
+			password: {
+				required: "Provide a password",
+				rangelength: jQuery.format("Enter at least {0} characters")
+			},
+			conformpassword: {
+				required: "Repeat your password",
+				minlength: jQuery.format("Enter at least {0} characters"),
+				equalTo: "Enter the same password as above"
+			},
+			email: {
+				required: "Please enter a valid email address",
+				minlength: "Please enter a valid email address"
+			},
+			dateformat: "Choose your preferred dateformat",
+			terms: " "
+		},
+		errorPlacement: function(error, element) {
+			if ( element.is(":radio") )
+				error.appendTo( element.parent().next().next() );
+			else if ( element.is(":checkbox") )
+				error.appendTo ( element.next() );
+			else
+				error.appendTo( element.parent().next() );
+		},
+		success: function(label) {
+			label.html("&nbsp;").addClass("checked");
+		}
+	});
+
+$("#username").focus(function() {
+		var firstname = $("#firstname").val();
+		var lastname = $("#lastname").val();
+		if(firstname && lastname && !this.value) {
+			this.value = firstname + "." + lastname;
+		}
+	});
+});
+function getpercentage()
+{
+    var total=document.getElementById("totalmarks").value;
+	var maxmark=document.getElementById("maxmarks").value;
+	var percentage=total/maxmark*100;
+	document.getElementById("percentage").value=percentage;
+}

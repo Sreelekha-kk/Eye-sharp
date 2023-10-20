@@ -35,9 +35,10 @@ const loadProducts = async(req,res)=>{
       if (!req.body.description || req.body.description.trim().length === 0) {
         return res.status(400).send("Description is required");
       }
-      if(req.body.price<=0){
-        return res.status(400).send("Product Price Should be greater than 0");
+      if (!req.body.price || req.body.price <= 1) {
+        return res.status(400).send("Product Price Should be greater than 1");
       }
+      
       if(req.body.stock< 0 || req.body.stock.trim().length === 0 ){
         return res.status(400).send("Stock Should be greater than 0");
       }
@@ -94,7 +95,20 @@ const loadProducts = async(req,res)=>{
   const updateProduct = async (req, res) => {
     try {
       const images = req.files ? req.files.map(file => file.filename) : undefined;
-        await productHelper.updateProduct(req.body,images)
+      const deletedImages = req.body.deletedImages ? req.body.deletedImages.split(",") : [];
+      const currentProduct = await Product.findById(req.body.id);
+
+
+       // If there are new images, add the old image names to the deleted images array
+        if (images && images.length > 0) {
+            images.forEach((img, index) => {
+                const oldImageName = currentProduct.images[index];
+                if (oldImageName) {
+                    deletedImages.push(oldImageName);
+                }
+            }); 
+        }
+        await productHelper.updateProduct(req.body,images,deletedImages)
         res.redirect('/admin/productManagement');
     } catch (error) {
       console.log(error.message);

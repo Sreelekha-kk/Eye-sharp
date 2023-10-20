@@ -1,0 +1,861 @@
+function Validdate1(DateName,DateValue) 
+{ 
+		var tempdate1=DateValue.split('/');	
+		var day1=tempdate1[0];
+		var month1=tempdate1[1];
+		var year1=tempdate1[2];
+		if(day1 > 31)
+		{
+		   	alert('Invalid Day');
+			DateName.focus();
+		   	DateName.value='';
+		   return false;
+	    }
+		if(month1 > 12)
+		{
+		   alert('Invalid Month');
+			DateName.focus();
+		   	DateName.value='';
+		   return false;
+		}
+		if(month1 == 2)
+		{
+		  if(day1 > 29)
+		  {
+		    alert('Invalid Day');
+			DateName.focus();
+		   	DateName.value='';
+			return false;
+		  }
+		}
+} 
+function Putage() 
+{ 
+		var date1=document.appform.agelmtdate.value;
+		var date2=document.appform.BirthDate.value;
+		var tempdate1=date1.split('/');	
+		var day1=tempdate1[0];
+		var month1=tempdate1[1];
+		var year1=tempdate1[2];
+		var tempdate2=date2.split('/');	
+		var day2=tempdate2[0];
+		var month2=tempdate2[1];
+		var year2=tempdate2[2];
+		if((date2!=null) && (date2!=''))
+		{
+		var age=0;	
+var firstDate = new Date(year1,month1,day1);
+var secondDate=new Date(year2,month2,day2);
+var firstYear = firstDate.getFullYear();
+var secondYear = secondDate.getFullYear();
+if (firstYear < secondYear) { fisrtYear = firstYear + 100; } 
+var years = firstYear - secondYear;
+var firstMonth = firstDate.getMonth();
+var secondMonth = secondDate.getMonth();
+if (firstMonth < secondMonth) 
+{ 
+age=(years - 1); 
+}
+else if (firstMonth > secondMonth)
+ { 
+  age=years; 
+ }
+else if (firstMonth == secondMonth) 
+	{ 
+       var firstDay = firstDate.getDate();
+       var secondDay = secondDate.getDate();
+       if (firstDay < secondDay) { 
+	   age=(years - 1); 
+	   }
+       else if (firstDay >= secondDay) 
+	   { 
+	   age=years; 
+	   }
+	}
+	document.appform.txtage.value=age;
+	}
+	else {
+	alert("Enter dateof birth");
+	}	
+}
+function Quotacheck(ChkName) 
+{
+		var service=document.appform.txtemployed.value;
+		var chk="Health Service";
+		if(service!=chk)
+		{
+		alert('Applicable for Health Service Candidates only');
+		ChkName.focus();
+		ChkName.checked=false;
+		}
+		
+}
+function Quotacheck1(ChkName) 
+{
+		var service=document.appform.txtemployed.value;
+		var chk="Health Service";
+		if(service!=chk)
+		{
+		alert('Applicable for Health Service Candidates only');
+		ChkName.focus();
+		ChkName.value='';
+		}
+		else
+		{
+		document.appform.SQuota1.checked=true;
+		}
+}
+function Quotacheck2(ChkName) 
+{
+		var service=document.appform.txtemployed.value;
+		var chk="Health Service";
+		if(service!=chk)
+		{
+		alert('Applicable for Health Service Candidates only');
+		ChkName.focus();
+		ChkName.value='';
+		}
+		else
+		{
+		document.appform.SQuota2.checked=true;
+		}
+}
+function Validdate(DateName,DateValue) 
+{ 
+		var tempdate1=DateValue.split('/');	
+		var day1=tempdate1[0];
+		var month1=tempdate1[1];
+		var year1=tempdate1[2];
+		if(day1 > 31)
+		{
+		   	alert('Invalid Day');
+			DateName.focus();
+		   	DateName.value='';
+		   return false;
+	    }
+		if(month1 > 12)
+		{
+		   alert('Invalid Month');
+			DateName.focus();
+		   	DateName.value='';
+		   return false;
+		}
+		if(month1 == 2)
+		{
+		  if(day1 > 29)
+		  {
+		    alert('Invalid Day');
+			DateName.focus();
+		   	DateName.value='';
+			return false;
+		  }
+		}
+} 
+function check()
+{
+	if(document.appform.txtname.value==0 )
+	{
+	    alert('Enter Candidate Name');
+		document.appform.txtname.focus();
+		return false;		
+	}
+    else if(document.appform.txtland.value==0 && document.appform.txtmobile.value==0)
+	{
+		alert('Enter Land/Moble No');
+		if(document.appform.txtland.value==0)
+		{
+		document.appform.txtland.focus();
+		}
+		else if(document.appform.txtmobile.value==0)
+		{
+		document.appform.txtmobile.focus();
+		}
+		return false;		
+	}   
+    else if(document.appform.BirthDate.value==0)
+	{
+		alert('Enter Date of Birth');
+		document.appform.BirthDate.focus();
+		return false;		
+	}
+	else if(document.appform.txtage.value==0)
+	{
+		alert('Enter Age');
+		document.appform.txtage.focus();
+		return false;		
+	}
+	else if(document.appform.txtage.value<20)
+	{
+		alert('Invalid Age');
+		document.appform.txtage.focus();
+		return false;		
+	}
+	else if(document.appform.txtadr1.value==0 || document.appform.txtadr2.value==0)
+	{
+		alert('Enter Full Postal Address');
+		document.appform.txtadr1.focus();
+		return false;
+	}
+    else if(document.appform.txtosecured.value==0)
+	{
+		alert('Enter secured Marks');
+		document.appform.txtosecured.focus();
+		return false;
+	}
+	else if(document.appform.txtmaxmark.value==0)
+	{
+		alert('Enter Maximum Marks');
+		document.appform.txtmaxmark.focus();
+		return false;
+	}
+	else if(document.appform.txtregno.value==0)
+	{
+		alert('Enter Register No');
+		document.appform.txtregno.focus();
+		return false;
+	}
+	else if(document.appform.txtmonthpass.value==0)
+	{
+		alert('Enter Month Pass');
+		document.appform.txtmonthpass.focus();
+		return false;
+	}
+	else if(document.appform.txtyearpass.value==0)
+	{
+		alert('Enter Year Pass');
+		document.appform.txtyearpass.focus();
+		return false;
+	}
+	else if(document.appform.txtuniversity.value==0)
+	{
+		alert('Enter University');
+		document.appform.txtuniversity.focus();
+		return false;
+	}
+	else if(document.appform.category.value=='SC' || document.appform.category.value=='ST')
+	{
+		if(document.appform.txtcommunity.value==0)
+		{
+		alert('Enter Community');
+		document.appform.txtcommunity.focus();
+		return false;
+		}			
+	}
+	return true;
+}
+function IsNumeric()
+{
+  var strValidChars = "0123456789";
+  var strChar;
+  var blnResult = true;
+  for (i = 0; i < document.appform.txtstd.value.length && blnResult == true; i++)
+  {
+    strChar = document.appform.txtstd.value.charAt(i);
+    if (strValidChars.indexOf(strChar) == -1)
+    {
+      alert('Only numbers are allowed');
+	  document.appform.txtstd.focus();
+	  document.appform.txtstd.value='';
+    }
+  }
+ }
+ function IsNumeric1()
+{
+  var strValidChars = "0123456789";
+  var strChar;
+  var blnResult = true;
+  for (i = 0; i < document.appform.txtland.value.length && blnResult == true; i++)
+  {
+    strChar = document.appform.txtland.value.charAt(i);
+    if (strValidChars.indexOf(strChar) == -1)
+    {
+      alert('Only numbers are allowed');
+	  document.appform.txtland.focus();
+	  document.appform.txtland.value='';
+    }
+  }
+ }
+  function IsNumeric2()
+{
+  var strValidChars = "0123456789";
+  var strChar;
+  var blnResult = true;
+  for (i = 0; i < document.appform.txtmobile.value.length && blnResult == true; i++)
+  {
+    strChar = document.appform.txtmobile.value.charAt(i);
+    if (strValidChars.indexOf(strChar) == -1)
+    {
+      alert('Only numbers are allowed');
+	  document.appform.txtmobile.focus();
+	  document.appform.txtmobile.value='';
+    }
+  }
+ }
+function IsNumeric3()
+{
+  var strValidChars = "0123456789";
+  var strChar;
+  var blnResult = true;
+  for (i = 0; i < document.appform.txtadr5.value.length && blnResult == true; i++)
+  {
+    strChar = document.appform.txtadr5.value.charAt(i);
+    if (strValidChars.indexOf(strChar) == -1)
+    {
+      alert('Only numbers are allowed');
+	  document.appform.txtadr5.focus();
+	  document.appform.txtadr5.value='';
+    }
+  }
+ }
+function IsNumeric4()
+{
+  var strValidChars = "0123456789";
+  var strChar;
+  var blnResult = true;
+  for (i = 0; i < document.appform.txtosecured.value.length && blnResult == true; i++)
+  {
+    strChar = document.appform.txtosecured.value.charAt(i);
+    if (strValidChars.indexOf(strChar) == -1)
+    {
+      alert('Only numbers are allowed');
+	  document.appform.txtosecured.focus();
+	  document.appform.txtosecured.value='';
+    }
+  }
+ }
+ function IsNumeric5()
+{
+  var strValidChars = "0123456789";
+  var strChar;
+  var blnResult = true;
+  for (i = 0; i < document.appform.txtmaxmark.value.length && blnResult == true; i++)
+  {
+    strChar = document.appform.txtmaxmark.value.charAt(i);
+    if (strValidChars.indexOf(strChar) == -1)
+    {
+      alert('Only numbers are allowed');
+	  document.appform.txtmaxmark.focus();
+	  document.appform.txtmaxmark.value='';
+    }
+  }
+ }
+   function IsNumeric7()
+{
+  if(document.appform.txtmonthpass.value > 12)
+  {
+      alert('Not a Valid Month');
+	  document.appform.txtmonthpass.value='';
+	  document.appform.txtmonthpass.focus();
+  }
+ }
+function IsNumeric8()
+{
+  var strValidChars = "0123456789";
+  var strChar;
+  var blnResult = true;
+  for (i = 0; i < document.appform.txtyearpass.value.length && blnResult == true; i++)
+  {
+    strChar = document.appform.txtyearpass.value.charAt(i);
+    if (strValidChars.indexOf(strChar) == -1)
+    {
+      alert('Only numbers are allowed');
+	  document.appform.txtyearpass.focus();
+	  document.appform.txtyearpass.value='';
+    }
+  }
+ }
+ function IsNumeric9()
+{
+  var strValidChars = "0123456789";
+  var strChar;
+  var blnResult = true;
+  var yer=new Date();
+  var CYear = yer.getFullYear();
+  var passyear=document.appform.txtyearpass.value;
+  var x=(CYear-passyear)+1;
+  for (i = 0; i < document.appform.txtempyear.value.length && blnResult == true; i++)
+  {
+    strChar = document.appform.txtempyear.value.charAt(i);
+    if (strValidChars.indexOf(strChar) == -1)
+    {
+      alert('Only numbers are allowed');
+	  document.appform.txtempyear.focus();
+	  document.appform.txtempyear.value='';
+    }
+  }
+    if(document.appform.txtempyear.value > x)
+  {
+      alert('Invalid Entry');
+	  document.appform.txtempyear.value='';
+	  document.appform.txtempyear.focus();
+  }
+ }
+  function IsNumeric10()
+{
+  var strValidChars = "0123456789";
+  var strChar;
+  var blnResult = true;
+  for (i = 0; i < document.appform.txtempmonth.value.length && blnResult == true; i++)
+  {
+    strChar = document.appform.txtempmonth.value.charAt(i);
+    if (strValidChars.indexOf(strChar) == -1)
+    {
+      alert('Only numbers are allowed');
+	  document.appform.txtempmonth.focus();
+	  document.appform.txtempmonth.value='';
+    }
+  }
+      if(document.appform.txtempmonth.value > 11)
+  {
+      alert('Invalid Entry');
+	  document.appform.txtempmonth.value='';
+	  document.appform.txtempmonth.focus();
+  }
+ }
+  function IsNumeric11()
+{
+        if(document.appform.txtempdays.value > 30)
+  {
+      alert('Invalid Entry');
+	  document.appform.txtempdays.value='';
+	  document.appform.txtempdays.focus();
+  }
+ }
+  function IsNumeric12()
+{
+  var strValidChars = "0123456789";
+  var strChar;
+  var blnResult = true;
+  for (i = 0; i < document.appform.txttcmed.value.length && blnResult == true; i++)
+  {
+    strChar = document.appform.txttcmed.value.charAt(i);
+    if (strValidChars.indexOf(strChar) == -1)
+    {
+      alert('Only numbers are allowed');
+	  document.appform.txttcmed.focus();
+	  document.appform.txttcmed.value='';
+    }
+  }
+ }
+ function addr1()
+ {
+    var iChars = "~`!@_#$%^&*+=[]\\\;{}|\":<>?";
+	        for (var i = 0; i < document.appform.txtadr1.value.length ; i++) 
+		{
+  	      if (iChars.indexOf(document.appform.txtadr1.value.charAt(i)) != -1) 
+		  {
+  	        alert ("Your address has special characters. \nThese are not allowed except ((),/).\n Please remove them and try again.");
+		  document.appform.txtadr1.value=''; 
+		  document.appform.txtadr1.focus();
+		  }
+	    }
+ }
+ function addr2()
+ {
+    var iChars = "~`!@_#$%^&*+=[]\\\;{}|\":<>?";
+        for (var i = 0; i < document.appform.txtadr2.value.length; i++) 
+		{
+  	      if (iChars.indexOf(document.appform.txtadr2.value.charAt(i)) != -1) 
+		  {
+  	        alert ("Your address has special characters. \nThese are not allowed except ((),/).\n Please remove them and try again.");
+		  document.appform.txtadr2.focus();
+		  document.appform.txtadr2.value='';
+		  }
+  	      }
+ }
+ function addr3()
+ {
+    var iChars = "~`!@_#$%^&*+=[]\\\;{}|\":<>?";
+        for (var i = 0; i < document.appform.txtadr3.value.length; i++) 
+		{
+  	      if (iChars.indexOf(document.appform.txtadr3.value.charAt(i)) != -1) 
+		  {
+  	        alert ("Your address has special characters. \nThese are not allowed except ((),/).\n Please remove them and try again.");
+			document.appform.txtadr3.focus();
+		    document.appform.txtadr3.value='';
+		  }
+  	      }
+ }
+  function addr4()
+ {
+    var iChars = "~`!@_#$%^&*+=[]\\\;{}|\":<>?";
+        for (var i = 0; i < document.appform.txtadr4.value.length; i++) 
+		{
+  	      if (iChars.indexOf(document.appform.txtadr4.value.charAt(i)) != -1) 
+		  {
+  	        alert ("Your address has special characters. \nThese are not allowed except ((),/).\n Please remove them and try again.");
+			document.appform.txtadr4.focus();
+		    document.appform.txtadr4.value='';
+		  }
+  	      }
+ }
+ function name1()
+	{
+	    var iChars = "~`!@_#$%^&*()+=-[]\\\;,./{}|\":<>?1234567890";
+        for (var i = 0; i < document.appform.txtname.value.length; i++) 
+		{
+  	      if (iChars.indexOf(document.appform.txtname.value.charAt(i)) != -1) 
+		  {
+  	        alert ("Your name has special characters. \nThese are not allowed except (').\n Please remove them and try again.");
+			document.appform.txtname.value='';
+			document.appform.txtname.focus();
+          }
+		}
+	}
+function echeck() {
+		var at="@"
+		var dot="."
+		var str=document.appform.txtemailid.value;
+		var lat=str.indexOf(at)
+		var lstr=str.length
+		var ldot=str.indexOf(dot)
+		if(str=='')
+		{
+		return false
+		}
+		if (str.indexOf(at)==-1 || str.indexOf(at)==0 || str.indexOf(at)==lstr)
+		{
+		   alert("Invalid E-mail ID")
+		   document.appform.txtemailid.value='';
+           document.appform.txtemailid.focus();
+		   return false
+		}
+		if (str.indexOf(dot)==-1 || str.indexOf(dot)==0 || str.indexOf(dot)==lstr)
+		{
+		    alert("Invalid E-mail ID")
+			document.appform.txtemailid.value='';
+            document.appform.txtemailid.focus();
+		    return false
+		}
+		 if (str.indexOf(at,(lat+1))!=-1)
+		 {
+		    alert("Invalid E-mail ID")
+			document.appform.txtemailid.value='';
+            document.appform.txtemailid.focus();
+		    return false
+		 }
+		 if (str.substring(lat-1,lat)==dot || str.substring(lat+1,lat+2)==dot)
+		 {
+		    alert("Invalid E-mail ID")
+			document.appform.txtemailid.value='';
+            document.appform.txtemailid.focus();
+		    return false
+		 }
+		 if (str.indexOf(dot,(lat+2))==-1)
+		 {
+		    alert("Invalid E-mail ID")
+			document.appform.txtemailid.value='';
+            document.appform.txtemailid.focus();
+		    return false
+		 }
+		 if (str.indexOf(" ")!=-1){
+		    alert("Invalid E-mail ID")
+			document.appform.txtemailid.value='';
+            document.appform.txtemailid.focus();
+		    return false
+		 }
+	}
+function markchk() 
+{
+	if(document.appform.txtmaxmark.value=='')
+	{
+	return false
+	}
+  if(document.appform.txtmaxmark.value < document.appform.txtosecured.value)
+  {
+    alert('Maximum Mark should not be less than mark secured');
+    document.appform.txtmaxmark.focus();
+	document.appform.txtmaxmark.value='';
+	return false
+  }
+}	
+function uni1()
+	{
+	    var iChars = "~`!@_#$%^&*()+=-[]\\\;./{}|\":<>?1234567890";
+        for (var i = 0; i < document.appform.txtuniversity.value.length; i++) 
+		{
+  	      if (iChars.indexOf(document.appform.txtuniversity.value.charAt(i)) != -1) 
+		  {
+  	        alert ("University name has special characters. \nThese are not allowed except (space and ,).\n Please remove them and try again.");
+			document.appform.txtuniversity.focus();
+		    document.appform.txtuniversity.value='';
+		  }
+		}
+	}
+	function commu1()
+	{
+	    var iChars = "~`!@_#$%^&*()+=-[]\\\;,./{}|\":<>?1234567890";
+        for (var i = 0; i < document.appform.txtcommunity.value.length; i++) 
+		{
+  	      if (iChars.indexOf(document.appform.txtcommunity.value.charAt(i)) != -1) 
+		  {
+  	        alert ("Your community has special characters. \nThese are not allowed except (space).\n Please remove them and try again.");
+			document.appform.txtcommunity.focus();
+		    document.appform.txtcommunity.value='';
+		  }
+		}
+	}
+function numbersonly(e)
+{
+	var unicode=e.charCode? e.charCode : e.keyCode
+	if (unicode!=8 && unicode!=9)
+	{ 
+		if (unicode<48||unicode>57) 
+			return false; 
+	}
+}
+function numbersonly1(e)
+{
+	var unicode=e.charCode? e.charCode : e.keyCode
+	if (unicode!=8 && unicode!=9 && unicode!=46)
+	{ 
+		if (unicode<48 || unicode>57) 
+			return false; 
+	}
+}
+function check123()
+{
+	var code1=document.appform.Choice1.value
+	var code2=document.appform.Choice2.value
+if(code1==code2)	
+{
+	alert("Please enter another choice");
+	document.appform.Choice2.value=0;
+	document.appform.code2.value='';
+	return false;
+}
+else
+{
+	if(code1)
+	{
+		if(code1=='M. Ch. Paediatric Surgery')
+		{
+			document.appform.code1.value='P'
+		}
+		if(code1=='M. Ch. Plastic Surgery')
+		{
+			document.appform.code1.value='S'
+		}
+		if(code1=='M. Ch. Genito Urinary Surgery')
+		{
+			document.appform.code1.value='U'
+		}
+		if(code1=='M. Ch. Thoracic Surgery')
+		{
+			document.appform.code1.value='T'
+		}
+		if(code1=='M. Ch. Neuro Surgery')
+		{
+			document.appform.code1.value='R'
+		}
+		if(code1=='M.Ch. Gastroenterology Surgery')
+		{
+			document.appform.code1.value='E'
+		}
+		if(code1=='D. M. Cardiology')
+		{
+			document.appform.code1.value='C'
+		}
+		if(code1=='D. M. Gastroenterology')
+		{
+			document.appform.code1.value='G'
+		}
+		if(code1=='D. M. Neurology')
+		{
+			document.appform.code1.value='N'
+		}
+		if(code1=='D. M. Nephrology')
+		{
+			document.appform.code1.value='F'
+		}
+	}
+	if(code2)
+	{
+		if(code2=='M. Ch. Paediatric Surgery')
+		{
+			document.appform.code2.value='P'
+		}
+		if(code2=='M. Ch. Plastic Surgery')
+		{
+			document.appform.code2.value='S'
+		}
+		if(code2=='M. Ch. Genito Urinary Surgery')
+		{
+			document.appform.code2.value='U'
+		}
+		if(code2=='M. Ch. Thoracic Surgery')
+		{
+			document.appform.code2.value='T'
+		}
+		if(code2=='M. Ch. Neuro Surgery')
+		{
+			document.appform.code2.value='R'
+		}
+		if(code2=='M.Ch. Gastroenterology Surgery')
+		{
+			document.appform.code2.value='E'
+		}
+		if(code2=='D. M. Cardiology')
+		{
+			document.appform.code2.value='C'
+		}
+		if(code2=='D. M. Gastroenterology')
+		{
+			document.appform.code2.value='G'
+		}
+		if(code2=='D. M. Neurology')
+		{
+			document.appform.code2.value='N'
+		}
+		if(code2=='D. M. Nephrology')
+		{
+			document.appform.code2.value='F'
+		}
+	}
+}
+}
+function selectre(val1)
+{
+	if(val1=='MS General Surgery')
+	{
+		document.appform.pgspeciality.value='Surgical';
+	}
+	else if(val1=='MD Paediatrics' || val1=='MD General Medicine')
+	{
+		document.appform.pgspeciality.value='Medical';
+	}
+	else
+	{
+		document.appform.pgspeciality.value='';
+	}
+}
+function chng() 
+{
+	val=document.appform.SQuota.value;
+	if(val=='MSQ')
+	{
+		document.appform.txtemployed.value='Medical Education Service';
+	}
+	else if(val=='HSQ')
+	{
+		document.appform.txtemployed.value='Health Service';
+	}
+	else
+	{
+		document.appform.txtemployed.value='';
+	}
+}
+function confsubmiit() 
+{
+	if(document.appform.txtddno.value=='')
+	{
+		document.appform.txtddno.focus();
+		alert ('DD Number');
+		return false
+	}
+	else if(document.appform.txtdate.value=='')
+	{
+		document.appform.txtdate.focus();
+		alert ('DD Date');
+		return false
+	}
+	else if(document.appform.txtbank.value=='')
+	{
+		document.appform.txtbank.focus();
+		alert ('Bank Name');
+		return false
+	}
+	else if(document.appform.txtamount.value=='')
+	{
+		document.appform.txtamount.focus();
+		alert ('DD Amount');
+		return false
+	}
+}
+function amiemarkchk() 
+{
+	if(document.appform.txtamiemaxmark.value=='')
+	{
+	return false
+	}
+  if(parseInt(document.appform.txtamiemaxmark.value) < parseInt(document.appform.txtamiemark.value))
+  {
+    alert('Maximum Mark should not be less than mark secured');
+    document.appform.txtamiemaxmark.focus();
+	document.appform.txtamiemaxmark.value='';
+	return false
+  }
+}	
+function btechmarkchk() 
+{
+	if(document.appform.txtmaxmark.value=='')
+	{
+	return false
+	}
+  if(parseInt(document.appform.txtmaxmark.value) < parseInt(document.appform.txtbtechtotal.value))
+  {
+    alert('Maximum Mark should not be less than mark secured');
+    document.appform.txtmaxmark.focus();
+	document.appform.txtmaxmark.value='';
+	return false
+  }
+}	
+function monthchk() 
+{
+	if(document.appform.txtmnth.value=='')
+	{
+	return false
+	}
+  if(document.appform.txtmnth.value >12)
+  {
+    alert('Month should not be greater than 12');
+    document.appform.txtmnth.focus();
+	document.appform.txtmnth.value='';
+	return false
+  }
+}	
+function gatemonthchk() 
+{
+	if(document.appform.txtmonthpass.value=='')
+	{
+	return false
+	}
+  if(document.appform.txtmonthpass.value >12)
+  {
+    alert('Month should not be greater than 12');
+    document.appform.txtmonthpass.focus();
+	document.appform.txtmonthpass.value='';
+	return false
+  }
+}
+function gateyearchk() 
+{
+	  if(document.appform.txtyearpass.value < document.appform.txtyr.value)
+  {
+    alert('Year of qualifying exam should be less than Year of GATE passing');
+    document.appform.txtyearpass.focus();
+	document.appform.txtyearpass.value='';
+	return false
+  }
+}	
+function datechk()
+{
+date1 = new Date();
+date2 = document.appform.txtdate.value+' 01:00:000';
+diff  = new Date();
+alert(date2.getTime());
+diff.setTime(Math.abs(date1.getTime() - date2.getTime()));
+timediff = diff.getTime();
+weeks = Math.floor(timediff / (1000 * 60 * 60 * 24 * 7));
+timediff -= weeks * (1000 * 60 * 60 * 24 * 7);
+days = Math.floor(timediff / (1000 * 60 * 60 * 24)); 
+timediff -= days * (1000 * 60 * 60 * 24);
+hours = Math.floor(timediff / (1000 * 60 * 60)); 
+timediff -= hours * (1000 * 60 * 60);
+mins = Math.floor(timediff / (1000 * 60)); 
+timediff -= mins * (1000 * 60);
+secs = Math.floor(timediff / 1000); 
+timediff -= secs * 1000;
+dateform.difference.value = weeks + " weeks, " + days + " days, " + hours + " hours, " + mins + " minutes, and " + secs + " seconds";
+return false; 
+}

@@ -1,74 +1,140 @@
 <%- include("./includes/headerPart.ejs") %>
 <%- include("./includes/header.ejs") %>
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    background-color: #f0f0f0;
+  }
 
-<div class="d-flex align-items-center justify-content-center" style="min-height: 100vh;">
-  <div class="container w-50 py-5">
+  .container {
+    max-width: 400px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #fff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    border-radius: 5px;
+  }
+
+  h2 {
+    text-align: center;
+    font-weight: bold;
+    color: #333;
+  }
+
+  form {
+    margin-top: 20px;
+  }
+
+  .form-group {
+    margin-bottom: 15px;
+  }
+
+  label {
+    font-weight: bold;
+    display: block;
+    margin-bottom: 5px;
+  }
+
+  input[type="text"],
+  input[type="tel"],
+  input[type="email"],
+  input[type="password"] {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+  }
+
+  input[type="submit"] {
+    width: 100%;
+    padding: 10px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+
+  input[type="submit"]:hover {
+    background-color: #0056b3;
+  }
+
+  span.error-message {
+    color: red;
+  }
+
+</style>
+
+<div class="d-flex align-items-center justify-content-center pt-5" style="min-height: 100vh;">
+  <div class="container w-50 py-5 pt-5">
     <div class="text-center">
-      <h2 class="font-weight-bold">Signup System</h2>
+      <h2 class="font-weight-bold">Signup</h2>
+      <span style="color: red;"><%=(typeof message!=='undefined')?message:""%></span>
     </div>
     <form action="/signupValidate" method="post" id="signup-form" onsubmit="return validateForm()">
       <div class="form-group">
         <label for="name">Name:</label>
-        <input type="text" class="form-control" id="name" name="name" required>
+        <input type="text" class="form-control" id="name" placeholder="Name" name="name" required>
       </div>
       <div class="form-group">
         <label for="mobile">Mobile:</label>
-        <input type="tel" class="form-control" id="mobile" name="mobile" required>
+        <input type="tel" class="form-control" id="mobile" placeholder="Mobile" name="mobile" required>
       </div>
       <div class="form-group">
         <label for="email">Email:</label>
-        <input type="email" class="form-control" id="email" name="email" required
-          pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}">
+        <input type="email" class="form-control" id="email" name="email"  placeholder="Email" required pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}">
       </div>
       <div class="form-group">
         <label for="password">Password:</label>
-        <input type="password" class="form-control" id="password" name="password" required minlength="8"
-          maxlength="20">
+        <input type="password" class="form-control" id="password" placeholder="Password" name="password" required minlength="8" maxlength="20">
       </div>
+      <div class="form-group">
+        <label for="password">Confirm Password</label>
+        <input type="password" class="form-control" id="name" placeholder="conform password" name="confPassword">
+    </div>
       <div class="text-center">
-        <div class="text-center">
-          <input type="submit" value="Submit" class="btn btn-primary">
-        </div>
+        <input type="submit" value="Submit">
       </div>
     </form>
   </div>
 </div>
-<%- include("./includes/footer.ejs") %>
+
 
 <script>
   function validateForm() {
-    const nameInput = document.getElementById("name");
-    const emailInput = document.getElementById("email");
-    const mobileInput = document.getElementById("mobile");
-    const passwordInput = document.getElementById("password");
+  const nameInput = document.getElementById("name");
+  const emailInput = document.getElementById("email");
+  const mobileInput = document.getElementById("mobile");
+  const passwordInput = document.getElementById("password");
 
-    // Validate name
-    if (nameInput.value.trim() === "") {
-      alert("Name is required");
-      return false;
-    }
-
-    // Validate email using a regular expression
-    const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
-    if (!emailPattern.test(emailInput.value)) {
-      alert("Invalid email address");
-      return false;
-    }
-
-    // Validate mobile number using a regular expression (adjust the pattern as needed)
-    const mobilePattern = /^[0-9]{10}$/;
-    if (!mobilePattern.test(mobileInput.value)) {
-      alert("Invalid mobile number");
-      return false;
-    }
-
-    // Validate password length
-    if (passwordInput.value.length < 8 || passwordInput.value.length > 20) {
-      alert("Password must be between 8 and 20 characters");
-      return false;
-    }
-
-    // Form is valid, continue with submission
-    return true;
+  // Validate name
+  if (nameInput.value.trim() === "") {
+    alert("Name is required");
+    return false;
   }
+
+  // Validate email using a regular expression
+  const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
+  if (!emailPattern.test(emailInput.value)) {
+    alert("Invalid email address");
+    return false;
+  }
+
+  // Validate mobile number using a regular expression
+  const mobilePattern = /^[1-9]\d{9}$/; // Allows any non-zero digit followed by 9 digits
+  if (!mobilePattern.test(mobileInput.value)) {
+    alert("Invalid mobile number");
+    return false;
+  }
+
+  // Validate password length
+  if (passwordInput.value.length < 8 || passwordInput.value.length > 20) {
+    alert("Password must be between 8 and 20 characters");
+    return false;
+  }
+
+  // Form is valid, continue with submission
+  return true;
+}
+
 </script>

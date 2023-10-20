@@ -11,7 +11,7 @@ const userSchema = new mongoose.Schema({
     email:{
         type:String,
         required:true
-    },
+    }, 
     password:{
         type:String,
         required:true
@@ -21,6 +21,16 @@ const userSchema = new mongoose.Schema({
         required:true,
         default:false
     },
+    wallet: {
+        type: Number,
+        default: 0
+    },
+    walletTransaction: {
+        type: Array
+    },
+    coupons: {
+        type: Array
+    }
 });
 
 module.exports = mongoose.model('User', userSchema)

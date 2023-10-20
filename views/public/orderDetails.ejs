@@ -1,192 +1,281 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
+<head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>eye sharp</title>
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.3/css/all.css"/>
+    <title>Eye Sharp - Order Details</title>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.3/css/all.css" />
+    <link rel="shortcut icon" type="image/x-icon" href="assets/imgs/theme/favicon.svg">
+
     <%- include("./includes/headerPart.ejs") %>
     <style>
+        /* Reset some default styles */
+        body,
+        html {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
 
-/* styles.css */
-table {
-  width: 100%;
-  border-collapse: collapse;
-  margin-bottom: 20px;
+        /* Header Styles */
+        /* Define your header styles here */
+
+        /* Main Container Styles */
+        .container {
+            padding-top: 50px;
+            /* Add appropriate padding value */
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 6px rgba(236, 192, 192, 0.1);
+        }
+
+        /* Card Styles */
+        .custom-card {
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            margin-top: 20px;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        /* Tab Styles */
+        .tabs {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .tab-btn {
+            background-color: #eee;
+            padding: 10px 20px;
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .tab-btn:hover {
+            background-color: #ddd;
+        }
+
+        .active {
+            background-color: #007bff;
+            color: #fff;
+        }
+
+        /* Table Styles */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+            background-color: #fff;
+            border-radius: 5px;
+        }
+
+        th,
+        td {
+            border: 1px solid #ddd;
+            padding: 10px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #21a6af;
+            color: #fff;
+        }
+
+        /* Additional Styles for Coupon Information */
+        #coupon-info {
+            display: none;
+        }
+
+        #coupon-info.show {
+            display: block;
+        }
+        .text-sm {
+    font-size: 14px; /* Adjust the font size as needed */
 }
-
-table, th, td {
-  border: 1px solid #ddd; /* Light gray borders */
-}
-
-th, td {
-  padding: 10px;
-  text-align: left;
-}
-
-th {
-  background-color: #333; /* Dark gray table header background */
-  color: #fff; /* White text color for table headers */
-}
-
-
-/* styles.css */
-.card {
-  background-color: #fff; /* White card background */
-  border-radius: 10px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-}
-
-.card-body {
-  padding: 20px;
-}
-
-.card-title {
-  color: #333; /* Dark text color for card titles */
-}
-
-
     </style>
-  </head>
-
-  <body>
+</head>
+<body>
     <!-- Header -->
-<%- include('./includes/header.ejs')%>
-    <section style="background-color: #eee">
-      <div class="container py-5 pt-5">
-        <div class="row pt-5">
-          <div class="col-lg-8 pt-5">
-            <div class="card mb-4">
-              <div class="card-body">
-                <h4>My Orders</h4>
-                <br>     
+    <!-- Include your header EJS file here -->
+    <%- include('./includes/header.ejs') %>
 
-                <!--================Order Details Area =================-->
-                <section class="order_details section_gap">
-                    <div class="container">
-                        <div class="row order_d_inner">
-                            <div class="col-md-6">
-                                <div class="details_item">
-                                    <h5>Order Info</h5>
-                                    <br>
-                                    <ul class="list">
-                                        <li>Order ID: <%=orders[0]._id%></li>
-                                        <li>Date: <%=orders[0].createdAt.toLocaleString()%></li>
-                                        <li>Total: ₹<%=orders[0].totalPrice%></li>
-                                        <li>Payment method: <%=orders[0].paymentMethod%></a></li>
-                                        <li>Payment Status: <%=orders[0].paymentStatus%></a></li>
-                                        <li>Transaction Id: <%=orders[0].razorpayId%></li>
-
-                                    </ul>
-                                </div>
-                            </div>
-                        
-                            <div class="col-md-6">
-                                <div class="details_item">
-                                    <h6 class="mb-1">Deliver to</h6>
-                                    <p class="mb-1">
-                                         <%=address.item.name%><br>
-                                        <%=address.item.address%><br>
-                                        <%=address.item.locality%> <br>
-                                        <%=address.item.city%> <br>
-                                        <%=address.item.pincode%> <br>
-                                        <%=address.item.state%>
-                                    </p>
-                            </div>
-                        </div>
-                        <div class="order_details_table py-4">
-                            <h2>Order Details</h2>
-                            <br>
-                            <div class="table-responsive">
-                                <table class="table">
-                                    <thead>
-                                        <tr>
-                                            <th scope="col">Product</th>
-                                            <th scope="col">Price</th>
-                                            <th scope="col">Quantity</th>
-                                            <th scope="col">Total</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <% products.forEach(function(product,index) {%>
-
-                                        <tr>
-                                            <td>
-                                                <p><%=product.productName%></p>
-                                            </td>
-                                            <td>
-                                                <p>₹<%=product.productPrice%></p>
-                                            </td>
-                                            <td>
-                                                <h5><%=product.quantity%></h5>
-                                            </td>
-                                            <td>
-                                                <p>₹<%=product.productPrice*product.quantity%></p>
-                                            </td>
-                                        </tr>
-                                        <% }) %>
-                                        <!-- <tr>
-                                            <td>
-                                                <h4>Coupon Code</h4>
-                                            </td>
-                                            <td>
-                                                <h5></h5>
-                                            </td>
-                                            <td>
-                                                <p><%=orders[0].couponCode%></p>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                <h4>Discount %</h4>
-                                            </td>
-                                            <td>
-                                                <h5></h5>
-                                            </td>
-                                            <td>
-                                                <p><%=orders[0].discountPercentage%> %</p>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                <h4>Discount Amount</h4>
-                                            </td>
-                                            <td>
-                                                <h5></h5>
-                                            </td>
-                                            <td>
-                                                <p>₹ <%=orders[0].discountAmount%></p>
-                                            </td>
-                                        </tr> -->
-                                    
-                                        <tr>
-                                            <td>
-                                                <h4>Total</h4>
-                                            </td>
-                                            <td>
-                                                <h5></h5>
-                                            </td>
-                                            <td>
-                                                <p>₹ <%=orders[0].totalPrice%></p>
-                                            </td>
-                                            <!-- <td>
-                                                <a href="/invoice?id=<=orders[0]._id%>" class="btn btn-primary">Download Invoice</a>
-                                            </td> -->
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
+    <section class="order-details section-gap pt-5">
+        <div class="container pt-5">
+            <div class="row pt-5">
+                <div class="col-md-12">
+                    <div class="tabs">
+                        <button class="tab-btn" id="order-info-tab">Order Info</button>
+                        <button class="tab-btn" id="deliver-to-tab">Deliver To</button>
+                    </div>
+                    <div class="custom-card details-box" id="order-info">
+                        <!-- Order Info Content Goes Here -->
+                        <ul class="list-unstyled">
+                            <li>Order ID: <%=orders[0]._id%></li>
+                            <li>Date: <%=orders[0].createdAt.toLocaleString()%></li>
+                            <li>Total: ₹<%=orders[0].totalPrice%></li>
+                            <li>Payment method: <%=orders[0].paymentMethod%></li>
+                            <li>Payment Status: <%=orders[0].paymentStatus%></li>
+                            <li>Transaction Id: <%=orders[0].razorpayId%></li>
+                        </ul>
+                    </div>
+                    <div class="custom-card details-box" id="deliver-to">
+                        <!-- Deliver To Content Goes Here -->
+                        <%=address.item.name%><br>
+                        <%=address.item.address%><br>
+                        <%=address.item.locality%> <br>
+                        <%=address.item.city%> <br>
+                        <%=address.item.pincode%> <br>
+                        <%=address.item.state%>
+                    </div>
+                    <div class="order_details_table pt-5 ">
+                        <h2>Order Details</h2>
+                        <div class="table-responsive pt-5">
+                            <table style="border: none; border-collapse: collapse; ">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">Product</th>
+                                        <th scope="col">Price</th>
+                                        <th scope="col">Quantity</th>
+                                        <th scope="col">Total</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <% products.forEach(function(product,index) {%>
+                                    <tr>
+                                        <td>
+                                            <p><%=product.productName%></p>
+                                        </td>
+                                        <td>
+                                            <p>₹<%=product.productPrice%></p>
+                                        </td>
+                                        <td>
+                                            <h5><%=product.quantity%></h5>
+                                        </td>
+                                        <td>
+                                            <p>₹<%=product.productPrice*product.quantity%></p>
+                                        </td>
+                                    </tr>
+                                    <% }) %>
+                                    <tr id="total-row">
+                                        <td>
+                                            <h4 class="text-sm">Total</h4>
+                                        </td>
+                                        <td>
+                                            <h5></h5>
+                                        </td>
+                                        <td>
+                                            <p>₹ <%=orders[0].totalPrice%></p>
+                                        </td>
+                                    </tr>
+                                    <!-- Coupon Code Row -->
+                                    <tr id="coupon-row">
+                                        <td>
+                                            <h4 class="text-sm">Coupon Code</h4>
+                                        </td>
+                                        <td>
+                                            <h5></h5>
+                                        </td>
+                                        <td>
+                                            <p><%=orders[0].couponCode%></p>
+                                        </td>
+                                    </tr>
+                                    <!-- Discount Percentage Row -->
+                                    <tr id="discount-percentage-row">
+                                        <td
+                                         
+                                            <h4 class="text-sm">Discount %</h4>
+                                        </td>
+                                        <td>
+                                            <h5></h5>
+                                        </td>
+                                        <td>
+                                            <p><%=orders[0].discountPercentage%> %</p>
+                                        </td>
+                                    </tr>
+                                    <!-- Discount Amount Row -->
+                                    <tr id="discount-amount-row">
+                                        <td>
+                                            <h4 class="text-sm">Discount Amount</h4>
+                                        </td>
+                                        <td>
+                                            <h5></h5>
+                                        </td>
+                                        <td>
+                                            <p>₹ <%=orders[0].discountAmount%></p>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
                         </div>
                     </div>
-                </section>
+                    <a href="/invoice?id=<%=orders[0]._id%>" class="btn btn-primary">Download Invoice</a>
 
-                <!--================End Order Details Area =================-->
-              </div>
+                </div>
             </div>
-          </div>
         </div>
-      </div>
     </section>
 
-    </body>
+    <!-- JavaScript to Show Coupon Information on Hover -->
+    <script>
+        // JavaScript to handle showing/hiding coupon information
+        document.addEventListener("DOMContentLoaded", function () {
+            const totalRow = document.getElementById("total-row");
+            const couponRow = document.getElementById("coupon-row");
+            const discountPercentageRow = document.getElementById("discount-percentage-row");
+            const discountAmountRow = document.getElementById("discount-amount-row");
+
+            totalRow.addEventListener("mouseenter", function () {
+                couponRow.style.display = "table-row";
+                discountPercentageRow.style.display = "table-row";
+                discountAmountRow.style.display = "table-row";
+            });
+
+            totalRow.addEventListener("mouseleave", function () {
+                couponRow.style.display = "none";
+                discountPercentageRow.style.display = "none";
+                discountAmountRow.style.display = "none";
+            });
+        });
+    </script>
+</body>
+</html>
+
+
+        <!--================End Order Details Area =================-->
+        </div>
+        </div>
+        </div>
+        </div>
+        </div>
+        </section>
+        <script>
+            // JavaScript to handle tab switching
+            const orderInfoTab = document.getElementById('order-info-tab');
+            const deliverToTab = document.getElementById('deliver-to-tab');
+            const orderInfoBox = document.getElementById('order-info');
+            const deliverToBox = document.getElementById('deliver-to');
+
+            orderInfoTab.addEventListener('click', () => {
+                orderInfoBox.style.display = 'block';
+                deliverToBox.style.display = 'none';
+            });
+
+            deliverToTab.addEventListener('click', () => {
+                orderInfoBox.style.display = 'none';
+                deliverToBox.style.display = 'block';
+            });
+
+            // Initialize by showing the "Order Info" tab and content
+            orderInfoTab.click();
+
+
+
+
+
+        </script>
+        <%-include('./includes/footer.ejs')%>
+</body>
+
 </html>

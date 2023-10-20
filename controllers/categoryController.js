@@ -19,26 +19,29 @@ const loadAddCategory = async(req,res)=>{
   }
 }
 
-const createCategory = async(req, res)=>{
-    try {
-      const categoryName = req.body.name.toLowerCase()
-      const existingCategory = await Category.findOne({name:categoryName})
+const createCategory = async (req, res) => {
+  try {
+      const categoryName = req.body.name.toLowerCase();
+      const existingCategory = await Category.findOne({ name: categoryName });
 
-      if(existingCategory){
-        return res.render("addCategory",{message:"Category already exists"})
-      } 
-     
-      
-      if (!req.body.name || req.body.name.trim().length === 0) {
-        return res.render("addCategory", { message: "Name is required" });
-    }
-       await categoryHelper.createCategory(req.body)
-      res.redirect('/admin/category')
-    } catch (error) {
-      console.log(error.message)
-      res.status(500).json({ error: 'Failed to create category' });
-    }
+      if (existingCategory) {
+          return res.render("addCategory", { message: "Category already exists" });
+      }
+
+      if (!categoryName || categoryName.trim().length === 0) {
+          return res.render("addCategory", { message: "Name is required" });
+      }
+
+      // Assuming categoryHelper.createCategory handles database operations and validation
+      await categoryHelper.createCategory(req.body);
+
+      res.redirect('/admin/category');
+  } catch (error) {
+      console.error(error.message);
+      res.status(500).render("error", { message: "Failed to create category" });
   }
+};
+
   
   
   const loadUpdateCategory = async(req,res)=>{

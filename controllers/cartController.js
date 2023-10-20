@@ -64,6 +64,7 @@ const deleteProduct = (req, res) => {
 }
 
 const updateQuantity = (req, res) => {
+    
     const userId = res.locals.user._id
     cartHelper.updateQuantity(req.body)
     .then(async (response) => {

@@ -23,7 +23,8 @@ const productController = require('../controllers/productCondroller')
 const categoryController=require('../controllers/categoryController')
 const couponController=require('../controllers/couponController')
 // adminRoute.get('/', auth.isLogout, adminController.loadLogin)
-
+const bannerController=require('../controllers/bannerController')
+const orderController=require('../controllers/orderController')
 
 const orderHelper=require('../helpers/orderHelper')
 
@@ -33,10 +34,10 @@ const orderHelper=require('../helpers/orderHelper')
 
 adminRoute.get('/', adminController.loadLogin)
 adminRoute.post('/login',adminController.verifyLogin)
-adminRoute.get('/dashboard',adminController.loadHome)
-adminRoute.get('/user',adminController.loadUsers)
-adminRoute.post('/blockUser',adminController.blockUser)
-adminRoute.post('/UnblockUser',adminController.unBlockUser)
+adminRoute.get('/dashboard', auth.isLogin,adminController.loadDashboard)
+adminRoute.get('/user', auth.isLogin,adminController.loadUsers)
+adminRoute.post('/blockUser', auth.isLogin,adminController.blockUser)
+adminRoute.post('/UnblockUser', auth.isLogin,adminController.unBlockUser)
 
 
 
@@ -77,11 +78,28 @@ adminRoute.get('/orderList', auth.isLogin, adminController.orderList)
 adminRoute.put('/orderStatus', adminController.changeStatus) 
 adminRoute.put('/cancelOrder', adminController.cancelOrder)
 adminRoute.get('/orderDetails', auth.isLogin, adminController.orderDetails)
+adminRoute.put('/returnOrder',orderController .returnOrder)
+
 
 
 adminRoute.get('/couponList',auth.isLogin,couponController.couponList)
-adminRoute.post('/addCoupon',couponController.loadAddCoupon)
+adminRoute.get('/addCoupon',auth.isLogin,couponController.loadAddCoupon)
+adminRoute.get('/generateCouponCode',auth.isLogin,couponController.generatecouponcode)
+adminRoute.post('/addCoupon',auth.isLogin,couponController.addCoupon)
+adminRoute.delete('/removeCoupon', auth.isLogin, couponController.removeCoupon)
 
+
+
+adminRoute.get('/bannerList',auth.isLogin,bannerController.bannerList)
+adminRoute.get('/addBanner',auth.isLogin,bannerController.addBannerQet)
+adminRoute.post('/addBanner', multer.addBannerUpload, bannerController.addBannerPost)
+adminRoute.get('/deleteBanner', auth.isLogin, bannerController.deleteBanner)
+adminRoute.get('/updateBanner',auth.isLogin,bannerController.loaddupdateBanner)
+adminRoute.post('/updateBanner', multer.addBannerUpload, auth.isLogin, bannerController.editBanner)
+
+
+adminRoute.get('/salesReport',auth.isLogin,orderController.getSalesReport)
+adminRoute.post('/salesReport',adminController.postSalesReport)
 
 
 

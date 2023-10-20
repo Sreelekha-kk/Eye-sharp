@@ -1,295 +1,370 @@
-
-
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
-    <%- include("./includes/headerPart.ejs") %>
+<%- include("./includes/headerPart.ejs") %>
 
 
 	<style>
-    /* Product Detail Container */
-	.product-detail {
-    padding: 40px 0;
-}
+		/* Product Detail Container */
+		.product-detail {
+			padding: 40px 0;
+		}
 
-.product-images {
-    display: flex;
-    flex-direction: column;
-}
+		.product-images {
+			display: flex;
+			flex-direction: column;
+		}
 
-.main-image img {
-    max-width: 100%;
+		.main-image img {
+			max-width: 100%;
+			height: auto;
+			border: 1px solid #ddd;
+			padding: 10px;
+		}
+
+		.thumbnail-images {
+			display: flex;
+			margin-top: 10px;
+		}
+
+		.thumbnail-images img {
+			max-width: 80px;
+			height: auto;
+			margin-right: 10px;
+			border: 1px solid #ddd;
+			cursor: pointer;
+		}
+
+		.product-details {
+			padding: 0 20px;
+		}
+
+		.product-title {
+			font-size: 24px;
+			margin-bottom: 10px;
+		}
+
+		.product-price {
+			font-size: 18px;
+			margin-bottom: 20px;
+		}
+
+		.currency-symbol {
+			font-size: 16px;
+		}
+
+		.price {
+			font-weight: bold;
+		}
+
+		.product-description {
+			font-size: 16px;
+			line-height: 1.6;
+			margin-bottom: 20px;
+		}
+
+		.product-actions {
+			display: flex;
+		}
+
+		.add-to-cart-button,
+		.buy-now-button {
+			padding: 10px 20px;
+			font-size: 16px;
+			background-color: #007bff;
+			color: #fff;
+			border: none;
+			cursor: pointer;
+			margin-right: 10px;
+		}
+		.product-images{
+			width: 500px;
+
+         	position: relative;
+		}
+
+		.buy-now-button {
+			background-color: #ff5722;
+		}
+		.main-product-image{
+			width: 100%;
     height: auto;
-    border: 1px solid #ddd;
-    padding: 10px;
-}
+			
+		}
 
-.thumbnail-images {
-    display: flex;
-    margin-top: 10px;
-}
+		.lense {
+			width: 100px;
+			height: 100px;
+			position: absolute;
+			top: 0;
+			left: 0;
 
-.thumbnail-images img {
-    max-width: 80px;
-    height: auto;
-    margin-right: 10px;
-    border: 1px solid #ddd;
-    cursor: pointer;
-}
+			background-color: rgba(225, 225, 225, 0.6);
 
-.product-details {
-    padding: 0 20px;
-}
+		}
 
-.product-title {
-    font-size: 24px;
-    margin-bottom: 10px;
-}
-
-.product-price {
-    font-size: 18px;
-    margin-bottom: 20px;
-}
-
-.currency-symbol {
-    font-size: 16px;
-}
-
-.price {
-    font-weight: bold;
-}
-
-.product-description {
-    font-size: 16px;
-    line-height: 1.6;
-    margin-bottom: 20px;
-}
-
-.product-actions {
-    display: flex;
-}
-
-.add-to-cart-button,
-.buy-now-button {
-    padding: 10px 20px;
-    font-size: 16px;
-    background-color: #007bff;
-    color: #fff;
-    border: none;
-    cursor: pointer;
-    margin-right: 10px;
-}
-
-.buy-now-button {
-    background-color: #ff5722;
-}
-
-        .lense {
-           width: 100px;
-		   height: 100px;
-		   position: absolute;
-		   top: 0;
-		   left: 0;
-		   
-		   background-color: rgba(225,225,225,0.6);
-
-        }
-
-        .result {
-           position: absolute;
-		   left:calc(100% + 80px) ;
-		   top: 30px;
-		   width: 300px;
-		   height: 300px;
+		.result {
+			position: absolute;
+			left: calc(100% + 80px);
+			top: 30px;
+			width: 400px;
+			height: 400px;
 
 
 
-        }
+		}
+	</style>
 
 
-    </style>
-
-	
 	<!-- Header -->
 	<%- include("./includes/header.ejs") %>
 
-	<!-- breadcrumb -->
-	
-    <section class="product-detail">
-		<div class="container pt-5">
-			<div class="row pt-5">
-				<div class="col-md-6">
-					<div class="product-images">
-						<div class="main-image">
-							<!-- The main image will be replaced with the clicked thumbnail -->
-							<img id="main-product-image" src="../admin/assets/images/products/SavedPictures/<%= product.images[0]%>" alt="Product Image">
-							<div class="lense"></div>
-							<div class="result"></div>
-							
-						</div>
-						
-						<div class="thumbnail-images">
-							<!-- Thumbnails for other product images -->
-							<img src="../admin/assets/images/products/SavedPictures/<%= product.images[0]%>" alt="Thumbnail Image" onclick="changeImage(this)">
-							<img src="../admin/assets/images/products/SavedPictures/<%= product.images[1]%>" alt="Thumbnail Image" onclick="changeImage(this)">
-							<img src="../admin/assets/images/products/SavedPictures/<%= product.images[2]%>" alt="Thumbnail Image" onclick="changeImage(this)">
-							<!-- Add more thumbnails as needed -->
+		<!-- breadcrumb -->
+
+		<section class="product-detail">
+			<div class="container pt-5">
+				<div class="row pt-5">
+					<div class="col-md-6">
+						<div class="product-images">
+							<div class="main-image">
+								<!-- The main image will be replaced with the clicked thumbnail -->
+								<img id="main-product-image"
+									src="<% if (product && product.images && product.images.length > 0) { %>../admin/assets/images/products/SavedPictures/<%= product.images[0] %><% } else { %>path_to_default_image.jpg<% } %>"
+									alt="Product Image">
+								<div class="lense"></div>
+								<div class="result"></div>
+
+							</div>
+
+							<div class="thumbnail-images">
+								<img src="<% if (product && product.images && product.images[0]) { %>../admin/assets/images/products/SavedPictures/<%= product.images[0] %><% } else { %>path_to_default_image_0.jpg<% } %>"
+									alt="Thumbnail Image" onclick="changeImage(this)">
+								<img src="<% if (product && product.images && product.images[1]) { %>../admin/assets/images/products/SavedPictures/<%= product.images[1] %><% } else { %>path_to_default_image_1.jpg<% } %>"
+									alt="Thumbnail Image" onclick="changeImage(this)">
+								<img src="<% if (product && product.images && product.images[2]) { %>../admin/assets/images/products/SavedPictures/<%= product.images[2] %><% } else { %>path_to_default_image_2.jpg<% } %>"
+									alt="Thumbnail Image" onclick="changeImage(this)">
+								<!-- Add more thumbnails as needed -->
+								<!-- Add more thumbnails as needed -->
+							</div>
 						</div>
 					</div>
-				</div>
-				<div class="col-md-6">
-					<div class="product-details">
-						<h1 class="product-title"><%= product.name %></h1>
-						<div class="product-price">
-							<span class="currency-symbol"><i class="fa fa-inr" aria-hidden="true"></i></span>
-							<span class="price"><%= product.price %></span>
-						</div>
-						<p class="product-description"><%= product.description %></p>
-						<!-- Additional product information (category, availability, etc.) -->
-						<div class="product-actions">
-							<a href="javascript:void(0)" onclick="addtocart('<%=product._id%>')" class="flex-c-m stext-101 cl5 size-10 bg2 bor1 hov-btn1 p-2 trans-04" style="width: 150px;">
-								<i class="ti-bag"></i> Add To Cart
-							</a>
-							<button class="buy-now-button">Buy Now</button>
+					<div class="col-md-6">
+						<div class="product-details">
+							<h1 class="product-title">
+								<h1 class="product-title">
+									<%= product && product.name ? product.name : 'Product Name Not Available' %>
+								</h1>
+								
+							</h1>
+							<div class="product-price">
+								<span class="currency-symbol"><i class="fa fa-inr" aria-hidden="true"></i></span>
+								<span class="price">
+									<%= product && product.price ? product.price : 'Price Not Available' %>
+								</span>
+								
+							</div>
+							<p class="product-description">
+								<%= product && product.description ? product.description : 'Description Not Available' %>
+							</p>
+							
+							<!-- Additional product information (category, availability, etc.) -->
+							<div class="product-actions">
+								<a href="javascript:void(0)" onclick="<% if (product && product._id) { %>addtocart('<%= product._id %>')<% } else { %>/* Handle the case when product or product._id is null or undefined */<% } %>"
+									class="flex-c-m stext-101 cl5 size-10 bg2 bor1 hov-btn1 p-2 trans-04"
+									style="width: 150px;">
+									<i class="ti-bag"></i> Add To Cart
+								</a>
+								
+							</div>
 						</div>
 					</div>
 				</div>
 			</div>
-		</div>
-	</section>
-	
-	<script>
-		function changeImage(thumbnail) {
-			// Get the source of the clicked thumbnail
-			var thumbnailSrc = thumbnail.src;
-	
-			// Get the main product image element
-			var mainImage = document.getElementById("main-product-image");
-	
-			// Set the source of the main image to the clicked thumbnail
-			mainImage.src = thumbnailSrc;
-		}
-	</script>
-	
+		</section>
+
+		<script>
+			function changeImage(thumbnail) {
+				// Get the source of the clicked thumbnail
+				var thumbnailSrc = thumbnail.src;
+
+				// Get the main product image element
+				var mainImage = document.getElementById("main-product-image");
+
+				// Set the source of the main image to the clicked thumbnail
+				mainImage.src = thumbnailSrc;
+			}
+		</script>
 
 
 
 
-    <script>
+
+		<script>
+
+			function changeImage(thumbnail) {
+				// Get the source of the clicked thumbnail
+				var thumbnailSrc = thumbnail.src;
+
+				// Get the main product image element
+				var mainImage = document.getElementById("main-product-image");
+
+				// Set the source of the main image to the clicked thumbnail
+				mainImage.src = thumbnailSrc;
+			}
+
+		</script>
+		<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+		<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+		<script>
+			function addtocart(proId) {
+				console.log("hfhj")
+				$.ajax({
+					url: '/addToCart/' + proId,
+					method: 'POST',
+
+					success: (response) => {
+						if (response.status == true) {
+							Swal.fire({
+								title: 'Added To Cart',
+								text: 'Your Product has been added to Cart',
+								icon: 'success',
+								timer: 5000
+							})
+
+						} else if (response.status == 'outOfStock') {
+							Swal.fire({
+								title: 'Out of Stock',
+								text: 'Product Out Of Stock',
+								icon: 'error',
+								timer: 5000
+							})
+						} else if (response.status == 'blocked') {
+							Swal.fire({
+								title: 'You are blocked',
+								icon: 'error',
+								timer: 5000
+							})
+							setTimeout(() => {
+								window.location.href = "/logout"
+							}, 5000)
+						}
+					}
+				})
+			}
+		</script>
+		<script>
+const mainImage = document.querySelector(".main-image");
+const mainProductImage = document.querySelector("#main-product-image");
+const lens = document.querySelector(".lense");
+const result = document.querySelector(".result");
+
+// Initialize the zoomed image based on the default main product image
+result.style.backgroundImage = `url(${mainProductImage.src})`;
+
+mainImage.addEventListener('mousemove', zoomImage);
+
+function zoomImage(e) {
+    const { x, y } = getMousePos(e);
+
+    // Calculate the boundaries to keep the lens within the main-image div
+    const minX = 0;
+    const minY = 0;
+    const maxX = mainImage.clientWidth - lens.clientWidth;
+    const maxY = mainImage.clientHeight - lens.clientHeight;
+
+    // Ensure that x and y are within the valid range
+    let clampedX = Math.min(maxX, Math.max(minX, x));
+    let clampedY = Math.min(maxY, Math.max(minY, y));
+
+    lens.style.left = clampedX + "px";
+    lens.style.top = clampedY + "px";
+
+    // Experiment with these values to adjust the zoom effect
+    let fx = 2; // Adjust as needed
+    let fy = 2; // Adjust as needed
+
+    // Adjust the zoomed image based on the lens position
+    result.style.backgroundSize = `${mainProductImage.width * fx}px ${mainProductImage.height * fy}px`;
+    result.style.backgroundPosition = `-${clampedX * fx}px -${clampedY * fy}px`;
+}
+
+function getMousePos(e) {
+    let x = e.clientX - mainImage.getBoundingClientRect().left - lens.clientWidth / 2;
+    let y = e.clientY - mainImage.getBoundingClientRect().top - lens.clientHeight / 2;
+
+    return { x, y };
+}
+
+// Function to change the main product image and the zoomed image
+function changeImage(thumbnail) {
+    // Get the source of the clicked thumbnail
+    var thumbnailSrc = thumbnail.src;
+
+    // Update the main product image source
+    mainProductImage.src = thumbnailSrc;
+
+    // Update the zoomed image source
+    result.style.backgroundImage = `url(${thumbnailSrc})`;
+}
+
+
+
+
+			
+// const container = document.querySelector(".main-image")
+// const image = document.querySelector("#main-product-image")
+// const lens = document.querySelector(".lense")
+// const result = document.querySelector(".result")
+
+// const containerRect = container.getBoundingClientRect()
+// const imageRect = image.getBoundingClientRect()
+// const lensRect = lens.getBoundingClientRect()
+// const resultRect = result.getBoundingClientRect()
+
+// container.addEventListener("mousemove", zoomImage)
+
+// result.style.backgroundImage = `url(${mainproductimage.src})`
+
+// function zoomImage(e) {
+//     console.log("zoom image", e.clientX, e.clientY)
+//     const { x, y } = getMousePos(e)
+
+//     lens.style.left = x + "px"
+//     lens.style.top = y + "px"
+
+//     let fx = resultRect.width / lensRect.width
+//     let fy = resultRect.height / lensRect.height
+
+//     result.style.backgroundSize = `${imageRect.width * fx}px ${
+//         imageRect.height * fy
+//     }px`
+//     result.style.backgroundPosition = `-${x * fx}px -${y * fy}px`
+// }
+
+// function getMousePos(e) {
+//     let x = e.clientX - containerRect.left - lensRect.width / 2
+//     let y = e.clientY - containerRect.top - lensRect.height / 2
+
+//     let minX = 0
+//     let minY = 0
+//     let maxX = containerRect.width - lensRect.width
+//     let maxY = containerRect.height - lensRect.height
+
+//     if (x <= minX) {
+//         x = minX
+//     } else if (x >= maxX) {
+//         x = maxX
+//     }
+//     if (y <= minY) {
+//         y = minY
+//     } else if (y >= maxY) {
+//         y = maxY
+//     }
+
+//     return { x, y }
+// }
+
+
+		</script>
 		
-        function changeImage(thumbnail) {
-            // Get the source of the clicked thumbnail
-            var thumbnailSrc = thumbnail.src;
-    
-            // Get the main product image element
-            var mainImage = document.getElementById("main-product-image");
-    
-            // Set the source of the main image to the clicked thumbnail
-            mainImage.src = thumbnailSrc;
-        }
-    
-        </script>
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-
-<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
-	<script>
-		function addtocart(proId) {
-			console.log("hfhj")
-		  $.ajax({
-			url: '/addToCart/' + proId,
-			method: 'POST',
-	  
-			success: (response) => {
-			  if (response.status==true) {
-				Swal.fire({
-				  title: 'Added To Cart',
-				  text: 'Your Product has been added to Cart',
-				  icon: 'success',
-				  timer: 5000
-				})
-				
-			  }else if(response.status=='outOfStock'){
-				Swal.fire({
-				  title: 'Out of Stock',
-				  text: 'Product Out Of Stock',
-				  icon: 'error',
-				  timer: 5000
-				})
-			  }else if(response.status=='blocked'){
-				Swal.fire({
-				  title: 'You are blocked',
-				  icon: 'error',
-				  timer: 5000
-				})
-				setTimeout(() => {
-					window.location.href="/logout"
-				},5000)
-			  }
-			}
-		  })
-		}
-	</script>
-	<script>
-		const mainimage=document.querySelector(".main-image")
-		const mainproductimage=document.querySelector("#main-product-image")
-		const lense=document.querySelector(".lense")
-		const result=document.querySelector(".result")
-
-
-		const mainimageRect=mainimage.getBoundingClientRect()
-		const mainproductRect=mainproductimage.getBoundingClientRect()
-		const lenseRect=lense.getBoundingClientRect()
-		const resultRect=result.getBoundingClientRect()
-
-
-
-		mainimage.addEventListener('mousemove',zoomImage)
-		result.style.backgroundImage=`url(${mainproductimage.src})`
-
-		function zoomImage(e){
-			console.log('zoom image',e.clientX,e.clientY)
-			 const  { x,y }=getMousepos(e)
-			lense.style.left=x+"px"
-			lense.style.top=y+"px"
-
-
-			let fx=resultRect.width/lenseRect.width
-			let fy=resultRect.height/lenseRect.height
-
-			result.style.backgroundSize=`${mainproductRect.width*fx}px ${mainproductRect.height*fy}px `
-			result.style.backgroundPosition=`${x*fx}px  ${y*fy}px`
-			
-
-
-		}
-		function getMousepos(e){
-
-			let x=e.clientX-mainimageRect.left-lenseRect.width/2
-			let y=e.clientY-mainimageRect.top-lenseRect.height/2
-
-			let minX=0;
-			let minY=0;
-			let maxX=mainimageRect.width-lenseRect.width
-			let maxY=mainimageRect.height-lenseRect.height
-
-			
-
-			if(x<=minX){
-				x=minX
-			}
-			else if(x>=maxX){
-				x=maxX
-
-			}
-			if(y<=minY){
-				y=minY
-			}
-			else if(y>=maxY){
-				y=maxY
-
-			}
-
-return { x,y }
-		}
-
-</script>

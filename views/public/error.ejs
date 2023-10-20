@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OTP Verification Error</title>
+    <!-- Add Bootstrap CSS link here -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        /* Add custom CSS styles here */
+        body {
+            background-color: #f8f9fa;
+        }
+        .error-container {
+            text-align: center;
+            margin-top: 50px;
+        }
+        h1 {
+            color: #dc3545; /* Bootstrap's danger color */
+        }
+    </style>
+</head>
+<body>
+    <div class="container error-container">
+        <h1>OTP Verification Error</h1>
+        <p><%= message %></p>      
+          <p><a href="/home" class="btn btn-primary">Try Again Later</a></p>
+
+        <!-- You can display additional details or error messages here if needed -->
+    </div>
+
+    <!-- Add Bootstrap JS and jQuery scripts here (if required) -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

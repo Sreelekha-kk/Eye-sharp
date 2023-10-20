@@ -1,0 +1,1372 @@
+function GetXmlHttpObject()
+{
+var xmlHttp=null;
+try
+ {
+ xmlHttp=new XMLHttpRequest();
+ }
+catch (e)
+ {
+ try
+  {
+  xmlHttp=new ActiveXObject("Msxml2.XMLHTTP");
+  }
+ catch (e)
+  {
+  xmlHttp=new ActiveXObject("Microsoft.XMLHTTP");
+  }
+ }
+return xmlHttp;
+}
+function course_year_fill(x,y)
+{
+	cyear=document.getElementById("txt_cyear");
+	var coursetype=document.getElementById("coursetype").value;
+	xmlobjdist=GetXmlHttpObject();
+		if (xmlobjdist==null)
+		 {
+			 alert ("Browser does not support HTTP Request")
+			 return
+		 }
+
+		 var url="../jscript/getdist.php?status=12";
+		 url+="&coursetype="+coursetype;
+		 url+="&sid="+Math.random();
+     	 xmlobjdist.onreadystatechange=setcyear;
+		 xmlobjdist.open("GET",url,true);
+		 xmlobjdist.send(null);
+}
+function setcyear()
+{
+	if(xmlobjdist.readyState==4)
+	{
+		var data=xmlobjdist.responseText;
+		if(data=='error')
+		{
+			alert('Data corrupted');
+		}
+		else
+		{
+		var opt=data.split("#");
+		for(i=1;i<cyear.length;i++)
+		{
+			cyear.remove(i);
+			i=i-1;
+		}
+		for(i=0;i<opt.length-1;i++)
+		{
+			var optn=opt[i].split("|");
+			var coptn=document.createElement("OPTION");
+			coptn.text=optn[1];
+            coptn.value=optn[0];
+			try
+            {
+            cyear.add(coptn,null);
+            }
+            catch(ex)
+            {
+            cyear.add(coptn);  
+            }
+		}
+	}
+	}
+}
+function setdist()
+{
+	if(xmlobjdist.readyState==4)
+	{
+		var data=xmlobjdist.responseText;
+		if(data=='error')
+		{
+			alert('Data Corrupted');
+		}
+		else
+		{
+		var opt=data.split("#");
+		for(i=1;i<cname.length;i++)
+		{
+			cname.remove(i);
+			i=i-1;
+		}
+		for(i=0;i<opt.length-1;i++)
+		{
+			var optn=opt[i].split("|");
+			var coptn=document.createElement("OPTION");
+			coptn.text=optn[1];
+            coptn.value=optn[0];
+			try
+            {
+            cname.add(coptn,null); 
+            }
+            catch(ex)
+            {
+            cname.add(coptn); 
+            }
+		}
+	}
+	}
+}
+function setcourse()
+{
+	if(xmlobjdist.readyState==4)
+	{
+		var data=xmlobjdist.responseText;
+		if(data=='')
+		{
+			var opt=data.split("#");
+			for(i=1;i<course.length;i++)
+			{
+				course.remove(i);
+				i=i-1;
+			}
+			alert("Contact Your Institution Regarding Course Details to Continue Further");
+		}
+		else if(data=='error')
+		{
+			alert("Data Corrupted");
+		}
+		else
+		{
+		var opt=data.split("#");
+		for(i=1;i<course.length;i++)
+		{
+			course.remove(i);
+			i=i-1;
+		}
+		for(i=0;i<opt.length-1;i++)
+		{
+			var optn=opt[i].split("|");
+			var coptn=document.createElement("OPTION");
+			coptn.text=optn[1];
+            coptn.value=optn[0];
+			try
+            {
+            course.add(coptn,null); 
+            }
+            catch(ex)
+            {
+            course.add(coptn); 
+            }
+		}
+	 }
+	}
+}
+function setsscourse()
+{
+	if(xmlobjdist.readyState==4)
+	{
+		var data=xmlobjdist.responseText;
+		if(data=='error')
+		{
+			alert('Data Corrupted');
+		}
+		else
+		{
+		var opt=data.split("#");
+		for(i=1;i<scourse.length;i++)
+		{
+			scourse.remove(i);
+			i=i-1;
+		}
+		for(i=0;i<opt.length-1;i++)
+		{
+			var optn=opt[i].split("|");
+			if(optn[2]=='Y')
+			{
+				var sss='Govt/Aided';
+			}
+			else
+			{
+				var sss='Unaided';
+			}
+			
+			var coptn=document.createElement("OPTION");
+			coptn.text=optn[1]+'-'+sss;
+            coptn.value=optn[0];
+			try
+            {
+            scourse.add(coptn,null); 
+            }
+            catch(ex)
+            {
+            scourse.add(coptn);  
+            }
+		}
+	}}
+}
+function setinst()
+{
+	if(xmlobjdist.readyState==4)
+	{
+		var data=xmlobjdist.responseText;
+		if(data=='error')
+		{
+			alert('Data Corrupted');
+		}
+		else
+		{
+		var opt=data.split("#");
+		for(i=1;i<cinst.length;i++)
+		{
+			cinst.remove(i);
+			i=i-1;
+		}
+		for(i=0;i<opt.length-1;i++)
+		{
+			var optn=opt[i].split("|");
+			var coptn=document.createElement("OPTION");
+			coptn.text=optn[1];
+            coptn.value=optn[0];
+			try
+            {
+            cinst.add(coptn,null); 
+            }
+            catch(ex)
+            {
+            cinst.add(coptn);  
+            }
+		}
+	}}
+}
+function setctype()
+{
+	if(xmlobjdist.readyState==4)
+	{
+		var data=xmlobjdist.responseText;
+		var no=0;
+		if(data=='')
+		{
+			var opt=data.split("#");
+			for(i=1;i<ctype.length;i++)
+			{
+				ctype.remove(i);
+				i=i-1;
+			}
+			alert("Contact Your Institution Regarding Course Details to Continue Further");
+		}
+		else if(data=='error')
+		{
+			alert('Data Corrupted');
+		}
+		else
+		{
+		var opt=data.split("#");
+		for(i=1;i<ctype.length;i++)
+		{
+			ctype.remove(i);
+			i=i-1;
+		}
+		for(i=0;i<opt.length-1;i++)
+		{
+			var optn=opt[i].split("|");
+			var coptn=document.createElement("OPTION");
+			coptn.text=optn[1];
+            coptn.value=optn[0];
+			try
+            {
+            ctype.add(coptn,null); 
+            }
+            catch(ex)
+            {
+            ctype.add(coptn); 
+            }
+		}
+	  }
+	}
+}
+
+function bankfill(x,y)
+{
+	bnames=document.getElementById("branchcode");
+   	var banktype=document.getElementById("banktype").value;
+	var bankstate=document.getElementById("bankstate").value;
+	var bankdist=document.getElementById("bank_dist").value;
+	xmlobjdist=GetXmlHttpObject();
+		if (xmlobjdist==null)
+		{
+			alert ("Browser does not support HTTP Request")
+			return
+		}
+		
+		 //var token=document.getElementById('token').value;
+		 var url="../jscript/getdist.php?banktype="+banktype;
+		 url+="&status=6&bankdist="+bankdist+"&bankstate="+bankstate;
+		 url+="&sid="+Math.random();
+		 //url+="&token="+token; 
+		 xmlobjdist.onreadystatechange=setbank;
+		 xmlobjdist.open("GET",url,true);
+		 xmlobjdist.send(null);
+}
+function setbank()
+{
+	if(xmlobjdist.readyState==4)
+	{
+		var data=xmlobjdist.responseText;
+		if(data=='error')
+		{
+			alert('Data Corrupted');
+		}
+		else
+		{
+			var opt=data.split("#");
+			for(i=1;i<bnames.length;i++)
+			{
+				bnames.remove(i);
+				i=i-1;
+			}
+			for(i=0;i<opt.length-1;i++)
+			{
+				var optn=opt[i].split("|");
+				var coptn=document.createElement("OPTION");
+				coptn.text=optn[1];
+				coptn.value=optn[0];
+				try
+				{
+				bnames.add(coptn,null); 
+				}
+				catch(ex)
+				{
+				bnames.add(coptn);  
+				}
+			}
+		}
+	}
+}
+
+function sscoursetype()
+{
+	if(xmlobjdist.readyState==4)
+	{
+		var data=xmlobjdist.responseText;
+		if(data=='error')
+		{
+			alert('Data Corrupted');
+		}
+		else
+		{
+		document.onlineregistration3.sscoursetype.value=data;
+		}
+	}
+}
+function sscoursetypefill(x,y)
+{
+	var ssname=document.getElementById("coursename").options[document.getElementById("coursename").selectedIndex].text;
+	 xmlobjdist=GetXmlHttpObject();
+		if (xmlobjdist==null)
+		 {
+			 alert ("Browser does not support HTTP Request")
+			 return
+		 }
+		 var token=document.getElementById('token').value;
+
+		 var url="../jscript/getdist.php?sscname="+ssname;
+		 url+="&status=7";
+		 url+="&sid="+Math.random();
+		 url+="&token="+token;
+		 xmlobjdist.onreadystatechange=sscoursetype;
+		 xmlobjdist.open("GET",url,true);
+		 xmlobjdist.send(null);
+}
+function ssctype()
+{
+  if(xmlobjdist.readyState==4)
+	{
+		var data=xmlobjdist.responseText;
+		if(data=='error')
+		{
+			alert('Data Corrupted');
+		}
+		else
+		{
+		var opt=data.split("#");
+		for(i=1;i<schtype.length;i++)
+		{
+			schtype.remove(i);
+			i=i-1;
+		}
+		for(i=0;i<opt.length-1;i++)
+		{
+			var optn=opt[i].split("|");
+			var coptn=document.createElement("OPTION");
+			coptn.text=optn[1];
+            coptn.value=optn[0];
+			try
+            {
+            schtype.add(coptn,null); 
+            }
+            catch(ex)
+            {
+            schtype.add(coptn);  
+            }
+		}
+	}
+	}
+}
+function ssctypefill(x,y)
+{
+	schtype=document.getElementById("ssctype");
+    var coursetype=document.getElementById("coursetype").value;
+	var inststate=document.getElementById("inststate").value;
+	var insttype=document.getElementById("insttype").value;
+	var instdist=document.getElementById("instdist").value;
+	var instname=document.getElementById("instname").value; 
+	   xmlobjdist=GetXmlHttpObject();
+		if (xmlobjdist==null)
+		 {
+			 alert ("Browser does not support HTTP Request")
+			 return
+		 }
+		 var token=document.getElementById('token').value;
+
+		 var url="../jscript/getdist.php?instname="+instname;
+
+		 url+="&status=8&insttype="+insttype;
+		 url+="&course="+coursetype;
+		 url+="&sid="+Math.random();
+		 url+="&token="+token;
+		 xmlobjdist.onreadystatechange=ssctype;
+		 xmlobjdist.open("GET",url,true);
+		 xmlobjdist.send(null);
+}
+var cstate;
+function distfill(x,y)
+{
+	// alert(x,y);
+	if(y=="pstate")
+	{
+	cname=document.getElementById("pdistrict");
+	cstate=document.getElementById("pstate").value;
+	}
+	else if(y=="cstate")
+	{
+	cname=document.getElementById("cdistrict");
+	cstate=document.getElementById("cstate").value;
+	}
+	else if(y=="inststate")
+	{
+	cname=document.getElementById("instdist");
+	cstate=document.getElementById("inststate").value;
+	}
+	else if(y=="bankstate")
+	{
+	cname=document.getElementById("bank_dist");
+	cstate=document.getElementById("bankstate").value;
+	}
+	xmlobjdist=GetXmlHttpObject();
+		if (xmlobjdist==null)
+		 {
+			 alert ("Browser does not support HTTP Request")
+			 return
+		 }
+		// var token=document.getElementById('token').value;
+
+		 var url="../jscript/getdist.php?distcode="+x;
+		 url+="&state="+cstate;
+		 url+="&sid="+Math.random();
+		//  url+="&token="+token;
+		 xmlobjdist.onreadystatechange=setdist;
+		 xmlobjdist.open("GET",url,true);
+		 xmlobjdist.send(null);
+}
+
+function distfill_in(x,y) 
+{
+
+	cname1=document.getElementById("instdista");
+	cstate1=document.getElementById("inststatea").value;
+
+xmlobjdist=GetXmlHttpObject();
+		if (xmlobjdist==null)
+		 {
+			 alert ("Browser does not support HTTP Request")
+			 return
+		 }
+		//  var token=document.getElementById('token').value;
+
+		 var url="../jscript/getdist.php?district="+x;
+		 url+="&state="+cstate1;
+		 url+="&sid="+Math.random();
+		//  url+="&token="+token;
+		 xmlobjdist.onreadystatechange=setdist_in;
+		 xmlobjdist.open("GET",url,true);
+		 xmlobjdist.send(null);
+}
+
+function setdist_in()
+{
+	if(xmlobjdist.readyState==4)
+	{
+		var data=xmlobjdist.responseText;
+		if(data=='error')
+		{
+			alert('Data Corrupted');
+		}
+		else
+		{
+		var opt=data.split("#");
+		for(i=1;i<cname1.length;i++)
+		{
+			cname1.remove(i);
+			i=i-1;
+		}
+		for(i=0;i<opt.length-1;i++)
+		{
+			var optn=opt[i].split("|");
+			var coptn=document.createElement("OPTION");
+			coptn.text=optn[1];
+            coptn.value=optn[0];
+			try
+            {
+            cname1.add(coptn,null); 
+            }
+            catch(ex)
+            {
+            cname1.add(coptn); 
+            }
+		}
+	}
+	}
+}
+
+
+
+
+
+function distfill_out(x,y)
+{
+	cname1=document.getElementById("instdist1");
+	cstate1=document.getElementById("inststate1").value;
+
+xmlobjdist=GetXmlHttpObject();
+		if (xmlobjdist==null)
+		 {
+			 alert ("Browser does not support HTTP Request")
+			 return
+		 }
+		 var token=document.getElementById('token').value;
+
+		 var url="../jscript/getdist.php?district="+x;
+		 url+="&state="+cstate1;
+		 url+="&sid="+Math.random();
+		 url+="&token="+token;
+		 xmlobjdist.onreadystatechange=setdist_out;
+		 xmlobjdist.open("GET",url,true);
+		 xmlobjdist.send(null);
+}
+
+function setdist_out()
+{
+	if(xmlobjdist.readyState==4)
+	{
+		var data=xmlobjdist.responseText;
+		if(data=='error')
+		{
+			alert('Data Corrupted');
+		}
+		else
+		{
+		var opt=data.split("#");
+		for(i=1;i<cname1.length;i++)
+		{
+			cname1.remove(i);
+			i=i-1;
+		}
+		for(i=0;i<opt.length-1;i++)
+		{
+			var optn=opt[i].split("|");
+			var coptn=document.createElement("OPTION");
+			coptn.text=optn[1];
+            coptn.value=optn[0];
+			try
+            {
+            cname1.add(coptn,null); 
+            }
+            catch(ex)
+            {
+            cname1.add(coptn); 
+            }
+		}
+	}
+	}
+}
+
+
+
+function instfill(x,y)
+{
+	cinst=document.getElementById("instname");
+	var inststate=document.getElementById("inststate").value;
+	var insttype = document.getElementById("insttype").value; 
+	var instdist=document.getElementById("instdist").value;
+	xmlobjdist=GetXmlHttpObject();
+		if (xmlobjdist==null)
+		 {
+			 alert ("Browser does not support HTTP Request")
+			 return
+		 }
+	
+		//  var token=document.getElementById('token').value;
+		 var url="../jscript/getdist.php?insttype="+insttype;
+		 url+="&status=1&inststate="+inststate+"&instdist="+instdist;
+		 url+="&sid="+Math.random();
+		//  url+="&token="+token;
+		 xmlobjdist.onreadystatechange=setinst;
+		 xmlobjdist.open("GET",url,true);
+		 xmlobjdist.send(null);
+}
+
+function instfill_edit(x, y) {
+	cinst = document.getElementById("instname");
+	var inststate = document.getElementById("inststate_edit").value;
+	var insttype = document.getElementById("insttype_edit").value;
+	var instdist = document.getElementById("instdist_edit").value;
+	xmlobjdist = GetXmlHttpObject();
+	if (xmlobjdist == null) {
+		alert("Browser does not support HTTP Request")
+		return
+	}
+
+	//  var token=document.getElementById('token').value;
+	var url = "../jscript/getdist.php?insttype=" + insttype;
+	url += "&status=1&inststate=" + inststate + "&instdist=" + instdist;
+	url += "&sid=" + Math.random();
+	//  url+="&token="+token;
+	xmlobjdist.onreadystatechange = setinst;
+	xmlobjdist.open("GET", url, true);
+	xmlobjdist.send(null);
+}
+
+
+
+function instfill_in(x,y)
+{
+	cinst=document.getElementById("instnamea");
+	var inststate=document.getElementById("inststatea").value;
+	var insttype=document.getElementById("insttypea").value;
+	var instdist=document.getElementById("instdista").value;
+	xmlobjdist=GetXmlHttpObject();
+		if (xmlobjdist==null)
+		 {
+			 alert ("Browser does not support HTTP Request")
+			 return
+		 }
+		 //var token=document.getElementById('token').value;
+		 var url="../jscript/getdist.php?insttype="+insttype;
+		 url+="&status=1008&inststate="+inststate+"&instdist="+instdist;
+		 url+="&sid="+Math.random();
+		 //url+="&token="+token;
+		 xmlobjdist.onreadystatechange=setinst_in;
+		 xmlobjdist.open("GET",url,true);
+		 xmlobjdist.send(null);
+}
+function setinst_in()
+{
+	if(xmlobjdist.readyState==4)
+	{
+		var data=xmlobjdist.responseText;
+		if(data=='error')
+		{
+			alert('Data Corrupted');
+		}
+		else
+		{
+		var opt=data.split("#");
+		for(i=1;i<cinst.length;i++)
+		{
+			cinst.remove(i);
+			i=i-1;
+		}
+		for(i=0;i<opt.length-1;i++)
+		{
+			var optn=opt[i].split("|");
+			var coptn=document.createElement("OPTION");
+			coptn.text=optn[1];
+            coptn.value=optn[0];
+			try
+            {
+            cinst.add(coptn,null); 
+            }
+            catch(ex)
+            {
+            cinst.add(coptn);  
+            }
+		}
+	}}
+}
+
+
+
+function instfill_out(x,y)
+{
+	cinst=document.getElementById("instname1");
+	var inststate=document.getElementById("inststate1").value;
+	var insttype=document.getElementById("insttype1").value;
+	var instdist=document.getElementById("instdist1").value;
+	xmlobjdist=GetXmlHttpObject();
+		if (xmlobjdist==null)
+		 {
+			 alert ("Browser does not support HTTP Request")
+			 return
+		 }
+		 var token=document.getElementById('token').value;
+		 var url="../jscript/getdist.php?insttype="+insttype;
+		 url+="&status=1007&inststate="+inststate+"&instdist="+instdist;
+		 url+="&sid="+Math.random();
+		 url+="&token="+token;
+		 xmlobjdist.onreadystatechange=setinst_out;
+		 xmlobjdist.open("GET",url,true);
+		 xmlobjdist.send(null);
+}
+function setinst_out()
+{
+	if(xmlobjdist.readyState==4)
+	{
+		var data=xmlobjdist.responseText;
+		if(data=='error')
+		{
+			alert('Data Corrupted');
+		}
+		else
+		{
+		var opt=data.split("#");
+		for(i=1;i<cinst.length;i++)
+		{
+			cinst.remove(i);
+			i=i-1;
+		}
+		for(i=0;i<opt.length-1;i++)
+		{
+			var optn=opt[i].split("|");
+			var coptn=document.createElement("OPTION");
+			coptn.text=optn[1];
+            coptn.value=optn[0];
+			try
+            {
+            cinst.add(coptn,null); 
+            }
+            catch(ex)
+            {
+            cinst.add(coptn);  
+            }
+		}
+	}}
+}
+
+function instfill1(x,y)
+{
+	cinst=document.getElementById("instname");
+	var inststate=document.getElementById("inststate").value;
+	xmlobjdist=GetXmlHttpObject();
+		if (xmlobjdist==null)
+		 {
+			 alert ("Browser does not support HTTP Request")
+			 return
+		 }
+		//  var token=document.getElementById('token').value;
+		 var url="../jscript/getdist.php?status=20";
+		 url+="&inststate="+inststate;
+		 url+="&sid="+Math.random();
+		//  url+="&token="+token;
+		 xmlobjdist.onreadystatechange=setinst;
+		 xmlobjdist.open("GET",url,true);
+		 xmlobjdist.send(null);
+}
+function coursefill(x,y)
+{
+	course=document.getElementById("coursename1");
+ 	var coursetype=document.getElementById("coursetype").value;
+	var inststate=document.getElementById("inststate").value;
+	var insttype=document.getElementById("insttype").value;
+	var instdist=document.getElementById("instdist").value;
+	var instname=document.getElementById("instname").value; 
+	   xmlobjdist=GetXmlHttpObject();
+		if (xmlobjdist==null)
+		 {
+			 alert ("Browser does not support HTTP Request")
+			 return
+		 }
+		//  var token=document.getElementById('token').value;
+		 var url="../jscript/getdist.php?instname="+instname;
+		 url+="&status=4&insttype="+insttype;
+		 url+="&coursetype="+coursetype;
+		 url+="&sid="+Math.random();
+		//  url+="&token="+token;
+		 xmlobjdist.onreadystatechange=setcourse;
+		 xmlobjdist.open("GET",url,true);
+		 xmlobjdist.send(null);
+}
+function scholarshipcoursefill(x,y)
+{
+	scourse=document.getElementById("coursename");
+    var ssctype=document.getElementById("ssctype").value;
+	var inststate=document.getElementById("inststate").value;
+	var insttype=document.getElementById("insttype").value;
+	var instdist=document.getElementById("instdist").value;
+	var instname=document.getElementById("instname").value; 
+	   xmlobjdist=GetXmlHttpObject();
+		if (xmlobjdist==null)
+		 {
+			 alert ("Browser does not support HTTP Request")
+			 return
+		 }
+		 var token=document.getElementById('token').value;
+		 var url="../jscript/getdist.php?instname="+instname;
+		 url+="&status=5";
+		 url+="&ssctype="+ssctype;
+		 url+="&sid="+Math.random();
+		 url+="&token="+token;
+		 xmlobjdist.onreadystatechange=setsscourse;
+		 xmlobjdist.open("GET",url,true);
+		 xmlobjdist.send(null);
+}
+function scholarshipcoursefillaspr(x,y)
+{
+	scourse=document.getElementById("coursename");
+    var ssctype=document.getElementById("ssctype").value;
+	var inststate=document.getElementById("inststate").value;
+	var insttype=document.getElementById("insttype").value;
+	var instdist=document.getElementById("instdist").value;
+	var instname=document.getElementById("instname").value; 
+	   xmlobjdist=GetXmlHttpObject();
+		if (xmlobjdist==null)
+		 {
+			 alert ("Browser does not support HTTP Request")
+			 return
+		 }
+		 var token=document.getElementById('token').value;
+		 var url="../jscript/getdist.php?instname="+instname;
+		 url+="&status=8";
+		 url+="&ssctype="+ssctype;
+		 url+="&sid="+Math.random();
+		 url+="&token="+token;
+		 xmlobjdist.onreadystatechange=setsscourse;
+		 xmlobjdist.open("GET",url,true);
+		 xmlobjdist.send(null);
+}
+function courselevel(x,y)
+{
+	ctype=document.getElementById("coursetype");
+	var insttype=document.getElementById("insttype").value;
+	var inststate=document.getElementById("inststate").value;
+	var instdist=document.getElementById("instdist").value;
+	var instname=document.getElementById("instname").value;
+	xmlobjdist=GetXmlHttpObject();
+			if (xmlobjdist==null)
+			{
+				 alert ("Browser does not support HTTP Request")
+				 return
+			}
+			
+			 var url="../jscript/getdist.php?insttype="+insttype;
+			 url+="&status=3";
+			 url+="&instname="+instname;
+			 url+="&sid="+Math.random();
+			 xmlobjdist.onreadystatechange=setctype;
+			 xmlobjdist.open("GET",url,true);
+			 xmlobjdist.send(null);
+}
+function dynamiccourse(x)
+{
+	cname=document.getElementById("coursename");
+	var courselevel=document.getElementById("courselevel").value;
+	xmlobjdist=GetXmlHttpObject();
+			if (xmlobjdist==null)
+			{
+				 alert ("Browser does not support HTTP Request")
+				 return
+			}
+			var token=document.getElementById('token').value;
+			 var url="../jscript/getdist.php?late="+x;
+			 url+="&status=4&level="+courselevel;
+			 url+="&sid="+Math.random();
+			 url+="&token="+token;
+			 xmlobjdist.onreadystatechange=setdist;
+			 xmlobjdist.open("GET",url,true);
+			 xmlobjdist.send(null);
+}
+function durationtype(x)
+{
+	var courselevel=document.getElementById("courselevel").value;
+	 if(courselevel=='UG')
+	{
+	document.getElementById("latarelentr").style.display='block';	
+		
+	}
+	else
+	{
+	document.getElementById("latarelentr").style.display='none';		
+	}
+}
+function validd()
+{
+	if(document.getElementById("courselevel").value=='0')
+	{
+	alert("please enter Current course levellevel");
+	document.getElementById("courselevel").focus();
+	return false;
+	}
+	else if(document.getElementById("lateral").value=='0')
+	{
+	alert("please enter lateralentry or not");
+	return false;
+	}
+	return true;
+}
+function showdistrict()
+{
+xmldist=GetXmlHttpObject();
+var statecode=document.getElementById('inststate').value;
+var url="fetchdistrict.php?";
+url+="statecode="+statecode;
+url+="&sid="+Math.random();
+xmldist.onreadystatechange=viewdistrict;
+xmldist.open("GET",url,true);
+xmldist.send(null);
+}
+function viewdistrict()
+{
+	if(xmldist.readyState==4)
+	{
+	var value=xmldist.responseText;
+	if(value=='error')
+	{
+		alert('Data Corrupted');
+	}
+	else
+	{
+	var data=value.split('#');
+	var dname=document.getElementById('instdist');
+	for(i=1;i<dname.length;i++)
+		{
+			dname.remove(i);
+			i=i-1;
+		}
+		for(i=0;i<data.length-1;i++)
+		{
+			var optn=data[i].split("|");
+			var coptn=document.createElement("OPTION");
+			coptn.text=optn[1];
+            coptn.value=optn[0];
+			try
+            {
+            dname.add(coptn,null); 
+            }
+            catch(ex)
+            {
+            dname.add(coptn); 
+            }
+		}	
+	}
+	}	
+}
+function showdistrictnew()
+{
+xmlobjdist=GetXmlHttpObject();
+if (xmlobjdist==null)
+			{
+				 alert ("Browser does not support HTTP Request")
+				 return
+			}
+var statecode=document.getElementById('bankstate').value;
+var url="fetchdistrict.php?";
+url+="statecode="+statecode;
+url+="&sid="+Math.random();
+xmlobjdist.onreadystatechange=viewdistrictnew;
+xmlobjdist.open("GET",url,true);
+xmlobjdist.send(null);
+}
+function viewdistrictnew()
+{
+	if(xmlobjdist.readyState==4)
+	{
+	var value=xmlobjdist.responseText;
+	if(value=='error')
+	{
+		alert('Data Corrupted');
+	}
+	else
+	{
+	var data=value.split('#');
+	var distname=document.getElementById('bank_dist');
+	for(i=1;i<distname.length;i++)
+		{
+			distname.remove(i);
+			i=i-1;
+		}
+		for(i=0;i<data.length-1;i++)
+		{
+			var optn=data[i].split("|");
+			var coptn=document.createElement("OPTION");
+			coptn.text=optn[1];
+            coptn.value=optn[0];
+			try
+            {
+            distname.add(coptn,null); 
+            }
+            catch(ex)
+            {
+            distname.add(coptn); 
+            }
+		}	
+	}
+	}
+}
+function instfillmodi(x,y)
+{
+	
+	cinst=document.getElementById("instname");
+	var sname=document.getElementById("sname1").value;
+	var inststate=document.getElementById("inststate").value;
+	var insttype=document.getElementById("insttype").value;
+	var instdist=document.getElementById("instdist").value;
+	var processnum=document.getElementById("processnum").value;
+		var type=document.getElementById("corrsetypes").value;
+		var freshren=document.getElementById("freshren").value;
+		if(sname=='DMS')
+	var renewyear=document.getElementById("renewyear").value;
+	xmlobjdist=GetXmlHttpObject();
+		if (xmlobjdist==null)
+		 {
+			 alert ("Browser does not support HTTP Request")
+			 return
+		 }
+		 var token=document.getElementById('token').value;
+
+		 var url="../jscript/getdist.php?insttype="+insttype;
+		 url+="&status=9&inststate="+inststate+"&instdist="+instdist+"&sname="+sname+"&insttype="+insttype+"&processnum="+processnum+"&type="+type+"&freshren="+freshren+"&renewyear="+renewyear;
+		 url+="&sid="+Math.random();
+		 url+="&token="+token;
+		 xmlobjdist.onreadystatechange=setinstmodi;
+		 xmlobjdist.open("GET",url,true);
+		 xmlobjdist.send(null);
+}
+function setinstmodi()
+{
+	if(xmlobjdist.readyState==4)
+	{
+		var data=xmlobjdist.responseText;
+		if(data=='error')
+		{
+			alert('Data Corrupted');
+		}
+		else
+		{
+		var opt=data.split("#");
+		for(i=1;i<cinst.length;i++)
+		{
+			cinst.remove(i);
+			i=i-1;
+		}
+		for(i=0;i<opt.length-1;i++)
+		{
+			var optn=opt[i].split("|");
+			var coptn=document.createElement("OPTION");
+			coptn.text=optn[1];
+            coptn.value=optn[0];
+			try
+            {
+            cinst.add(coptn,null); 
+            }
+            catch(ex)
+            {
+            cinst.add(coptn); 
+            }
+		}
+	}}
+}
+function loadprocess()
+{
+	var freshren=document.getElementById('freshren').value;
+    cinst=document.getElementById("processnum");
+	var sname=document.getElementById("sname1").value;
+	xmlobjdist=GetXmlHttpObject();
+		if (xmlobjdist==null)
+		 {
+			 alert ("Browser does not support HTTP Request")
+			 return
+		 }
+		 var token=document.getElementById('token').value;
+
+		 var url="../jscript/getdist.php?freshren="+freshren;
+		 url+="&status=10&sname="+sname;
+		 url+="&sid="+Math.random();
+		 url+="&token="+token;
+		 xmlobjdist.onreadystatechange=setprocess;
+		 xmlobjdist.open("GET",url,true);
+		 xmlobjdist.send(null);
+}
+function setprocess()
+{
+	if(xmlobjdist.readyState==4)
+	{
+		var data=xmlobjdist.responseText;
+		if(data=='error')
+		{
+			alert('Data Corrupted');
+		}
+		else
+		{
+		var opt=data.split("#");
+		for(i=1;i<cinst.length;i++)
+		{
+			cinst.remove(i);
+			i=i-1;
+		}
+		for(i=0;i<opt.length-1;i++)
+		{
+			var optn=opt[i].split("|");
+			var coptn=document.createElement("OPTION");
+			coptn.text=optn[1];
+            coptn.value=optn[0];
+			try
+            {
+            cinst.add(coptn,null); 
+            }
+            catch(ex)
+            {
+            cinst.add(coptn);  
+            }
+		}
+		}}
+}
+function insttypeload()
+{
+	cinst=document.getElementById("insttype");
+	var sname=document.getElementById("sname1").value;
+	var inststate=document.getElementById("inststate").value;
+	var instdist=document.getElementById("instdist").value;
+	var processnum=document.getElementById("processnum").value;
+		var type=document.getElementById("corrsetypes").value;
+			var freshren=document.getElementById("freshren").value;
+			if(sname=='DMS')
+	      var renewyear=document.getElementById("renewyear").value;
+	xmlobjdist=GetXmlHttpObject();
+		if (xmlobjdist==null)
+		 {
+			 alert ("Browser does not support HTTP Request")
+			 return
+		 }
+		 var token=document.getElementById('token').value;
+
+		 var url="../jscript/getdist.php?type="+type;
+		 url+="&status=11&inststate="+inststate+"&instdist="+instdist+"&sname="+sname+"&processnum="+processnum+"&freshren="+freshren+"&renewyear="+renewyear;
+		 url+="&sid="+Math.random();
+		 url+="&token="+token;
+		 xmlobjdist.onreadystatechange=setinsttypemodi;
+		 xmlobjdist.open("GET",url,true);
+		 xmlobjdist.send(null);
+}
+function setinsttypemodi()
+{
+	if(xmlobjdist.readyState==4)
+	{
+		var data=xmlobjdist.responseText;
+		if(data=='error')
+		{
+			alert('Data Corrupted');
+		}
+		else
+		{
+		var opt=data.split("#");
+		for(i=1;i<cinst.length;i++)
+		{
+			cinst.remove(i);
+			i=i-1;
+		}
+		for(i=0;i<opt.length-1;i++)
+		{
+			var optn=opt[i].split("|");
+			var coptn=document.createElement("OPTION");
+			coptn.text=optn[1];
+            coptn.value=optn[0];
+			try
+            {
+            cinst.add(coptn,null); 
+            }
+            catch(ex)
+            {
+            cinst.add(coptn);  
+            }
+		}
+		}}
+}
+
+
+
+
+
+function loadprno()
+{
+var sstype=document.getElementById('sstype').value;
+var ssyear=document.getElementById('ssyear').value;
+var freshren=document.getElementById('freshren').value;
+var processno=document.getElementById('processno');
+document.getElementById('prdate').value=0;
+if(sstype=='HS' || sstype=='SMS')
+{
+	var type=document.getElementById('type').value;
+}
+if(sstype=='MGS')
+{
+	var corrsetypes=document.getElementById('corrsetypes').value;
+}
+if(sstype=='MGS' && freshren=='F')
+{
+	var category=document.getElementById('category').value;
+}
+var i=0;
+$.post('getprocessno.php',{sstype:sstype,ssyear:ssyear,freshren:freshren,type:type,corrsetypes:corrsetypes,category:category,st:'1'},function(data)
+{
+	//alert(data)
+	var opt=data.split("#");
+	for(i=1;i<processno.length;i++)
+	{
+	processno.remove(i);
+	i=i-1;
+	}
+	for(i=0;i<opt.length-1;i++)
+	{
+	var coptn=document.createElement("OPTION");
+	coptn.text=opt[i];
+	coptn.value=opt[i];
+	try
+    {
+    processno.add(coptn,null); 
+    }
+    catch(ex)
+    {
+    processno.add(coptn); 
+    }
+	}
+});
+
+
+
+
+
+
+
+}
+function loaddt()
+{
+var sstype=document.getElementById('sstype').value;
+var ssyear=document.getElementById('ssyear').value;
+var freshren=document.getElementById('freshren').value;
+var processno=document.getElementById('processno').value;
+var prdate=document.getElementById('prdate');
+if(sstype=='HS' || sstype=='SMS')
+{
+	var type=document.getElementById('type').value;
+}
+if(sstype=='BPHFC')
+{
+	var list=document.getElementById('list').value;
+	var host=document.getElementById('host').value;
+	var phase=document.getElementById('phase').value;
+	freshren='F';
+}
+if(sstype=='DMS')
+{
+	var renewyear=document.getElementById('renewyear').value;
+}
+if(sstype=='MGS')
+{
+	var corrsetypes=document.getElementById('corrsetypes').value;
+}
+if(sstype=='MGS' && freshren=='F')
+{
+	var category=document.getElementById('category').value;
+}
+for(i=1;i<prdate.length;i++)
+	{
+	prdate.remove(i);
+	i=i-1;
+	}
+$.post('getprocessno.php',{sstype:sstype,ssyear:ssyear,freshren:freshren,processno:processno,type:type,host:host,list:list,renewyear:renewyear,corrsetypes:corrsetypes,category:category,phase:phase,st:'2'},function(data)
+{ 
+	var opt=data.split("#");
+	for(i=0;i<opt.length-1;i++)
+	{
+	var coptn=document.createElement("OPTION");
+	coptn.text=opt[i];
+	coptn.value=opt[i];
+	try
+    {
+    prdate.add(coptn,null); 
+    }
+    catch(ex)
+    {
+    prdate.add(coptn);  
+    }}
+});
+}
+function viewprocedngsno()
+{
+var sstype=document.getElementById('sstype').value;
+var ssyear=document.getElementById('ssyear').value;
+var freshren=document.getElementById('freshren').value;
+var processno=document.getElementById('processno').value;
+var prdate=document.getElementById('prdate').value;
+var prcdno=document.getElementById('prcdno');
+if(sstype=='HS' || sstype=='SMS')
+{
+	var type=document.getElementById('type').value;
+}
+if(sstype=='BPHFC')
+{
+	var list=document.getElementById('list').value;
+	var host=document.getElementById('host').value;
+	var phase=document.getElementById('phase').value;
+	freshren='F';
+}
+if(sstype=='DMS')
+{
+	var renewyear=document.getElementById('renewyear').value;
+}
+if(sstype=='MGS')
+{
+	var corrsetypes=document.getElementById('corrsetypes').value;
+}
+if(sstype=='MGS' && freshren=='F')
+{
+	var category=document.getElementById('category').value;
+}
+$.post('getprocessno.php',{sstype:sstype,ssyear:ssyear,freshren:freshren,processno:processno,type:type,host:host,list:list,renewyear:renewyear,corrsetypes:corrsetypes,category:category,phase:phase,prdate:prdate,st:'3'},function(data)
+{
+	document.getElementById('prcdno').value=data;
+});	
+}
+
+function getbankaddr()
+{
+	var branchname=document.getElementById("branchcode").value;
+   	var banktype=document.getElementById("banktype").value;
+	var bankstate=document.getElementById("bankstate").value;
+	var bankdist=document.getElementById("bank_dist").value;
+	 xmlobjdist=GetXmlHttpObject();
+		if (xmlobjdist==null)
+		 {
+			 alert ("Browser does not support HTTP Request")
+			 return
+		 }
+		 var token=document.getElementById('token').value;
+
+		 var url="../jscript/getdist.php?banktype="+banktype;
+		 url+="&status=21&bankdist="+bankdist+"&bankstate="+bankstate+"&branchname="+branchname;
+		 url+="&sid="+Math.random();
+		 url+="&token="+token;
+		 xmlobjdist.onreadystatechange=setbankaddr;
+		 xmlobjdist.open("GET",url,true);
+		 xmlobjdist.send(null);
+}
+
+function setbankaddr()
+{
+	if(xmlobjdist.readyState==4)
+	{
+		var data=xmlobjdist.responseText;
+		document.onlineregistration4.bname.value=data;
+	}
+}
+
+

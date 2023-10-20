@@ -4,7 +4,35 @@
 <html lang="en">
   <head>
    
-    
+    <style>
+		.pagination {
+  			margin-top: 10px;
+  			border-left: 1px solid #ffffff;
+  			border-radius: 0px; }
+  		.pagination a {
+    		width: 40px;
+    		line-height: 40px;
+    		text-align: center;
+    		display: inline-block;
+    		background: #cfcccc; }
+    	.pagination a.active {
+      		color: #fff; }
+    	.pagination a:hover {
+      		color: #fff; }
+  		.pagination .dot-dot {
+    		width: auto;
+    		background: transparent;
+    		border-top: 0px;
+    		border-bottom: 0px;
+    		color: #cccccc;
+    		padding: 0 5px; }
+    	.pagination .dot-dot:hover {
+      		background: transparent;
+      		border: 0px;
+      		border-right: 1px solid #eee;
+      		color: #cccccc; }
+
+	</style>
       <%-include("./includes/headerPart.ejs")%>
     </style>
   </head>
@@ -47,227 +75,108 @@
             </div>
 
             <div class="flex-w flex-c-m m-tb-10">
-                <div class="flex-c-m stext-106 cl6 size-104 bor4 pointer hov-btn3 trans-04 m-r-8 m-tb-4 js-show-filter">
-                    <i class="icon-filter cl2 m-r-6 fs-15 trans-04 zmdi zmdi-filter-list"></i>
-                    <i class="icon-close-filter cl2 m-r-6 fs-15 trans-04 zmdi zmdi-close dis-none"></i>
-                     Filter
-                </div>
+					<div class="flex-c-m stext-106 cl6 size-104 bor4 pointer hov-btn3 trans-04 m-r-8 m-tb-4 js-show-filter">
+						<i class="icon-filter  cl2 m-r-6 fs-15 trans-04 zmdi zmdi-filter-list"></i>
+						<i class="icon-close-filter cl2 m-r-6 fs-15 trans-04 zmdi zmdi-close dis-none"></i>
+						 Filter
+					</div>
 
-                <div class="flex-c-m stext-106 cl6 size-105 bor4 pointer hov-btn3 trans-04 m-tb-4 js-show-search">
-                    <i class="icon-search cl2 m-r-6 fs-15 trans-04 zmdi zmdi-search"></i>
-                    <i class="icon-close-search cl2 m-r-6 fs-15 trans-04 zmdi zmdi-close dis-none"></i>
-                    Search
-                </div>
-            </div>
-            
-            <!-- Search product -->
-            <div class="dis-none panel-search w-full p-t-10 p-b-15">
-                <div class="bor8 dis-flex p-l-15">
-                    <button class="size-113 flex-c-m fs-16 cl2 hov-cl1 trans-04">
-                        <i class="zmdi zmdi-search"></i>
-                    </button>
+					<div class="flex-c-m stext-106 cl6 size-105 bor4 pointer hov-btn3 trans-04 m-tb-4 js-show-search">
+						<i class="icon-search cl2 m-r-6 fs-15 trans-04 zmdi zmdi-search"></i>
+						<i class="icon-close-search cl2 m-r-6 fs-15 trans-04 zmdi zmdi-close dis-none"></i>
+						Search
+					</div>
+				</div>
+				
+				<div class="search_input dis-none panel-search w-full p-t-10 p-b-15" id="search_input_box">
+					<div class="container bor8 dis-flex p-l-15">
+						<button class="size-113 flex-c-m fs-16 cl2 hov-cl1 trans-04">
+							<i class="zmdi zmdi-search"></i>
+						</button>
+						<form class="d-flex justify-content-between" action="/shop">
+							<input class="mtext-107 cl2 size-114 plh2 p-r-15" id="search_input" type="text" name="search" placeholder="Search Here">
+							<button type="submit" class="btn ml-auto">search</button>
+							<button type="button" class="btn" id="clear_search">Clear</button>
+						  </form>
+						  
+					</div>
+				</div>
+				
 
-                    <input class="mtext-107 cl2 size-114 plh2 p-r-15" type="text" name="search-product" placeholder="Search">
-                </div>	
-            </div>
+				<!-- Filter -->
+				<div class="dis-none panel-filter w-full p-t-10">
+					<div class="wrap-filter flex-w bg6 w-full p-lr-40 p-t-27 p-lr-15-sm">
+						<div class="filter-col1 p-r-15 p-b-27">
+							<div class="mtext-102 cl2 p-b-15">
+								Sort By
+							</div>
 
-            <!-- Filter -->
-            <div class="dis-none panel-filter w-full p-t-10">
-                <div class="wrap-filter flex-w bg6 w-full p-lr-40 p-t-27 p-lr-15-sm">
-                    <div class="filter-col1 p-r-15 p-b-27">
-                        <div class="mtext-102 cl2 p-b-15">
-                            Sort By
-                        </div>
+							<ul>
+								<li class="p-b-6">
+									<a href="/shop?sort=price_asc" class="filter-link stext-106 trans-04">
+										Price: Low to High
+									</a>
+								</li>
 
-                        <ul>
-                            <li class="p-b-6">
-                                <a href="#" class="filter-link stext-106 trans-04">
-                                    Default
-                                </a>
-                            </li>
+								<li class="p-b-6">
+									<a href="/shop?sort=price_desc" class="filter-link stext-106 trans-04">
+										Price: High to Low
+									</a>
+								</li>
+							</ul>
+						</div>
 
-                            <li class="p-b-6">
-                                <a href="#" class="filter-link stext-106 trans-04">
-                                    Popularity
-                                </a>
-                            </li>
+						<div class="filter-col2 p-r-15 p-b-27">
+							<div class="mtext-102 cl2 p-b-15">
+								Price
+							</div>
 
-                            <li class="p-b-6">
-                                <a href="#" class="filter-link stext-106 trans-04">
-                                    Average rating
-                                </a>
-                            </li>
+							<ul>
+								<li class="p-b-6">
+									<a href="/shop" class="filter-link stext-106 trans-04">
+										All
+									</a>
+								</li>
 
-                            <li class="p-b-6">
-                                <a href="#" class="filter-link stext-106 trans-04 filter-link-active">
-                                    Newness
-                                </a>
-                            </li>
+								<li class="p-b-6">
+									<a href="/shop?minPrice=1&&maxPrice=999" class="filter-link stext-106 trans-04">
+										₹ 1 to ₹ 999
+									</a>
+								</li>
 
-                            <li class="p-b-6">
-                                <a href="#" class="filter-link stext-106 trans-04">
-                                    Price: Low to High
-                                </a>
-                            </li>
+								<li class="p-b-6">
+									<a href="/shop?minPrice=1000&&maxPrice=4999" class="filter-link stext-106 trans-04">
+										₹ 1000 to ₹ 4999
+									</a>
+								</li>
 
-                            <li class="p-b-6">
-                                <a href="#" class="filter-link stext-106 trans-04">
-                                    Price: High to Low
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
+								<li class="p-b-6">
+									<a href="/shop?minPrice=5000&&maxPrice=9999" class="filter-link stext-106 trans-04">
+										
+                                        ₹ 5000 to ₹ 9999
+									</a>
+								</li>
 
-                    <div class="filter-col2 p-r-15 p-b-27">
-                        <div class="mtext-102 cl2 p-b-15">
-                            Price
-                        </div>
-
-                        <ul>
-                            <li class="p-b-6">
-                                <a href="#" class="filter-link stext-106 trans-04 filter-link-active">
-                                    All
-                                </a>
-                            </li>
-
-                            <li class="p-b-6">
-                                <a href="#" class="filter-link stext-106 trans-04">
-                                    $0.00 - $50.00
-                                </a>
-                            </li>
-
-                            <li class="p-b-6">
-                                <a href="#" class="filter-link stext-106 trans-04">
-                                    $50.00 - $100.00
-                                </a>
-                            </li>
-
-                            <li class="p-b-6">
-                                <a href="#" class="filter-link stext-106 trans-04">
-                                    $100.00 - $150.00
-                                </a>
-                            </li>
-
-                            <li class="p-b-6">
-                                <a href="#" class="filter-link stext-106 trans-04">
-                                    $150.00 - $200.00
-                                </a>
-                            </li>
-
-                            <li class="p-b-6">
-                                <a href="#" class="filter-link stext-106 trans-04">
-                                    $200.00+
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
-
-                    <div class="filter-col3 p-r-15 p-b-27">
-                        <div class="mtext-102 cl2 p-b-15">
-                            Color
-                        </div>
-
-                        <ul>
-                            <li class="p-b-6">
-                                <span class="fs-15 lh-12 m-r-6" style="color: #222;">
-                                    <i class="zmdi zmdi-circle"></i>
-                                </span>
-
-                                <a href="#" class="filter-link stext-106 trans-04">
-                                    Black
-                                </a>
-                            </li>
-
-                            <li class="p-b-6">
-                                <span class="fs-15 lh-12 m-r-6" style="color: #4272d7;">
-                                    <i class="zmdi zmdi-circle"></i>
-                                </span>
-
-                                <a href="#" class="filter-link stext-106 trans-04 filter-link-active">
-                                    Blue
-                                </a>
-                            </li>
-
-                            <li class="p-b-6">
-                                <span class="fs-15 lh-12 m-r-6" style="color: #b3b3b3;">
-                                    <i class="zmdi zmdi-circle"></i>
-                                </span>
-
-                                <a href="#" class="filter-link stext-106 trans-04">
-                                    Grey
-                                </a>
-                            </li>
-
-                            <li class="p-b-6">
-                                <span class="fs-15 lh-12 m-r-6" style="color: #00ad5f;">
-                                    <i class="zmdi zmdi-circle"></i>
-                                </span>
-
-                                <a href="#" class="filter-link stext-106 trans-04">
-                                    Green
-                                </a>
-                            </li>
-
-                            <li class="p-b-6">
-                                <span class="fs-15 lh-12 m-r-6" style="color: #fa4251;">
-                                    <i class="zmdi zmdi-circle"></i>
-                                </span>
-
-                                <a href="#" class="filter-link stext-106 trans-04">
-                                    Red
-                                </a>
-                            </li>
-
-                            <li class="p-b-6">
-                                <span class="fs-15 lh-12 m-r-6" style="color: #aaa;">
-                                    <i class="zmdi zmdi-circle-o"></i>
-                                </span>
-
-                                <a href="#" class="filter-link stext-106 trans-04">
-                                    White
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
-
-                    <div class="filter-col4 p-b-27">
-                        <div class="mtext-102 cl2 p-b-15">
-                            Tags
-                        </div>
-
-                        <div class="flex-w p-t-4 m-r--5">
-                            <a href="#" class="flex-c-m stext-107 cl6 size-301 bor7 p-lr-15 hov-tag1 trans-04 m-r-5 m-b-5">
-                                Fashion
-                            </a>
-
-                            <a href="#" class="flex-c-m stext-107 cl6 size-301 bor7 p-lr-15 hov-tag1 trans-04 m-r-5 m-b-5">
-                                Lifestyle
-                            </a>
-
-                            <a href="#" class="flex-c-m stext-107 cl6 size-301 bor7 p-lr-15 hov-tag1 trans-04 m-r-5 m-b-5">
-                                Denim
-                            </a>
-
-                            <a href="#" class="flex-c-m stext-107 cl6 size-301 bor7 p-lr-15 hov-tag1 trans-04 m-r-5 m-b-5">
-                                Streetstyle
-                            </a>
-
-                            <a href="#" class="flex-c-m stext-107 cl6 size-301 bor7 p-lr-15 hov-tag1 trans-04 m-r-5 m-b-5">
-                                Crafts
-                            </a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
+								<li class="p-b-6">
+									<a href="/shop?minPrice=10000&&maxPrice=100000" class="filter-link stext-106 trans-04">
+										Above ₹ 10000
+									</a>
+								</li>
+							</ul>
+						</div>
+					</div>
+				</div>
+			</div>
         <div class="row isotope-grid">
             <% product.forEach((item) => { %>
                 <div class="col-sm-6 col-md-4 col-lg-3 p-b-35 isotope-item">
                     <!-- Block2 -->
                     <div class="block2">
                         <div class="block2-pic hov-img0">
-                            <img class="img" src="../admin/assets/images/products/SavedPictures/<%= item.images[0]%>" alt="IMG-PRODUCT">
+                            <a href="/productPage?id=<%=item._id %>">
+                                <img class="img" src="../admin/assets/images/products/SavedPictures/<%= item.images[0]%>"  alt="IMG-PRODUCT">
+ 
+                            </a>
         
                             <a href="/productPage?id=<%=item._id %>" class="block2-btn flex-c-m stext-103 cl2 size-102 bg0 bor2 hov-btn1 p-lr-15 trans-04">
                                 Quick View
@@ -318,10 +227,35 @@
 
         <!-- Pagination -->
         <div class="flex-c-m flex-w w-full p-t-45">
-            <a href="/shop" class="flex-c-m stext-101 cl5 size-103 bg2 bor1 hov-btn1 p-lr-15 trans-04">
-                Load More
-            </a>
-        </div>
+			<div class="pagination">
+				<% if (currentPage> 1) { %>
+					<a href="/shop?page=<%= currentPage - 1 %>&sort=<%= sortQuery %>"
+						class="prev-arrow flex-c-m stext-10 cl5 size-20 bg2 bor1">
+						<i class="fa fa-long-arrow-left" aria-hidden="true"></i>
+					</a>
+				<% } %>
+				
+				<% for (let i=1; i <=totalPages; i++) { %>
+					<% if (i===currentPage) { %>
+						<a href="/shop?page=<%= i %>&sort=<%= sortQuery %>"
+							class="active flex-c-m stext-10 cl5 size-20 bg2 bor1">
+							<%= i %>
+						</a>
+					<% } else { %>
+							<a href="/shop?page=<%= i %>&sort=<%= sortQuery %>" class="flex-c-m stext-10 cl5 size-30 bg2 bor1">
+								<%= i %>
+							</a>
+					<% } %>
+				<% } %>
+				
+				<% if (currentPage < totalPages) { %>
+					<a href="/shop?page=<%= currentPage + 1 %>&sort=<%= sortQuery %>"
+						class="next-arrow flex-c-m stext-10 cl5 size-20 bg2 bor1">
+						<i class="fa fa-long-arrow-right" aria-hidden="true"></i>
+					</a>
+					<% } %>
+			</div>
+		</div>
     </div>
 </div>
 </section>
@@ -329,4 +263,109 @@
 
 <!-- Footer -->
 <%-include("./includes/footer.ejs")%>
+
+
+
+
 </body>
+
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+	<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+	<script>
+		function addtocart(proId) {
+			console.log("hfhj")
+		  $.ajax({
+			url: '/addToCart/' + proId,
+			method: 'POST',
+	  
+			success: (response) => {
+			  if (response.status==true) {
+				Swal.fire({
+				  title: 'Added To Cart',
+				  text: 'Your Product has been added to Cart',
+				  icon: 'success',
+				  timer: 5000
+				})
+				
+			  }else if(response.status=='outOfStock'){
+				Swal.fire({
+				  title: 'Out of Stock',
+				  text: 'Product Out Of Stock',
+				  icon: 'error',
+				  timer: 5000
+				})
+			  }
+			  else if(response.status=='alredy exist'){
+				Swal.fire({
+				  title: 'existing',
+				  text: 'this product alredy exist in yor cart',
+				  icon: 'error',
+				  timer: 5000
+				})
+			  }else if(response.status=='blocked'){
+				Swal.fire({
+				  title: 'You are blocked',
+				  icon: 'error',
+				  timer: 5000
+				})
+				
+				setTimeout(() => {
+					window.location.href="/logout"
+				},5000)
+			  }
+			 
+			}
+		  })
+		}
+	</script>
+	<script>
+	document.addEventListener('DOMContentLoaded', function () {
+		const searchInput = document.getElementById('search_input');
+		const clearButton = document.getElementById('clear_button');
+	  
+		clearButton.addEventListener('click', function () {
+		  searchInput.value = ''; // Clear the input field
+		});
+	  });
+	</script>
+	<script>
+		document.addEventListener('DOMContentLoaded', function () {
+  const searchInput = document.getElementById('search_input');
+  const clearButton = document.getElementById('clear_button');
+
+  clearButton.addEventListener('click', function () {
+    searchInput.value = ''; // Clear the input field
+  });
+});
+
+	</script>
+	  <script>
+		// Check if the page is being loaded or navigated back to
+		
+	
+	// Check if the page is being loaded or navigated back to
+	window.addEventListener("load", function() {
+		// Check if there's a search query in the URL
+		const urlParams = new URLSearchParams(window.location.search);
+		const searchQuery = urlParams.get("search");
+		
+		// If a search query is present, set it in the search input field
+		if (searchQuery) {
+			document.getElementById("search_input").value = searchQuery;
+		}
+		
+		// Add an event listener to the Clear button
+		const clearButton = document.getElementById("clear_search");
+		clearButton.addEventListener("click", function () {
+			// Clear the search input field
+			document.getElementById("search_input").value = "";
+			
+			// Redirect to the shop page
+			window.location.href = "/categoryShop";
+		});
+	});
+	
+	
+		</script>

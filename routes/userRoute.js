@@ -5,6 +5,7 @@ const auth = require('../middleware/auth')
 
  userRoute.use(auth.checkSession)
 
+
   const profileController = require('../controllers/profileCondroller')
 
 // const cartController = require('../controllers/cartController')
@@ -15,13 +16,14 @@ const productController = require('../controllers/productCondroller')
 const orderController=require('../controllers/orderController')
 const userController = require('../controllers/userController')
 const cartController = require('../controllers/cartController')
+const couponController=require('../controllers/couponController')
+userRoute.get('/login',userController.login)
 
 userRoute.get('/',userController.home)
 userRoute.get('/home',userController.home)
 
 userRoute.get('/signup',userController.signup)
 userRoute.post('/signupValidate',userController.insertUser)
-userRoute.get('/login',userController.login)
 userRoute.post('/loginValidate', userController.verifyLogin)
 //  userRoute.post('/signupvalidate',userController.verifyOtp)
 userRoute.post('/verifyOtp', userController.verifyotp)
@@ -33,7 +35,7 @@ userRoute.get('/shop',userController.displayproduct)
 
 
 userRoute.get('/productPage', auth.isLogin, productController.productPage)
-
+userRoute.get('/categoryShop', auth.isLogin, userController.categoryPage)
 
 
 userRoute.get('/cart', auth.isLogin, auth.blocked, cartController.loadCart)
@@ -59,6 +61,7 @@ userRoute.get('/profileAddress',profileController.profileAddress)
 userRoute.post('/submitAddress', profileController.submitAddress)
 userRoute.post('/updateAddress',profileController.editAddress)
 userRoute.get('/deleteAddress',profileController. deleteAddress)
+userRoute.get('/wallet',profileController.walletTransaction)
 
 
 userRoute.get('/checkOut',auth.isLogin,auth.blocked,orderController.checkOut)
@@ -71,10 +74,24 @@ userRoute.post('/changeDefaultAddress',auth.isLogin,orderController.changeDefaul
   //  userRoute.get('/orderDetails', auth.isLogin, auth.blocked, orderController.orderDetails)
   userRoute.get('/orderDetails', auth.isLogin, auth.blocked, orderController.orderDetails)
   // userRoute.post('/changeDefaultAddress', auth.isLogin, orderController.changePrimary)
+  userRoute.get('/invoice',orderController.downloadInvoice)
+
+  
 
 
 
-  userRoute.put('/cancelOrder', auth.isLogin, orderController.cancelOrder)   
+  userRoute.put('/cancelOrder', auth.isLogin, orderController.cancelOrder)
+  
+  
+  userRoute.post('/verifyPayment', orderController.verifyPayment)  
+  // userRoute.post('/paymentFailed', orderController.paymentFailed)
+
+userRoute.get('/applyCoupon/:id', auth.isLogin, auth.blocked, couponController.applyCoupon)
+userRoute.get('/verifyCoupon/:id', auth.isLogin, auth.blocked, couponController.verifyCoupon)
+
+
+ userRoute.get('/search',userController.search)
+
 
 module.exports = userRoute
 

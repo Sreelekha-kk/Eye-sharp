@@ -1,7 +1,7 @@
-const isLogin = (req, res, next)=>{
+const isLogin = async(req, res, next)=>{
     try {
-        if(req.session.user_id){
-            res.redirect("/")
+        if(!req.session.admin_id){
+           return res.redirect('/admin')
         }
         next()
     } catch (error) {

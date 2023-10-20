@@ -21,6 +21,7 @@ const addCart = async (productId, userId) => {
     console.log("hereeeeee");
     
     const product = await Product.findOne({_id: productId})
+    
     const productObj = {
         productId: productId,
         quantity: 1,
@@ -53,7 +54,7 @@ const addCart = async (productId, userId) => {
                                 resolve({response, status: true})
                             })
                         }else{
-                            resolve({status: 'outOfStock'})
+                            resolve({status: 'alredy exist'})
                         }
                     }else{
                         if(product.stock>0){
@@ -69,12 +70,14 @@ const addCart = async (productId, userId) => {
                                 console.log("response:",response);
                                 resolve({status: true})
                             })
-                        }else{
+                        }else {
+
                             resolve({status: 'outOfStock'})
                         }
                     }
+                  
                 }else{
-                    if(product.stock>0){
+                      if(product.stock>0){
                         const newCart = await Cart({
                             user: userId,
                             cartItems: productObj,
@@ -87,9 +90,13 @@ const addCart = async (productId, userId) => {
                     }else{
                         resolve({status: 'outOfStock'})
                     }
+                    
                 }
+               
             })
         })
+    
+        
     } catch (error) {
         console.log(error.message)
     }

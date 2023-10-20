@@ -134,10 +134,201 @@ const addToStock = async(orderId,userId)=>{
       console.log(error.message);
     }
   }
+  const getOnlineCount = async () => {
+    try {
+      const response = await Order.aggregate([
+        { $unwind: "$orders" },
+        {
+          $match: {
+            "orders.paymentMethod": "razorpay",
+            "orders.orderStatus": "Delivered"
+          }
+        },
+        {
+          $group: {
+            _id: null,
+            totalPriceSum: { $sum: { $toInt: "$orders.totalPrice" } },
+            count: { $sum: 1}
+          }
+        }
+      ])
+      return response
+    } catch (error) {
+      console.error("Error fetching online count: ", error)
+      throw error
+    }
+  }
+
+  const getCodCount = async () => {
+    try {
+      const response = await Order.aggregate([
+        { $unwind: "$orders" },
+        {
+          $match: {
+            "orders.paymentMethod": "cod",
+            "orders.orderStatus": "Delivered"
+          }
+        },
+        {
+          $group: {
+            _id: null,
+            totalPriceSum: { $sum: { $toInt: "$orders.totalPrice" } },
+            count: { $sum: 1}
+          }
+        }
+      ])
+      return response
+    } catch (error) {
+      console.error("Error fetching online count: ", error)
+      throw error
+    }
+  }
+  const returnOrder = async (orderId, userId, status) => {
+    try {
+      return new Promise(async (resolve, reject) => {
+        Order.findOne({ "orders._id": new ObjectId(orderId) })
+          .then((orders) => {
+            const order = orders.orders.find((order) => order._id == orderId);
+            if(order.paymentMethod == 'cod'){
+              if (status == 'Return Declined') {
+                Order.updateOne(
+                  { "orders._id": new ObjectId(orderId) },
+                  {
+                    $set: {
+                      "orders.$.cancelStatus": status,
+                      "orders.$.orderStatus": status,
+                      "orders.$.paymentStatus": "No Refund"
+                    } 
+                  }
+                ).then((response) => {
+                  resolve(response);
+                });
+              }else if(status == 'Return Accepted'){
+                Order.updateOne(
+                  { "orders._id": new ObjectId(orderId) },
+                  {
+                    $set: {
+                      "orders.$.cancelStatus": status,
+                      "orders.$.orderStatus": status,
+                      "orders.$.paymentStatus": "Refund Credited to Wallet"
+                    }
+                  }
+                ).then(async (response) => {
+                  const user = await User.findOne({ _id: userId});
+                  user.wallet += parseInt(order.totalPrice);  
+                  await user.save();
+                  const walletTransaction = {
+                    date:new Date(),
+                    type:"Credit",
+                    amount:order.totalPrice,
+                  }
+                  const walletupdated = await User.updateOne(
+                    { _id: userId },
+                    {
+                      $push: { walletTransaction: walletTransaction }
+                    }
+                  )
+                  resolve(response);
+                });
+              }
+            }else if(order.paymentMethod=='wallet'||order.paymentMethod=='razorpay'||order.paymentMethod=='wallet_razorpay'){
+              if(status == 'Return Accepted'){
+                Order.updateOne(
+                  { "orders._id": new ObjectId(orderId) },
+                  {
+                    $set: {
+                      "orders.$.cancelStatus": status,
+                      "orders.$.orderStatus": status,
+                      "orders.$.paymentStatus": "Refund Credited to Wallet"
+                    }
+                  }
+                ).then(async (response) => {
+                  const user = await User.findOne({ _id: userId});
+                  user.wallet += parseInt(order.totalPrice);
+                  await user.save();
+                  const walletTransaction = {
+                    date:new Date(),
+                    type:"Credit",
+                    amount:order.totalPrice,
+                  }
+                  const walletupdated = await User.updateOne(
+                    { _id: userId },
+                    {
+                      $push: { walletTransaction: walletTransaction },
+                    }
+                  )
+                  resolve(response);
+                });
+              }else if(status == 'Return Declined'){
+                Order.updateOne(
+                  { "orders._id": new ObjectId(orderId) },
+                  {
+                    $set: {
+                      "orders.$.cancelStatus": status,
+                      "orders.$.orderStatus": status,
+                      "orders.$.paymentStatus": "No Refund"
+                    }
+                  }
+                ).then((response) => {
+                  resolve(response);
+                });
+              }
+            }
+          });
+      });
+    } catch (error) {
+      console.log(error.message);
+    }
+}
+const getSalesReport = async () => {
+  try {
+    const response = await Order.aggregate([
+      { $unwind: "$orders" },
+      { $match: { "orders.orderStatus": "Delivered"}}
+    ])
+    return response
+  } catch (error) {
+    console.log(error.message)
+  }
+}
+
+const postReport = async (date) => {
+  try {
+    const start = new Date(date.startdate)
+    const end = new Date(date.enddate)
+    const response = await Order.aggregate([
+      { $unwind: "$orders" },
+      {
+        $match: {
+          $and: [
+             {
+              "orders.createdAt": {
+                $gte: start,
+                $lte: new Date(end.getTime() + 86400000)
+              }
+            },
+            {
+              $expr: { $gt: [end, start] }
+            }
+          ]
+        }
+      }
+    ]).exec()
+
+    return response
+  } catch (error) {
+    console.log(error.message)
+  }
+}
 
 module.exports={
     cancelOrder,
     addToStock,
-    findOrder
+    findOrder,
+    getOnlineCount,
+    getCodCount,
+    returnOrder,
+    getSalesReport,
+    postReport 
 
 }

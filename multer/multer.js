@@ -25,6 +25,15 @@ const fileFilter = (req, file, cb) => {
     }
 };
 
+const addBanner = multer.diskStorage({
+    destination: (req, file, cb) => {
+        cb(null, path.join(__dirname, '../views/admin/banner_images'))
+    },
+    filename: (req, file, cb) => {
+        cb(null, Date.now() + "-" + file.originalname)
+    }
+})
+
 module.exports = {
     upload: multer({ 
         storage: storage,
@@ -32,5 +41,6 @@ module.exports = {
         limits: {
             fileSize: 2 * 1024 * 1024 // setting the limit for each image to 2MB
         }
-    }).array("images", 3),  // Allow a maximum of 3 images to be uploaded at once
+    }).array("images", 3),
+    addBannerUpload: multer({storage: addBanner}).single('image')  // Allow a maximum of 3 images to be uploaded at once
 };

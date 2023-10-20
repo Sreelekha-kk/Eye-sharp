@@ -6,31 +6,29 @@ const categoryHelper = require('../helpers/categoryHelper')
 const bcrypt = require('bcrypt')
 const config = require('../configuration/config')
 const orderHelper=require('../helpers/orderHelper')
-
+const Product=require('../models/productModel')
 const adminHelper=require('../helpers/addminHelper')
-
+const Order=require('../models/orderModel')
 
 const loadLogin = async(req,res)=>{
     try {
-      if(res.locals.admin!=null){
-        res.redirect('/admin/dashboard')
-    }else{
+      
         res.render('adminLogin')
     }
-    } catch (error) {
+     catch (error) {
         console.log(error.message)
     }
 }
 
-const adminlogout=async(req,res)=>{
+const adminlogout = async (req, res) => {
   try {
-    // req.session.admin_id = null 
-    req.session.destroy()
-    res.redirect('/admin')
-   } catch (error) {
-    console.log(error.message) 
-   }
-}
+    req.session.destroy();
+    res.redirect('/admin');
+  } catch (error) {
+    console.log(error.message);
+  }
+};
+
 
 
 
@@ -45,13 +43,122 @@ const securePassword = async (password) => {
   };
 
 
-  const loadHome = async(req, res)=>{
-    try {
-        res.render('dashboard')
+  const loadDashboard = async (req, res) => {
+    try { 
+      
+      const orders = await Order.aggregate([
+        { $unwind: "$orders" },
+        { $match: { "orders.orderStatus": "Delivered" } },
+        {
+          $group: {
+            _id: null,
+            totalPriceSum: { $sum: { $toInt: "$orders.totalPrice" } },
+            count: { $sum: 1}
+        }}
+      ]) 
+  
+      const categorySales = await Order.aggregate([
+        { $unwind: "$orders" },
+        { $unwind: "$orders.productDetails"},
+        { $match: { "orders.orderStatus": "Delivered" } },
+        {
+
+          $project: {
+            CategoryId: "$orders.productDetails.category",
+            totalPrice: {
+              $multiply: [
+                { $toDouble: "$orders.productDetails.productPrice" },
+                { $toDouble: "$orders.productDetails.quantity"}
+              ]
+            }
+          }
+        },
+        {
+          $group: {
+            _id: "$CategoryId",
+            PriceSum: { $sum: "$totalPrice"}
+          }
+        },
+        {
+          $lookup: {
+            from: "categories",
+            localField: "_id",
+            foreignField: "_id",
+            as: "categoryDetails"
+          }
+        },
+        { $unwind: "$categoryDetails" },
+        {
+          $project: {
+            categoryName: "$categoryDetails.name",
+            PriceSum: 1,
+            _id: 0
+          }
+        }
+      ])
+  
+      const salesData = await Order.aggregate([
+        { $unwind: "$orders" },
+        {
+          $match: {
+            "orders.orderStatus": "Delivered"
+          }
+        },
+        {
+          $group: {
+            _id: {
+              $dateToString: {
+                format: "%Y-%m-%d",
+                date: "$orders.createdAt"
+              }
+            },
+            dailySales: { $sum: { $toInt: "$orders.totalPrice" } }
+          }
+        },
+        { $sort: { _id: 1 } }
+      ])
+  
+      const salesCount = await Order.aggregate([
+        { $unwind: "$orders" },
+        { $match: { "orders.orderStatus": "Delivered" } },
+        {
+          $group: {
+            _id: {
+              $dateToString: {
+                format: "%Y-%m-%d",
+                date: "$orders.createdAt"
+              }
+            },
+            orderCount: { $sum: 1 }
+          }
+        },
+        { $sort: { _id: 1 } }
+      ])
+  
+      const categoryCount = await Category.find({}).count()
+      const productsCount = await Product.find({}).count()
+  
+      const onlinePay = await adminHelper.getOnlineCount()
+      // const walletPay = await adminHelper.getWalletCount()
+      const codPay = await adminHelper.getCodCount()
+  
+      const latestOrders = await Order.aggregate([
+        { $unwind: "$orders" },
+        {
+          $sort: {
+          'orders.createdAt': -1
+          }
+        },
+        { $limit: 10 }
+      ])
+  
+      res.render('dashboard', {orders, productsCount, categoryCount, salesCount, salesData, categorySales, onlinePay,  codPay, order: latestOrders})
     } catch (error) {
-        console.log(error.message)
+      console.log(error) 
+      res.status(500).send('Internal Server Error')
     }
-}
+  }
+  
 
 const verifyLogin = async(req,res)=>{
     try {
@@ -103,17 +210,9 @@ const loadUsers = async(req,res)=>{
       console.log(error.message);
   }
   }
-  const deleteUser = async(req,res)=>{
-    try {
-        const id = req.query.id;
-        await User.deleteOne({_id:id})
-        res.redirect('/admin/usermanagment')
-        
-    } catch (error) {
-        console.log(error.message);
-    }
-  }
+  
 
+  
 
 // const loadHome = async(req, res)=>{
 //     try {
@@ -254,7 +353,7 @@ const loadUpdateCategory = async(req,res)=>{
 
         // Assuming categoryHelper.createCategory returns a Promise
         await categoryHelper.updateCategory(categoryId,req.body);
-console.log("dhhs");
+        console.log("dhhs");
         // Redirect to the appropriate page after successfully creating the category
         res.redirect('/admin/categorymanagement');
     } catch (error) {
@@ -311,12 +410,29 @@ const orderDetails = async (req,res)=>{
     console.log(error.message);
   }
 }
+const postSalesReport = async (req, res) => {
+  let details = []
+  const getDate = (date) => {
+    const orderDate = new Date(date)
+    const day = orderDate.getDate()
+    const month = orderDate.getMonth() + 1
+    const year = orderDate.getFullYear()
+    return `${isNaN(day) ? "00" : day} - ${isNaN(month) ? "00" : month} - ${isNaN(year) ? "0000" : year}`
+  }
+
+  adminHelper.postReport(req.body).then((orderDate) => {
+    orderDate.forEach((orders) => {
+      details.push(orders.orders)
+    })
+    res.render('salesReport', {details, getDate})
+  })
+}
 
 
 module.exports = {
     loadLogin,
     verifyLogin,
-     loadHome, 
+    loadDashboard, 
     loadUsers,
     unBlockUser,
     blockUser,
@@ -338,5 +454,6 @@ module.exports = {
     // manageUser
     orderList,
     cancelOrder,
-    orderDetails
+    orderDetails,
+    postSalesReport
 }

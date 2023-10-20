@@ -9,7 +9,58 @@
   <link rel="stylesheet" href="/admin/assets/css/styles.min.css" />
   <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.css">
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-  <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.js"></script></head>
+  <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.js"></script>
+
+  <style>.pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
+  }
+  
+  .pagination ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    gap: 10px;
+  }
+  
+  .pagination li {
+    font-size: 16px;
+    background: #f0f0f0;
+    border: 1px solid #ccc;
+    padding: 8px 16px;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  .pagination li.active {
+    background: #007bff;
+    color: #fff;
+  }
+  
+  .pagination a {
+    text-decoration: none;
+    color: inherit;
+  }
+  
+  .pagination li.active a {
+    color: #fff;
+  }
+  
+  .pagination li a.prev,
+  .pagination li a.next {
+    font-weight: bold;
+  }
+  
+  .pagination li a.prev:hover,
+  .pagination li a.next:hover {
+    background: #007bff;
+    color: #fff;
+  }
+  
+ </style></head>
 
 <body>
   <!--  Body Wrapper -->
@@ -19,7 +70,7 @@
     <!--  Main wrapper -->
     <div class="body-wrapper">
       <!--  Header Start -->
-      <%-include("./includes/header.ejs")%>
+      <%-include("./includes/header.ejs")%> 
       <!--  Header End -->
 
   
@@ -67,33 +118,16 @@
                 </div>
             </div> <!-- card-body end// -->
         </div> <!-- card end// -->
-        <div class="pagination-area mt-15 mb-50">
-            <nav aria-label="Page navigation example">
-                <ul class="pagination justify-content-start">
-                    <% if (page > 1) { %>
-                        <li class="page-item active">
-                            <a class="page-link" href="/admin/users?page=<%= page - 1 %>&pageSize=<%= pageSize %>">Pre</a>
-                        </li>
-                    <% } %>
-                    <% for (let i = 1; i <= totalPages; i++) { %>
-                        <% if (i === page) { %>
-                            <li class="page-item active"><span><%= i %></span></li>
-                        <% } else { %>
-                            <li class="page-item active">
-                                <a class="page-link" href="/admin/users?page=<%= i %>&pageSize=<%= pageSize %>"><%= i %></a>
-                            </li>
-                        <% } %>
-                    <% } %>
-                    <% if (page < totalPages) { %>
-                        <li class="page-item active">
-                            <a class="page-link" href="/admin/users?page=<%= page + 1 %>&pageSize=<%= pageSize %>" style="width: 45px;">Next</a>
-                        </li>
-                    <% } %>
-                </ul>
-            </nav>
-        </div>
+        <div class="pagination">
+            <ul>
+              <li><a href="#" class="prev">Previous</a></li>
+              <li class="active"><a href="#">1</a></li>
+              <li><a href="#">2</a></li>
+              <li><a href="#" class="next">Next</a></li>
+            </ul>
+          </div>
+          
     </section>
-<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.js"></script>
 
 
   <script>
@@ -152,6 +186,36 @@
             }
         })
     }
+    
+  $(document).ready(function () {
+    var items = $('#myTable tbody tr');
+    var itemsPerPage = 10; // Number of items to display per page
+    var currentPage = 1;
+
+    showPage = function (page) {
+      items.hide();
+      items.slice((page - 1) * itemsPerPage, page * itemsPerPage).show();
+    };
+
+    showPage(currentPage);
+
+    $('.pagination a').on('click', function () {
+      if ($(this).hasClass('prev')) {
+        if (currentPage > 1) {
+          currentPage--;
+        }
+      } else if ($(this).hasClass('next')) {
+        if (currentPage < Math.ceil(items.length / itemsPerPage)) {
+          currentPage++;
+        }
+      } else {
+        currentPage = parseInt($(this).text());
+      }
+      showPage(currentPage);
+    });
+  });
+
+
 
   </script>
 
@@ -159,23 +223,25 @@
   <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
   
+  <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.js"></script>
 
 
-<script>
- $(document).ready(function() {
-  console.log("Initializing DataTables");
-  var table = $('#myTable').DataTable({
-    "paging": true,
-    "pageLength": 10,
-    "lengthMenu": [10, 25, 50, 75, 100],
-  });
+  <script>
+    $(document).ready(function() {
+      // $.noConflict();
+      
+      var table = $('#myTable').DataTable({
+        "paging": true,          // Enable pagination
+        "pageLength": 10,        // Number of rows per page
+        "lengthMenu": [10, 25, 50, 75, 100],  // Dropdown options for rows per page
+      });
+    
+      table.on('draw', function() {
+        $(".paginate_button:not(.previous):not(.next)").addClass("number_button");
+      });
+    });
+  </script>
 
-  table.on('draw', function() {
-    console.log("Table redrawn");
-    $(".paginate_button:not(.previous):not(.next)").addClass("number_button");
-  });
-});
-</script>
 
 
 

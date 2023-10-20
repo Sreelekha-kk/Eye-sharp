@@ -138,7 +138,23 @@ const deleteAddress = async (req, res) => {
       console.log(error.message);
     }
   }
-
+  const walletTransaction = async(req, res, next)=>{
+    try {
+      const user = res.locals.user
+      const count = await cartHelper.getCartCount(user.id)
+      // const userData= await User.findOne({_id:user._id})
+      const wallet = await User.aggregate([
+        {$match:{_id:user._id}},
+        {$unwind:"$walletTransaction"},
+        {$sort:{"walletTransaction.date":-1}},
+        {$project:{walletTransaction:1,wallet:1}}
+      ])
+      res.render('public/walletTransaction',{wallet, count})
+    } catch (error) {
+      console.log(error.message);
+      next(error);
+    }
+  }
 
 
 
@@ -147,6 +163,7 @@ module.exports={
     submitAddress,
     editAddress,
     deleteAddress,
-    checkOutAddress
+    checkOutAddress,
+    walletTransaction 
     
 }

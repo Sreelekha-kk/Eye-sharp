@@ -1,0 +1,159 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>eye sharp</title>
+  <link rel="icon" type="image/png" href="/public/images/logo.png"/>
+  <link rel="stylesheet" href="/admin/assets/css/styles.min.css" />
+</head>
+
+<body>
+  <!--  Body Wrapper -->
+  <div class="page-wrapper" id="main-wrapper" data-layout="vertical" data-navbarbg="skin6" data-sidebartype="full"
+    data-sidebar-position="fixed" data-header-position="fixed">
+    <%-include('./includes/sidebar.ejs')%>
+    <!--  Main wrapper -->
+    <div class="body-wrapper">
+      
+      <!--  Header Start -->
+      <%-include("./includes/header.ejs")%>
+      <main class="container-fluid">
+        
+        <form action="/admin/addBanner" method="post" enctype="multipart/form-data" id="myform">
+        <section class="content-main">
+        
+            <div class="row">
+                <div class="col-6">
+                    <div class="content-header">
+                        <h2 class="content-title">Add New Banner</h2>
+                        <div>
+                            <input class="btn btn-md rounded font-sm hover-up" value="Publish" type="submit"></input>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-6">
+                    <div class="card mb-4">
+                        <div class="card-body">
+                            <div class="row">
+                                <!-- <div class="col-md-3">
+                                    <h6>1. General info</h6>
+                                </div> -->
+                                <div class="col-md-9">
+                                    <div class="mb-4">
+                                        <label class="form-label">Product title</label>
+                                        <input type="text" placeholder="Type here" class="form-control" name="title" id="name" onkeyup="titleValidation()">
+                                    </div>
+                                    <span id="title-error"></span>
+                                    <div class="mb-4">
+                                        <label class="form-label">Link</label>
+                                        <input placeholder="Type here" class="form-control" rows="4" name="link" id="description" onkeyup="descriptionValidation()">
+                                    </div>
+                                    <span id="description-error"></span>
+                                </div> <!-- col.// -->
+                            </div> <!-- row.// -->
+                            <hr class="mb-4 mt-0">
+                           <!-- row.// -->
+                            
+                            <hr class="mb-4 mt-0">
+                            <div class="row">
+                                <!-- <div class="col-md-3">
+                                    <h6>4. Media</h6>
+
+                                </div> -->
+                                <div class="col-md-9">
+                                    <div class="mb-4">
+                                        <label class="form-label">Main Image</label>
+                                        <input class="form-control" type="file" name="image">
+                                    </div>
+                                </div>
+                         <!-- col.// -->
+                            </div> <!-- .row end// -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+            </div>
+        </form>
+        <p><%=(typeof message!=='undefined')?message:""%></p>
+        </section> <!-- content-main end// -->
+
+    </main>
+    <script>
+        let regex = /^(?!\s*$).+/;
+      
+        let description = document.getElementById("description");
+        let link = document.getElementById("link");
+      
+        let titleError = document.getElementById("title-error");
+        let descriptionError = document.getElementById("description-error");
+        let linkError = document.getElementById("link-error");
+      
+        let myform = document.getElementById("myform");
+      
+        function titleValidation() {
+          let name = document.getElementById("name").value;
+          let nameInput = document.getElementById("name");
+          if (name.length == 0) {
+            titleError.innerHTML = "Title is required";
+            titleError.style.color = "red";
+            nameInput.style.border = "solid 2px red";
+            return false;
+          }
+          if (!name.match(regex)) {
+            titleError.innerHTML = "Write valid Title";
+            titleError.style.color = "red";
+            nameInput.style.border = "solid 2px red";
+            return false;
+          }
+          titleError.innerHTML = "";
+          titleError.style.color = "green";
+          nameInput.style.border = "solid 2px green";
+          return true;
+        }
+      
+        function descriptionValidation() {
+          let name = document.getElementById("description").value;
+          let nameInput = document.getElementById("description");
+          if (name.length == 0) {
+            descriptionError.innerHTML = "Description is required";
+            descriptionError.style.color = "red";
+            nameInput.style.border = "solid 2px red";
+            return false;
+          }
+          if (!name.match(regex)) {
+            descriptionError.innerHTML = "Write valid Description";
+            descriptionError.style.color = "red";
+            nameInput.style.border = "solid 2px red";
+            return false;
+          }
+          descriptionError.innerHTML = "";
+          descriptionError.style.color = "green";
+          nameInput.style.border = "solid 2px green";
+          return true;
+        }
+      
+        myform.addEventListener("submit", (event) => {
+          event.preventDefault();
+          if (!titleValidation() || !descriptionValidation()) {
+            return false;
+          } else {
+            myform.submit();
+          }
+        });
+      </script>
+    <script src="../admin-assets/js/vendors/jquery-3.6.0.min.js"></script>
+    <script src="../admin-assets/js/vendors/bootstrap.bundle.min.js"></script>
+    <script src="../admin-assets/js/vendors/select2.min.js"></script>
+    <script src="../admin-assets/js/vendors/perfect-scrollbar.js"></script>
+    <script src="../admin-assets/js/vendors/jquery.fullscreen.min.js"></script>
+    <!-- Main Script -->
+    <script src="../admin-assets/js/main.js" type="text/javascript"></script>
+    
+</body>
+
+
+</html>

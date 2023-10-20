@@ -119,7 +119,7 @@
                                                 <label class="form-label" for="product-price">Cost in INR</label>
                                             </div>
                                             <div>
-                                                <input type="number" id="product-price" class="form-control" name="price" placeholder="00.0">
+                                                <input type="number" id="product-price" class="form-control" name="price" placeholder="00.0" min="1">
                                             </div>
                                         </div>
 
@@ -226,7 +226,6 @@ function viewImages(event) {
             // Append the cropped image to the same container as the original image
             imgContainer.innerHTML = ''; // Clear the original image
             imgContainer.appendChild(croppedImage);
-
             // You can save the cropped data URL or take further actions as needed
             console.log('Cropped Data URL:', croppedDataUrl);
         });
