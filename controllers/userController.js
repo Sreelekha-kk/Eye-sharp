@@ -15,7 +15,7 @@ const Product = require("../models/productModel")
 const cartHelper = require("../helpers/cartHelper")
 const Banner = require("../models/bannerModel")
 
-require("dotenv").config();
+
 
 
 
