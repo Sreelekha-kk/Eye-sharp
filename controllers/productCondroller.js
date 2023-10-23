@@ -19,7 +19,7 @@ const loadProducts = async(req,res)=>{
   const displayProduct = async(req,res)=>{
     try {
       const product = await Product.find({}).populate('category')
-      res.render('productManagement', {product: product});
+      res.render('productmanagement', {product: product});
     } catch (error) {
       console.log(error.message)
     }
@@ -50,7 +50,7 @@ const loadProducts = async(req,res)=>{
       console.log(images);
       
       await productHelper.createProduct(req.body,images)
-      res.redirect('/admin/productManagement');
+      res.redirect('/admin/productmanagement');
     } catch (error) {
       console.log(error)
       next(error)
@@ -63,7 +63,7 @@ const loadProducts = async(req,res)=>{
     try {
       await productHelper.unListProduct(req.query.id)
 
-        res.redirect('/admin/productManagement')
+        res.redirect('/admin/productmanagement')
         
     } catch (error) {
         console.log(error.message);
@@ -74,7 +74,7 @@ const loadProducts = async(req,res)=>{
     try {
 
         await productHelper.reListProduct(req.query.id)
-        res.redirect('/admin/productManagement')
+        res.redirect('/admin/productmanagement')
     } catch (error) {
         console.log(error.message);
     }
@@ -109,7 +109,7 @@ const loadProducts = async(req,res)=>{
             }); 
         }
         await productHelper.updateProduct(req.body,images,deletedImages)
-        res.redirect('/admin/productManagement');
+        res.redirect('/admin/productmanagement');
     } catch (error) {
       console.log(error.message);
     }
